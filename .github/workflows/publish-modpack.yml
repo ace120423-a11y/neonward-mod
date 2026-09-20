@@ -48,3 +48,6 @@ jobs:
               --title "NeonWard v${VERSION}" \
               --generate-notes
           fi
+          jar="neonward-0.1.0-v${VERSION}.jar"
+          cp distribution/neonward-0.1.0.jar "$jar"
+          gh release upload "v${VERSION}" "$jar" --clobber
