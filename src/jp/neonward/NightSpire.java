@@ -30,7 +30,7 @@ public final class NightSpire {
    if(s.getTickCount()%20!=0)return;
    SpireBosses.migrate(l);ClockworkPuzzles.tick(l);ClockworkPatrols.tick(l);
    for(var id:new ArrayList<>(waiting.keySet())){var p=s.getPlayerList().getPlayer(id);if(p==null){waiting.remove(id);continue;}int f=waiting.get(id)?1:checkpoint(p);if(progress.built>=f){waiting.remove(id);arrive(p,f);}}
-   var floors=new HashSet<Integer>();for(var p:l.players())if(!p.isSpectator()&&p.isAlive()&&SpireSite.contains(l,p.blockPosition())){
+   var floors=new HashSet<Integer>();for(var p:new ArrayList<>(l.players()))if(!p.isSpectator()&&p.isAlive()&&SpireSite.contains(l,p.blockPosition())){
     int f=DungeonLayout.floor(p.getY());floors.add(f);active.put(f,(long)s.getTickCount());
     
     if(cleared(p)>=f&&enemies(l,f).stream().noneMatch(e->e.entityTags().contains("nw_spire_boss")&&e.isAlive())){gate(l,f);double gx=SpireSite.X+34.5,gz=SpireSite.Z+35;if(p.distanceToSqr(gx,DungeonLayout.base(f)+3,gz)<=12.25){ascend(p);continue;}}
