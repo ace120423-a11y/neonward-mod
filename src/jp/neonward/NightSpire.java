@@ -33,7 +33,7 @@ public final class NightSpire {
    var floors=new HashSet<Integer>();for(var p:l.players())if(!p.isSpectator()&&p.isAlive()&&SpireSite.contains(l,p.blockPosition())){
     int f=DungeonLayout.floor(p.getY());floors.add(f);active.put(f,(long)s.getTickCount());
     
-    if(cleared(p)>=f&&enemies(l,f).stream().noneMatch(e->e.entityTags().contains("nw_spire_boss")&&e.isAlive())){gate(l,f);if(p.getX()>=SpireSite.X+33&&p.getX()<=SpireSite.X+36&&p.getZ()>=SpireSite.Z+34.2&&p.getZ()<=SpireSite.Z+36.5){ascend(p);continue;}}
+    if(cleared(p)>=f&&enemies(l,f).stream().noneMatch(e->e.entityTags().contains("nw_spire_boss")&&e.isAlive())){gate(l,f);double gx=SpireSite.X+34.5,gz=SpireSite.Z+35;if(p.distanceToSqr(gx,DungeonLayout.base(f)+3,gz)<=12.25){ascend(p);continue;}}
     p.sendOverlayMessage(Component.literal("NIGHT SPIRE  "+f+" / 30階  "+DungeonLayout.THEMES[DungeonLayout.theme(f)]+(!ClockworkPuzzles.solved(f)?"  機関復旧 "+ClockworkPuzzles.state(f).stage+" / 3 ・通路を探索":cleared(p)>=f?"  ボス撃破済み・光るゲートへ":"  奥の階層ボスを撃破")));
    }
    for(int f:floors){if(l.getDifficulty()==Difficulty.PEACEFUL)continue;boolean needs=l.players().stream().anyMatch(p->SpireSite.contains(l,p.blockPosition())&&!p.isSpectator()&&DungeonLayout.floor(p.getY())==f&&cleared(p)<f);if(needs&&ClockworkPuzzles.solved(f)&&enemies(l,f).stream().noneMatch(e->e.entityTags().contains("nw_spire_boss")&&e.isAlive())){populate(l,f);}}
