@@ -22,7 +22,7 @@ public class SpireBoss extends CyberEnemy {
  final List<BossHazard> hazards=new ArrayList<>();
  private final Map<UUID,Integer> lastHit=new HashMap<>();
  private ServerBossEvent bar;
- int combatTicks,cycle,casts;boolean engaged;Vec3 dashFrom,dashTo;int dashAt;
+ int combatTicks,cycle,casts,moveSkillCooldown;boolean engaged;Vec3 dashFrom,dashTo;int dashAt;
  public SpireBoss(EntityType<? extends Zombie> type,Level level){super(type,level);setPersistenceRequired();xpReward=70+spec().floor()*4;}
  public BossRoster.Kind spec(){return SpireBosses.KINDS.get(getType());}
  @Override public HostileRoster.Kind kind(){return spec().legacy();}
@@ -40,7 +40,7 @@ public class SpireBoss extends CyberEnemy {
  @Override public float getVoicePitch(){return .65f+(spec().floor()-1)/10*.35f;}
  @Override public void tick(){
   super.tick();if(!(level() instanceof ServerLevel l)||!isAlive()||isRemoved())return;
-  int f=spec().floor(),base=DungeonLayout.base(f)+1;var max=getAttribute(Attributes.MAX_HEALTH);if(max!=null&&max.getBaseValue()<spec().hp()*3){max.setBaseValue(spec().hp()*3);setHealth(getMaxHealth());}
+  int f=spec().floor(),base=DungeonLayout.base(f)+1;var max=getAttribute(Attributes.MAX_HEALTH);if(max!=null&&max.getBaseValue()<spec().hp()*4.5){max.setBaseValue(spec().hp()*4.5);setHealth(getMaxHealth());}
   // Bosses stay in their own chamber; players may retreat into the maze safely.
   if(l.dimension()!=NeonZones.TOWER||!entityTags().contains("nw_spire_boss"))return;
   if(getY()<base-.5||getY()>base+4||getX()<SpireSite.X-63||getX()>SpireSite.X+51||getZ()<SpireSite.Z+24||getZ()>SpireSite.Z+51)setPos(SpireSite.X+32.5,base,SpireSite.Z+32.5);
@@ -57,10 +57,24 @@ public class SpireBoss extends CyberEnemy {
   boolean casting=!hazards.isEmpty();entityData.set(CAST,casting?1:0);
   bar.setName(Component.literal(f+"F  "+spec().name()+" / "+(phase==1?"OVERDRIVE / ":"")+(casting?spec().attack():"冷却中")));
   if(--cycle<=0){planAttack(target.position());casts++;cycle=phase==1?165:185;}
+  if(--moveSkillCooldown<=0){useMoveSkill(l,target);moveSkillCooldown=210+(f%5)*18;}
   tickHazards(l);
   if(dashTo!=null&&combatTicks>=dashAt){move(MoverType.SELF,dashTo.subtract(position()).multiply(1,0,1).scale(.24));if(combatTicks>dashAt+14)dashTo=null;}
   else if(!casting&&cycle>35)moveAround(target);
   if(tickCount%100==0)lastHit.entrySet().removeIf(e->combatTicks-e.getValue()>100);
+ }
+ void useMoveSkill(ServerLevel l,Player target){
+  Vec3 toward=target.position().subtract(position()).multiply(1,0,1);double d=toward.length();if(d<.01)return;
+  var unit=toward.scale(1/d);double distance=spec().motion().equals("rush")?Math.min(7,d+2.5):4.5;
+  double nx=Math.max(SpireSite.X-61,Math.min(SpireSite.X+49,getX()+unit.x*distance));
+  double nz=Math.max(SpireSite.Z+26,Math.min(SpireSite.Z+49,getZ()+unit.z*distance));
+  boolean blink=spec().motion().equals("orbit")||spec().motion().equals("float")||spec().floor()%7==0;
+  if(blink){
+   l.sendParticles(new DustParticleOptions(spec().color(),.8f),getX(),getY()+.5,getZ(),6,.25,.35,.25,.02);
+   teleportTo(nx,getY(),nz);
+   if(spec().motion().equals("float"))setDeltaMovement(0,.48,0);
+  }else setDeltaMovement(unit.x*.55,spec().motion().equals("patrol")?.22:0,unit.z*.55);
+  l.sendParticles(new DustParticleOptions(spec().color(),.8f),getX(),getY()+.5,getZ(),6,.25,.35,.25,.02);
  }
  void moveAround(Player p){
   Vec3 toward=p.position().subtract(position()).multiply(1,0,1);double d=toward.length();if(d<.01)return;var unit=toward.scale(1/d);double speed=.075+spec().floor()*.0015;var motion=spec().motion();Vec3 delta=Vec3.ZERO;

@@ -60,27 +60,30 @@ public final class NightSpire {
  public static void ascend(ServerPlayer p){if(progress==null||!SpireSite.contains(p.level(),p.blockPosition()))return;int f=DungeonLayout.floor(p.getY());if(!ClockworkPuzzles.solved(f)){p.sendSystemMessage(Component.literal("この階の3つの機関を復旧してから進もう"));return;}if(cleared(p)<f){p.sendSystemMessage(Component.literal("この階のボスを倒すとゲートが解放されます"));return;}if(f==30){leave(p);return;}if(progress.built<f+1){p.sendSystemMessage(Component.literal("次の階を準備しています"));return;}int before=checkpoint(p);progress.checkpoint.put(p.getStringUUID(),Math.max(before,f+1));try{save();}catch(Exception ex){progress.checkpoint.put(p.getStringUUID(),before);p.sendSystemMessage(Component.literal("進行を保存できなかったため移動を中止しました"));return;}arrive(p,f+1);p.sendSystemMessage(Component.literal("進行セーブ：第"+(f+1)+"階に到達。次回はこの階から再開できます。"));}
  public static void leave(ServerPlayer p){NeonZones.move(p,p.level().getServer().overworld(),new Vec3(SpireSite.OUTER_X+3.5,65,SpireSite.OUTER_Z-8.5),180);p.sendSystemMessage(Component.literal("NIGHT SPIRE / 塔の玄関前へ帰還"));}
  static void gate(ServerLevel l,int f){
-  int y=DungeonLayout.base(f)+1;for(int i=0;i<14;i++){double x=33+l.getRandom().nextDouble()*3,yy=y+.2+l.getRandom().nextDouble()*3.5;l.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0x89ffff,1),SpireSite.X+x,yy,SpireSite.Z+35.5,1,0,0,0,0);}if(l.getBlockState(SpireSite.pos(32,y,35)).is(Blocks.SEA_LANTERN))return;
+  int y=DungeonLayout.base(f)+1;if(l.getGameTime()%40==0)for(int i=0;i<4;i++){double x=33+l.getRandom().nextDouble()*3,yy=y+.2+l.getRandom().nextDouble()*3.5;l.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0x89ffff,1),SpireSite.X+x,yy,SpireSite.Z+35.5,1,0,0,0,0);}if(l.getBlockState(SpireSite.pos(32,y,35)).is(Blocks.SEA_LANTERN))return;
   for(int dy=0;dy<5;dy++)for(int x=32;x<=37;x++)if(x==32||x==37||dy==4)l.setBlock(SpireSite.pos(x,y+dy,35),Blocks.SEA_LANTERN.defaultBlockState(),3);
   for(int x=33;x<=36;x++)l.setBlock(SpireSite.pos(x,y-1,35),Blocks.SEA_LANTERN.defaultBlockState(),3);
   for(int x=33;x<=36;x++)for(int dy=1;dy<=3;dy++)l.setBlock(SpireSite.pos(x,y+dy,35),Blocks.AIR.defaultBlockState(),3);
   NeonZones.sign(l,SpireSite.pos(32,y+5,35),f==30?"帰還ゲート":"第 "+(f+1)+" 階層へ","ボス撃破・解放済み","光る枠をくぐる","移動時に進行セーブ");
  }
- static List<CyberEnemy> enemies(ServerLevel l,int f){var found=new ArrayList<CyberEnemy>();for(var e:l.getAllEntities())if(e instanceof CyberEnemy mob&&e.entityTags().contains("nw_spire_floor_"+f))found.add(mob);return found;}
+ static List<CyberEnemy> enemies(ServerLevel l,int f){
+  int y=DungeonLayout.base(f);var box=new net.minecraft.world.phys.AABB(SpireSite.X-64,y-2,SpireSite.Z+23,SpireSite.X+52,y+DungeonLayout.STEP+2,SpireSite.Z+52);
+  return l.getEntitiesOfClass(CyberEnemy.class,box,e->e.entityTags().contains("nw_spire_floor_"+f));
+ }
  static void populate(ServerLevel l,int f){
   int gy=DungeonLayout.base(f)+1;for(int x=32;x<=37;x++)for(int dy=0;dy<=5;dy++)l.setBlock(SpireSite.pos(x,gy+dy,35),Blocks.AIR.defaultBlockState(),2);
   SpireBosses.spawn(l,f,32.5,32.5);
  }
  static CyberEnemy spawn(ServerLevel l,int floor,double x,double z,HostileRoster.Kind k,boolean boss){
   var e=new CyberEnemy(NeonHostiles.TYPES.get(k.id()),l);e.setPos(SpireSite.X+x,DungeonLayout.base(floor)+1,SpireSite.Z+z);e.setPersistenceRequired();e.addTag("nw_spire_floor_"+floor);
-  double factor=1+(floor-1)*.09;e.getAttribute(Attributes.MAX_HEALTH).setBaseValue(k.hp()*factor*(boss?3:1));e.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(k.damage()*(1+(floor-1)*.035)*(boss?1.35:1));e.setHealth(e.getMaxHealth());
+  double factor=1+(floor-1)*.09;e.getAttribute(Attributes.MAX_HEALTH).setBaseValue(k.hp()*factor*(boss?4.5:1));e.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(k.damage()*(1+(floor-1)*.035)*(boss?1.35:1));e.setHealth(e.getMaxHealth());
   if(boss){e.addTag("nw_spire_boss");e.getAttribute(Attributes.SCALE).setBaseValue(k.id().equals("iron_colossus")?1.65:1.25);e.setCustomName(Component.literal("第"+floor+"階 守護者 / "+k.name()).withColor(0xff537f));e.setCustomNameVisible(true);}
   l.addFreshEntity(e);return e;
  }
  static void build(ServerLevel l){
   if(progress.built>=30)return;int f=progress.built+1,size=DungeonLayout.SIZE,total=size*DungeonLayout.DEPTH*DungeonLayout.STEP;
   if(plan==null)plan=DungeonLayout.plan(f);
-  for(int budget=0;budget<20000&&cursor<total;budget++,cursor++){
+  for(int budget=0;budget<5000&&cursor<total;budget++,cursor++){
    int x=cursor%size,z=(cursor/size)%DungeonLayout.DEPTH,dy=cursor/(size*DungeonLayout.DEPTH);var p=new BlockPos(x,DungeonLayout.base(f)+dy,z);BlockState state=ClockworkInterior.state(plan,x,dy,z,f);
    if(!l.getBlockState(p).equals(state))l.setBlock(p,state,2);
   }
