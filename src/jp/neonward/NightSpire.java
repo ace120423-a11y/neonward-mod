@@ -40,10 +40,10 @@ public final class NightSpire {
    for(var f:new ArrayList<>(active.keySet()))if(!floors.contains(f)&&s.getTickCount()-active.get(f)>200){for(var e:enemies(l,f))if(e.entityTags().contains("nw_spire_boss"))e.discard();active.remove(f);}
   });
   ServerLivingEntityEvents.AFTER_DEATH.register((e,source)->{
-   if(!(e instanceof net.minecraft.world.entity.LivingEntity boss)||!SpireSite.contains(e.level(),e.blockPosition())||!e.entityTags().contains("nw_spire_boss")||!(source.getEntity() instanceof ServerPlayer)||progress==null)return;
+   if(!(e instanceof net.minecraft.world.entity.LivingEntity boss)||!SpireSite.contains(e.level(),e.blockPosition())||!e.entityTags().contains("nw_spire_boss")||progress==null)return;
    int f=DungeonLayout.floor(e.getY());var l=(ServerLevel)e.level();var before=new HashMap<>(progress.cleared);var recipients=new ArrayList<ServerPlayer>();
    for(var p:l.players())if(SpireSite.contains(l,p.blockPosition())&&!p.isSpectator()&&p.isAlive()&&DungeonLayout.floor(p.getY())==f&&cleared(p)>=f-1){progress.cleared.put(p.getStringUUID(),Math.max(cleared(p),f));recipients.add(p);}
-   try{save();gate(l,f);for(var p:recipients)p.sendSystemMessage(Component.literal(f==30?"NIGHT SPIRE / 30階攻略達成！ 出現した帰還ゲートで街へ戻れます。":f+"階ボス撃破！ 最奥に次の階層へのゲートが出現しました。"));}catch(Exception ex){progress.cleared=before;for(var p:recipients)p.sendSystemMessage(Component.literal("攻略記録を保存できませんでした。再挑戦できるようボスを復旧します。"));}
+   gate(l,f);try{save();for(var p:recipients)p.sendSystemMessage(Component.literal(f==30?"NIGHT SPIRE / 30階攻略達成！ 出現した帰還ゲートで街へ戻れます。":f+"階ボス撃破！ 最奥に次の階層へのゲートが出現しました。"));}catch(Exception ex){progress.cleared=before;for(var p:recipients)p.sendSystemMessage(Component.literal("攻略記録を保存できませんでした。再挑戦できるようボスを復旧します。"));}
   });
  }
  static int cleared(ServerPlayer p){return progress==null?0:Math.max(0,Math.min(30,progress.cleared.getOrDefault(p.getStringUUID(),0)));}
@@ -53,7 +53,8 @@ public final class NightSpire {
   if(progress==null){p.sendSystemMessage(Component.literal(fault.isEmpty()?"塔を準備中です":fault));return;}
   var l=p.level().getServer().getLevel(NeonZones.TOWER);if(l==null){p.sendSystemMessage(Component.literal("塔の反映にはゲームの再起動が必要です"));return;}
   if(l.getDifficulty()==Difficulty.PEACEFUL){p.sendSystemMessage(Component.literal("ピースフルではボスが出ないため、イージー以上に変更してね"));return;}
-  int f=first?1:checkpoint(p);if(progress.built<f){waiting.put(p.getUUID(),first);p.sendSystemMessage(Component.literal("塔を建設中です（"+progress.built+" / 30階）。準備できたら移動します。"));return;}arrive(p,f);
+  int f=first?1:checkpoint(p);var tower=p.level().getServer().getLevel(NeonZones.TOWER);if(tower!=null){for(var q:tower.players())if(!q.isSpectator()&&q.isAlive()&&SpireSite.contains(tower,q.blockPosition())){f=DungeonLayout.floor(q.getY());break;}}
+  if(progress.built<f){waiting.put(p.getUUID(),first);p.sendSystemMessage(Component.literal("塔を建設中です（"+progress.built+" / 30階）。準備できたら移動します。"));return;}arrive(p,f);
  }
  static void arrive(ServerPlayer p,int f){var l=p.level().getServer().getLevel(NeonZones.TOWER);if(l==null)return;NeonZones.move(p,l,new Vec3(40.5,DungeonLayout.base(f)+1,9.5),-30);p.sendSystemMessage(Component.literal("NIGHT SPIRE / "+f+"階。最奥のボス撃破でゲートが出現します。3つの機関を復旧して進もう。入口の端末で塔の外へ帰還できます。"));}
  public static void ascend(ServerPlayer p){if(progress==null||!SpireSite.contains(p.level(),p.blockPosition()))return;int f=DungeonLayout.floor(p.getY());if(!ClockworkPuzzles.solved(f)){p.sendSystemMessage(Component.literal("この階の3つの機関を復旧してから進もう"));return;}if(cleared(p)<f){p.sendSystemMessage(Component.literal("この階のボスを倒すとゲートが解放されます"));return;}if(f==30){leave(p);return;}if(progress.built<f+1){p.sendSystemMessage(Component.literal("次の階を準備しています"));return;}int before=checkpoint(p);progress.checkpoint.put(p.getStringUUID(),Math.max(before,f+1));try{save();}catch(Exception ex){progress.checkpoint.put(p.getStringUUID(),before);p.sendSystemMessage(Component.literal("進行を保存できなかったため移動を中止しました"));return;}arrive(p,f+1);p.sendSystemMessage(Component.literal("進行セーブ：第"+(f+1)+"階に到達。次回はこの階から再開できます。"));}
