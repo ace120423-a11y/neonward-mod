@@ -2,6 +2,7 @@ package jp.neonward;
 import java.nio.file.*;
 import java.util.*;
 import java.io.*;
+import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -22,7 +23,7 @@ public final class PhotoStore {
    Minecraft.getInstance().getTextureManager().register(id,new DynamicTexture(()->"Phone photo",im));
   }
   Picture(byte[] bytes) throws IOException {
-   NativeImage im;try(var in=new ByteArrayInputStream(bytes)){im=NativeImage.read(in);}
+   NativeImage im;var decoded=ImageIO.read(new ByteArrayInputStream(bytes));if(decoded==null)throw new IOException("photo format");try(var png=new ByteArrayOutputStream()){ImageIO.write(decoded,"PNG",png);try(var in=new ByteArrayInputStream(png.toByteArray())){im=NativeImage.read(in);}}
    width=im.getWidth();height=im.getHeight();id=NeonWard.id("photo/"+UUID.randomUUID());
    Minecraft.getInstance().getTextureManager().register(id,new DynamicTexture(()->"PULSE photo",im));
   }
