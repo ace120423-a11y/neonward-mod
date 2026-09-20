@@ -45,7 +45,7 @@ public final class LiftSystem {
   CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("neonlift").then(Commands.literal("select").then(Commands.argument("lift",IntegerArgumentType.integer(0,PLANS.size()-1)).then(Commands.argument("floor",IntegerArgumentType.integer(1,64)).executes(ctx->{
    var player=ctx.getSource().getPlayerOrException();var p=PLANS.get(IntegerArgumentType.getInteger(ctx,"lift"));int floor=IntegerArgumentType.getInteger(ctx,"floor")-1;
    if(player.level()!=player.level().getServer().overworld()||player.isSpectator())return 0;
-   if(p.id()==2&&floor>0&&!CityApartments.owns(player,floor+1)){player.sendOverlayMessage(Component.literal("購入した自分の階と1階だけ選択できます"));return 0;}var cab=find((ServerLevel)player.level(),p);if(cab==null||!cab.inside(player)){player.sendOverlayMessage(Component.literal("エレベーターの箱に入って操作してください。"));return 0;}return cab.request(floor)?1:0;
+   if(p.id()==2&&floor>0&&!CityApartments.canAccess(player,floor+1)){player.sendOverlayMessage(Component.literal("購入者または登録フレンドの階だけ選択できます"));return 0;}var cab=find((ServerLevel)player.level(),p);if(cab==null||!cab.inside(player)){player.sendOverlayMessage(Component.literal("エレベーターの箱に入って操作してください。"));return 0;}return cab.request(floor)?1:0;
   }))))));
  }
  public static VerticalLift find(ServerLevel l,Plan p){return l.getEntitiesOfClass(VerticalLift.class,p.shaft().inflate(1)).stream().filter(v->v.liftId()==p.id).findFirst().orElse(null);}
@@ -55,6 +55,6 @@ public final class LiftSystem {
   public static final MapCodec<Panel> CODEC=simpleCodec(Panel::new);
   Panel(BlockBehaviour.Properties p){super(p);}
   @Override public MapCodec<? extends Block> codec(){return CODEC;}
-  @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player player,BlockHitResult hit){if(l instanceof ServerLevel server&&l.dimension()==Level.OVERWORLD&&!player.isSpectator()){var p=atPanel(pos);if(p!=null){int target=p.nearest(pos.getY()-1);if(p.id()==2&&target>0&&!CityApartments.owns(player,target+1))return InteractionResult.FAIL;var cab=find(server,p);if(cab!=null){cab.request(p.nearest(pos.getY()-1));player.sendOverlayMessage(Component.literal("呼び出し受付 / 現在 "+(p.nearest(cab.getY())+1)+"階"));}}}return InteractionResult.SUCCESS;}
+  @Override protected InteractionResult useWithoutItem(BlockState s,Level l,BlockPos pos,Player player,BlockHitResult hit){if(l instanceof ServerLevel server&&l.dimension()==Level.OVERWORLD&&!player.isSpectator()){var p=atPanel(pos);if(p!=null){int target=p.nearest(pos.getY()-1);if(p.id()==2&&target>0&&!CityApartments.canAccess(player,target+1))return InteractionResult.FAIL;var cab=find(server,p);if(cab!=null){cab.request(p.nearest(pos.getY()-1));player.sendOverlayMessage(Component.literal("呼び出し受付 / 現在 "+(p.nearest(cab.getY())+1)+"階"));}}}return InteractionResult.SUCCESS;}
  }
 }

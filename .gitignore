@@ -1,5 +1,6 @@
 # Build output and generated runtime files
 build/
+work/
 __pycache__/
 *.pyc
 
