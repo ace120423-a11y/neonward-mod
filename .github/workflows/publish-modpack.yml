@@ -41,6 +41,10 @@ jobs:
         run: |
           asset="NeonWard-Friends-v${VERSION}.mrpack"
           cp distribution/NeonWard-Friends.mrpack "$asset"
-          gh release create "v${VERSION}" "$asset" \
-            --title "NeonWard v${VERSION}" \
-            --generate-notes
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            gh release upload "v${VERSION}" "$asset" --clobber
+          else
+            gh release create "v${VERSION}" "$asset" \
+              --title "NeonWard v${VERSION}" \
+              --generate-notes
+          fi
