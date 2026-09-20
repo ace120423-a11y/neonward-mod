@@ -967,6 +967,17 @@
     "job": "dealer"
   },
   {
+    "key": "bar_staff_car_sales",
+    "x": 350,
+    "y": 65,
+    "z": 579,
+    "role": 0,
+    "name": "NEON MOTOR / 購入カウンター",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "car_sales"
+  },
+  {
     "key": "bar_staff_casino",
     "x": 520,
     "y": 65,

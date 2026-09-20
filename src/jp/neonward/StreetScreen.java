@@ -8,7 +8,7 @@ public final class StreetScreen extends Screen {
  JsonObject data=new JsonObject();String page,id="car",message="";int x,y,w,h;
  public StreetScreen(String page){super(Component.literal(page.equals("motor")?"MOTOR WORKS":"BLACKLINE"));this.page=page;}
  public boolean isPauseScreen(){return false;}
- void receive(JsonObject o){data=o;if(o.has("vehicle"))id=o.get("vehicle").getAsString();message=o.get("message").getAsString();rebuildWidgets();}
+ void receive(JsonObject o){data=o;if(o.has("vehicle"))id=o.get("vehicle").getAsString();message=o.get("message").getAsString();if(page.equals("underworld")){if(o.has("nav")&&o.get("nav").getAsBoolean()){int z=Math.clamp(o.get("nav_z").getAsInt(),-31,998);StreetNavigation.start(new MapPlaces.Place(o.get("nav_name").getAsString(),o.get("nav_x").getAsInt(),z));}else StreetNavigation.stop();}rebuildWidgets();}
  void cmd(String s){if(minecraft.player!=null)minecraft.player.connection.sendCommand(s);}
  int offset(int v){return v*h/290;}
  void button(int yy,String text,String cmd){addRenderableWidget(new PhoneScreen.NeonButton(x+12,y+offset(yy),w-24,h<270?16:20,text,b->cmd(cmd)));}
