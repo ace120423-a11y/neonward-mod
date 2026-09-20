@@ -17,7 +17,7 @@ public final class SpireBosses {
   var key=ResourceKey.create(Registries.ENTITY_TYPE,NeonWard.id(k.id()));
   var type=Registry.register(BuiltInRegistries.ENTITY_TYPE,key,EntityType.Builder.<SpireBoss>of(SpireBoss::new,MobCategory.MONSTER).sized(k.width(),k.height()).clientTrackingRange(10).notInPeaceful().noLootTable().build(key));
   KINDS.put(type,k);TYPES.put(k.id(),type);
-  FabricDefaultAttributeRegistry.register(type,SpireBoss.createAttributes().add(Attributes.MAX_HEALTH,k.hp()).add(Attributes.ARMOR,4+k.floor()*.2).add(Attributes.MOVEMENT_SPEED,.23).add(Attributes.ATTACK_DAMAGE,k.damage()).add(Attributes.FOLLOW_RANGE,32).add(Attributes.SPAWN_REINFORCEMENTS_CHANCE,0).add(Attributes.KNOCKBACK_RESISTANCE,1));
+  FabricDefaultAttributeRegistry.register(type,SpireBoss.createAttributes().add(Attributes.MAX_HEALTH,k.hp()*3).add(Attributes.ARMOR,4+k.floor()*.2).add(Attributes.MOVEMENT_SPEED,.23).add(Attributes.ATTACK_DAMAGE,k.damage()).add(Attributes.FOLLOW_RANGE,96).add(Attributes.SPAWN_REINFORCEMENTS_CHANCE,0).add(Attributes.KNOCKBACK_RESISTANCE,1));
  }}
  static SpireBoss spawn(ServerLevel l,int f,double x,double z){
   var k=BossRoster.floor(f);var e=new SpireBoss(TYPES.get(k.id()),l);e.setPos(SpireSite.X+x,DungeonLayout.base(f)+1,SpireSite.Z+z);e.setPersistenceRequired();e.addTag("nw_spire_floor_"+f);e.addTag("nw_spire_boss");e.setCustomName(Component.literal(f+"F / "+k.name()).withColor(k.color()));e.setHealth(e.getMaxHealth());l.addFreshEntity(e);return e;

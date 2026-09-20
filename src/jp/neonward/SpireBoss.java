@@ -40,7 +40,7 @@ public class SpireBoss extends CyberEnemy {
  @Override public float getVoicePitch(){return .65f+(spec().floor()-1)/10*.35f;}
  @Override public void tick(){
   super.tick();if(!(level() instanceof ServerLevel l)||!isAlive()||isRemoved())return;
-  int f=spec().floor(),base=DungeonLayout.base(f)+1;
+  int f=spec().floor(),base=DungeonLayout.base(f)+1;var max=getAttribute(Attributes.MAX_HEALTH);if(max!=null&&max.getBaseValue()<spec().hp()*3){max.setBaseValue(spec().hp()*3);setHealth(getMaxHealth());}
   // Bosses stay in their own chamber; players may retreat into the maze safely.
   if(l.dimension()!=NeonZones.TOWER||!entityTags().contains("nw_spire_boss"))return;
   if(getY()<base-.5||getY()>base+4||getX()<SpireSite.X-63||getX()>SpireSite.X+51||getZ()<SpireSite.Z+24||getZ()>SpireSite.Z+51)setPos(SpireSite.X+32.5,base,SpireSite.Z+32.5);
@@ -81,10 +81,10 @@ public class SpireBoss extends CyberEnemy {
  double localX(double x){return 32.5+(x-SpireSite.X-32.5)/2.4;}
  double localZ(double z){return 32.5+(z-SpireSite.Z-32.5)/2.4;}
  Vec3 point(double x,double z){return floor(new Vec3(SpireSite.X+32.5+(x-32.5)*2.4,0,SpireSite.Z+32.5+(z-32.5)*2.4));}
- void disc(Vec3 p,double r,int delay,float power){hazards.add(new BossHazard(0,floor(p),Vec3.ZERO,r*2,0,combatTicks+delay,6,power,false,0));}
- void ring(Vec3 p,double r,int delay){hazards.add(new BossHazard(1,floor(p),Vec3.ZERO,r*2,0,combatTicks+delay,6,1,true,0));}
- void line(Vec3 a,Vec3 b,double r,int delay){hazards.add(new BossHazard(2,floor(a),floor(b),r*1.5,0,combatTicks+delay,7,1,false,0));}
- void cone(Vec3 a,double angle,double half,double radius,int delay){hazards.add(new BossHazard(3,floor(a),new Vec3(half,0,0),radius*2,angle,combatTicks+delay,7,1.1f,false,0));}
+ void disc(Vec3 p,double r,int delay,float power){hazards.add(new BossHazard(0,floor(p),Vec3.ZERO,r*6,0,combatTicks+delay,6,power,false,0));}
+ void ring(Vec3 p,double r,int delay){hazards.add(new BossHazard(1,floor(p),Vec3.ZERO,r*6,0,combatTicks+delay,6,1,true,0));}
+ void line(Vec3 a,Vec3 b,double r,int delay){hazards.add(new BossHazard(2,floor(a),floor(b),r*4.5,0,combatTicks+delay,7,1,false,0));}
+ void cone(Vec3 a,double angle,double half,double radius,int delay){hazards.add(new BossHazard(3,floor(a),new Vec3(half,0,0),radius*6,angle,combatTicks+delay,7,1.1f,false,0));}
  Vec3 radial(Vec3 center,double angle,double distance){return center.add(Math.cos(angle)*distance,0,Math.sin(angle)*distance);}
  void charge(Vec3 a,Vec3 target,int delay){Vec3 end=target;double pad=spec().width()/2+.2;end=new Vec3(Math.max(SpireSite.X-63+pad,Math.min(SpireSite.X+51-pad,end.x)),getY(),Math.max(SpireSite.Z+24+pad,Math.min(SpireSite.Z+51-pad,end.z)));line(a,end,.8,delay);dashFrom=a;dashTo=end;dashAt=combatTicks+delay;}
  /** The thirty cases are intentionally distinct encounter programs, not random recolors. */

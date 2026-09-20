@@ -16,7 +16,7 @@ public final class HomeBuildingRules {
  public static boolean editablePosition(Level l,Player p,BlockPos pos){
   if(l.dimension()==Level.OVERWORLD)return CityApartments.editable(l,p,pos);if(l.dimension()!=PrivateHomes.DIMENSION)return false;
   int slot;
-  if(p instanceof ServerPlayer sp){var a=PrivateHomes.account(sp);if(a==null||a.homeSlot<=0||!PrivateHomes.ownsPosition(sp))return false;slot=a.homeSlot;}
+  if(p instanceof ServerPlayer sp){if(!PrivateHomes.insidePosition(sp))return false;slot=Math.floorDiv((int)Math.floor(sp.getX()),1024)+Math.floorDiv((int)Math.floor(sp.getZ()),1024)*512;}
   else{if(p==null)return false;slot=Math.floorDiv(p.blockPosition().getX(),1024)+Math.floorDiv(p.blockPosition().getZ(),1024)*512;}
   var o=PrivateHomes.origin(slot);var r=pos.subtract(o);
   if(r.getX()<2||r.getX()>26||r.getZ()<2||r.getZ()>13||r.getY()<65||r.getY()>70)return false;

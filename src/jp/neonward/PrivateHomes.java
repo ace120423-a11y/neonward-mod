@@ -31,23 +31,25 @@ public final class PrivateHomes {
  static MarketLedger.Account account(ServerPlayer p){return StockMarket.ledger==null?null:StockMarket.ledger.account(p.getStringUUID());}
  static boolean near(ServerPlayer p){return p.level().dimension()==Level.OVERWORLD&&p.distanceToSqr(221.5,65,950.5)<49;}
  static boolean ownsPosition(ServerPlayer p){var a=account(p);if(a==null||a.homeSlot==0)return false;var o=origin(a.homeSlot);return p.getX()>=o.getX()-1&&p.getX()<o.getX()+31&&p.getZ()>=o.getZ()-1&&p.getZ()<o.getZ()+20&&p.getY()>=63&&p.getY()<82;}
+ static boolean canAccessPosition(ServerPlayer p){if(!insidePosition(p))return false;int slot=Math.floorDiv((int)Math.floor(p.getX()),1024)+Math.floorDiv((int)Math.floor(p.getZ()),1024)*512;String owner=null;for(var e:StockMarket.ledger.accounts.entrySet())if(e.getValue().homeSlot==slot){owner=e.getKey();break;}return owner!=null&&(owner.equals(p.getStringUUID())||PhoneFriends.linked(StockMarket.ledger,owner,p.getStringUUID()));}
+ static boolean insidePosition(ServerPlayer p){int slot=Math.floorDiv((int)Math.floor(p.getX()),1024)+Math.floorDiv((int)Math.floor(p.getZ()),1024)*512;var o=origin(slot);return p.getX()>=o.getX()-1&&p.getX()<o.getX()+31&&p.getZ()>=o.getZ()-1&&p.getZ()<o.getZ()+20&&p.getY()>=63&&p.getY()<82;}
  public static void init(){
   try(var in=PrivateHomes.class.getResourceAsStream("/data/neonward/housing/slum.json")){template=JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(in),java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();}catch(Exception e){throw new IllegalStateException("Home template missing",e);}
   CommandRegistrationCallback.EVENT.register((d,c,e)->{var root=Commands.literal("neonhome");for(String action:List.of("view","buy","enter","leave"))root.then(Commands.literal(action).executes(ctx->request(ctx.getSource().getPlayerOrException(),action)));d.register(root);});
   UseBlockCallback.EVENT.register((p,l,h,hit)->{
    var pos=hit.getBlockPos();
    if(l.dimension()==Level.OVERWORLD&&pos.getX()==221&&pos.getZ()==949&&pos.getY()>=65&&pos.getY()<=68){if(p instanceof ServerPlayer sp&&h==InteractionHand.MAIN_HAND)request(sp,"view");return InteractionResult.SUCCESS;}
-   if(l.dimension()==DIMENSION&&p instanceof ServerPlayer sp&&!ownsPosition(sp))return InteractionResult.FAIL;
+   if(l.dimension()==DIMENSION&&p instanceof ServerPlayer sp&&!canAccessPosition(sp))return InteractionResult.FAIL;
    return InteractionResult.PASS;
   });
   ServerLifecycleEvents.SERVER_STOPPED.register(s->cooldown.clear());
   ServerTickEvents.END_SERVER_TICK.register(s->{for(var p:s.getPlayerList().getPlayers()){
    if(s.getTickCount()<cooldown.getOrDefault(p.getUUID(),0))continue;
    if(p.level().dimension()==DIMENSION){
-    if(!ownsPosition(p)){leave(p);continue;}
+    if(!canAccessPosition(p)){leave(p);continue;}
     var a=account(p);var o=origin(a.homeSlot);
     if(p.getZ()>o.getZ()+15.5&&Math.abs(p.getX()-(o.getX()+8.5))<1.4){leave(p);continue;}
-    if(s.getTickCount()%100==0)nameplate(p);
+    if(s.getTickCount()%100==0&&ownsPosition(p))nameplate(p);
    }else if(p.level().dimension()==Level.OVERWORLD&&p.getX()>220&&p.getX()<223&&p.getZ()>948&&p.getZ()<950&&p.getY()>=64&&p.getY()<68){
     var a=account(p);if(a!=null&&a.homeSlot>0)enter(p);else{p.teleportTo(s.overworld(),221.5,65,951.5,Set.of(),180,0,true);reply(p,"スラムの隠れ家 / 家具付き 10,000 Cr");cooldown.put(p.getUUID(),s.getTickCount()+30);}
    }

@@ -16,6 +16,7 @@ public final class CyberwareScreen extends Screen {
   int fw=(w-20)/4;for(int f=0;f<4;f++){final int f0=f;addRenderableWidget(new PhoneScreen.NeonButton(x+10+f*fw,y+h-119,fw-2,16,(family==f?">":"")+CyberwareCatalog.FAMILIES[f],b->{family=f0;rebuildWidgets();}));}
   int id=CyberwareCatalog.index(selected,family,tier);boolean installed=java.util.Objects.equals(account.cyberSlots.get(selected),id)&&account.cyberRolls.getOrDefault(selected,0)>=rolls[id];var install=new PhoneScreen.NeonButton(x+10,y+h-64,w-20,18,installed?"装着中":counts[id]>0?"所持中の最高値を装着 / 所持 "+counts[id]+" 個":"未所持 / 敵からランダムドロップ",b->request("install",id));install.active=editable&&!installed&&counts[id]>0;addRenderableWidget(install);
   var remove=new PhoneScreen.NeonButton(x+10,y+h-25,95,18,"取り外す",b->request("remove",selected));remove.active=editable&&account.cyberSlots.containsKey(selected);addRenderableWidget(remove);
+  var sell=new PhoneScreen.NeonButton(x+112,y+h-25,95,18,"売却",b->request("sell",id));sell.active=editable&&counts[id]>0;addRenderableWidget(sell);
   addRenderableWidget(new PhoneScreen.NeonButton(x+w-80,y+h-25,70,18,"閉じる",b->onClose()));
   if(!requested){requested=true;request("view",-1);}
  }
