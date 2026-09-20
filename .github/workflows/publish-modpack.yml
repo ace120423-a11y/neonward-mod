@@ -1,0 +1,46 @@
+name: Publish NeonWard modpack
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version, for example 0.1.15"
+        required: true
+        type: string
+  push:
+    paths:
+      - "distribution/NeonWard-Friends.mrpack"
+      - "release/VERSION"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select release version
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [ -n "$INPUT_VERSION" ]; then
+            version="$INPUT_VERSION"
+          else
+            version="$(cat release/VERSION)"
+          fi
+          version="${version#v}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          asset="NeonWard-Friends-v${VERSION}.mrpack"
+          cp distribution/NeonWard-Friends.mrpack "$asset"
+          gh release create "v${VERSION}" "$asset" \
+            --title "NeonWard v${VERSION}" \
+            --generate-notes
