@@ -42,7 +42,7 @@ public final class NightSpire {
   ServerLivingEntityEvents.AFTER_DEATH.register((e,source)->{
    if(!(e instanceof net.minecraft.world.entity.LivingEntity boss)||!SpireSite.contains(e.level(),e.blockPosition())||!e.entityTags().contains("nw_spire_boss")||progress==null)return;
    int f=DungeonLayout.floor(e.getY());var l=(ServerLevel)e.level();var before=new HashMap<>(progress.cleared);var recipients=new ArrayList<ServerPlayer>();
-   for(var p:l.players())if(SpireSite.contains(l,p.blockPosition())&&!p.isSpectator()&&p.isAlive()&&DungeonLayout.floor(p.getY())==f&&cleared(p)>=f-1){progress.cleared.put(p.getStringUUID(),Math.max(cleared(p),f));recipients.add(p);}
+   for(var p:l.players())if(SpireSite.contains(l,p.blockPosition())&&!p.isSpectator()&&p.isAlive()&&DungeonLayout.floor(p.getY())==f){progress.cleared.put(p.getStringUUID(),Math.max(cleared(p),f));recipients.add(p);}
    gate(l,f);try{save();for(var p:recipients)p.sendSystemMessage(Component.literal(f==30?"NIGHT SPIRE / 30階攻略達成！ 出現した帰還ゲートで街へ戻れます。":f+"階ボス撃破！ 最奥に次の階層へのゲートが出現しました。"));}catch(Exception ex){progress.cleared=before;for(var p:recipients)p.sendSystemMessage(Component.literal("攻略記録を保存できませんでした。再挑戦できるようボスを復旧します。"));}
   });
  }
