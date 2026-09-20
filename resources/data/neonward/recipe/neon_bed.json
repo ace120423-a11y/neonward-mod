@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:cyan_bed"
+  ],
+  "result": {
+    "id": "neonward:neon_bed",
+    "count": 1
+  }
+}

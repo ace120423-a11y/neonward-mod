@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " Q ",
+    " Q ",
+    " IR"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone",
+    "Q": "minecraft:quartz"
+  },
+  "result": {
+    "id": "neonward:kurosame_katana",
+    "count": 1
+  }
+}

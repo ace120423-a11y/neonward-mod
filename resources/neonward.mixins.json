@@ -1,0 +1,32 @@
+{
+  "required": true,
+  "package": "jp.neonward.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "PhoneHandMixin",
+    "PhoneActionsMixin",
+    "MeterTextAccess",
+    "LiftDisplayAccess",
+    "CityExplosionMixin",
+    "ProtectedPlacementMixin",
+    "WeaponGlintMixin",
+    "CyberDefenseMixin",
+    "FishingCollectibleMixin"
+  ],
+  "client": [
+    "EnchantParticlesMixin",
+    "PhoneUseMixin",
+    "PhoneDropMixin",
+    "CameraFrameMixin",
+    "CameraHudMixin",
+    "CameraHandMixin",
+    "CameraMovementMixin",
+    "TailoredArmorMixin",
+    "GunInputMixin",
+    "GunAimMixin",
+    "GunFovMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

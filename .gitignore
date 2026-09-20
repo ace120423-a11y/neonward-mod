@@ -1,0 +1,19 @@
+# Build output and generated runtime files
+build/
+__pycache__/
+*.pyc
+
+# Local IDE/editor files
+.idea/
+.vscode/
+*.iml
+
+# Local Minecraft/server data
+logs/
+crash-reports/
+world/
+run/
+
+# Local secrets and machine-specific settings
+.env
+*.local.json

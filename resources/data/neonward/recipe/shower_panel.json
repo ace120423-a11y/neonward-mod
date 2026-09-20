@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:tripwire_hook"
+  ],
+  "result": {
+    "id": "neonward:shower_panel",
+    "count": 1
+  }
+}

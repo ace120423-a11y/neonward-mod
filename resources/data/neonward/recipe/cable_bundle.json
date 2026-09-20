@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:string"
+  ],
+  "result": {
+    "id": "neonward:cable_bundle",
+    "count": 1
+  }
+}

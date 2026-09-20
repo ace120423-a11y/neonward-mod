@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:iron_bars"
+  ],
+  "result": {
+    "id": "neonward:weapon_rack",
+    "count": 1
+  }
+}

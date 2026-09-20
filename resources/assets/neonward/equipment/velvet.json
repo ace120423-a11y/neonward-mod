@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "neonward:velvet"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "neonward:velvet"
+      }
+    ]
+  }
+}

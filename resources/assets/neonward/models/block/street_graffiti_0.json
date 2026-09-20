@@ -1,0 +1,1 @@
+{"textures": {"art": "neonward:block/south_graffiti_atlas", "particle": "neonward:block/grimy_concrete"}, "elements": [{"from": [-8, 0, 15.9], "to": [24, 32, 16], "faces": {"north": {"texture": "#art", "uv": [0, 0, 8, 8]}}}]}

@@ -1,0 +1,516 @@
+{
+  "variants": {
+    "facing=north,part=head,join_north=false,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_0",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=false,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_0",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=false,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_0",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=false,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_0",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=false,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_1",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=true,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_1",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=false,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_1",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=false,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_1",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=false,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_2",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=false,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_2",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=false,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_2",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=true,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_2",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=false,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_3",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=true,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_3",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=false,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_3",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=true,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_3",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=true,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_4",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=false,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_4",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=false,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_4",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=false,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_4",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=true,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_5",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=true,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_5",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=false,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_5",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=false,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_5",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=true,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_6",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=false,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_6",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=false,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_6",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=true,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_6",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=true,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_7",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=true,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_7",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=false,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_7",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=true,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_7",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=false,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_8",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=false,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_8",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=true,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_8",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=false,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_8",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=false,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_9",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=true,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_9",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=true,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_9",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=false,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_9",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=false,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_10",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=false,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_10",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=true,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_10",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=true,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_10",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=false,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_11",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=true,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_11",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=true,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_11",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=true,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_11",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=true,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_12",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=false,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_12",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=true,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_12",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=false,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_12",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=true,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_13",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=true,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_13",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=true,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_13",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=false,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_13",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=true,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_head_joined_14",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=false,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_14",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=true,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_14",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=true,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_14",
+      "y": 270
+    },
+    "facing=north,part=head,join_north=true,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_15",
+      "y": 0
+    },
+    "facing=east,part=head,join_north=true,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_15",
+      "y": 90
+    },
+    "facing=south,part=head,join_north=true,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_15",
+      "y": 180
+    },
+    "facing=west,part=head,join_north=true,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_head_joined_15",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=false,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_0",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=false,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_0",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=false,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_0",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=false,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_0",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=false,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_1",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=true,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_1",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=false,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_1",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=false,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_1",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=false,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_2",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=false,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_2",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=false,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_2",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=true,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_2",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=false,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_3",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=true,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_3",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=false,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_3",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=true,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_3",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=true,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_4",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=false,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_4",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=false,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_4",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=false,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_4",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=true,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_5",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=true,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_5",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=false,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_5",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=false,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_5",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=true,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_6",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=false,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_6",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=false,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_6",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=true,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_6",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=true,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_7",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=true,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_7",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=false,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_7",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=true,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_7",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=false,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_8",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=false,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_8",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=true,join_east=false,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_8",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=false,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_8",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=false,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_9",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=true,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_9",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=true,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_9",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=false,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_9",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=false,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_10",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=false,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_10",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=true,join_east=false,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_10",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=true,join_east=true,join_south=false,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_10",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=false,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_11",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=true,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_11",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=true,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_11",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=true,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_11",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=true,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_12",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=false,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_12",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=true,join_east=false,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_12",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=false,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_12",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=true,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_13",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=true,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_13",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=true,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_13",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=false,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_13",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=true,join_east=true,join_south=true,join_west=false": {
+      "model": "neonward:block/neon_bed_foot_joined_14",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=false,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_14",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=true,join_east=false,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_14",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=true,join_east=true,join_south=false,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_14",
+      "y": 270
+    },
+    "facing=north,part=foot,join_north=true,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_15",
+      "y": 0
+    },
+    "facing=east,part=foot,join_north=true,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_15",
+      "y": 90
+    },
+    "facing=south,part=foot,join_north=true,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_15",
+      "y": 180
+    },
+    "facing=west,part=foot,join_north=true,join_east=true,join_south=true,join_west=true": {
+      "model": "neonward:block/neon_bed_foot_joined_15",
+      "y": 270
+    }
+  }
+}

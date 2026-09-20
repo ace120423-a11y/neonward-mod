@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "neonward:block/alley_vent", "y": 0}, "facing=east": {"model": "neonward:block/alley_vent", "y": 90}, "facing=south": {"model": "neonward:block/alley_vent", "y": 180}, "facing=west": {"model": "neonward:block/alley_vent", "y": 270}}}

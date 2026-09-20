@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "neonward:block/weapon_rack",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "neonward:block/weapon_rack",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "neonward:block/weapon_rack",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "neonward:block/weapon_rack",
+      "y": 270
+    }
+  }
+}

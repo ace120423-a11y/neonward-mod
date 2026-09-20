@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:smooth_stone_slab"
+  ],
+  "result": {
+    "id": "neonward:neon_table",
+    "count": 1
+  }
+}

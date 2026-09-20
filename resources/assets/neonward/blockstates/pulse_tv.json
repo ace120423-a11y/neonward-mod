@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "neonward:block/pulse_tv",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "neonward:block/pulse_tv",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "neonward:block/pulse_tv",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "neonward:block/pulse_tv",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "variants": {
+    "facing=north,half=lower,hinge=left,open=false": {
+      "model": "neonward:block/automatic_door_lower_left_false",
+      "y": 0
+    },
+    "facing=east,half=lower,hinge=left,open=false": {
+      "model": "neonward:block/automatic_door_lower_left_false",
+      "y": 90
+    },
+    "facing=south,half=lower,hinge=left,open=false": {
+      "model": "neonward:block/automatic_door_lower_left_false",
+      "y": 180
+    },
+    "facing=west,half=lower,hinge=left,open=false": {
+      "model": "neonward:block/automatic_door_lower_left_false",
+      "y": 270
+    },
+    "facing=north,half=lower,hinge=left,open=true": {
+      "model": "neonward:block/automatic_door_lower_left_true",
+      "y": 0
+    },
+    "facing=east,half=lower,hinge=left,open=true": {
+      "model": "neonward:block/automatic_door_lower_left_true",
+      "y": 90
+    },
+    "facing=south,half=lower,hinge=left,open=true": {
+      "model": "neonward:block/automatic_door_lower_left_true",
+      "y": 180
+    },
+    "facing=west,half=lower,hinge=left,open=true": {
+      "model": "neonward:block/automatic_door_lower_left_true",
+      "y": 270
+    },
+    "facing=north,half=lower,hinge=right,open=false": {
+      "model": "neonward:block/automatic_door_lower_right_false",
+      "y": 0
+    },
+    "facing=east,half=lower,hinge=right,open=false": {
+      "model": "neonward:block/automatic_door_lower_right_false",
+      "y": 90
+    },
+    "facing=south,half=lower,hinge=right,open=false": {
+      "model": "neonward:block/automatic_door_lower_right_false",
+      "y": 180
+    },
+    "facing=west,half=lower,hinge=right,open=false": {
+      "model": "neonward:block/automatic_door_lower_right_false",
+      "y": 270
+    },
+    "facing=north,half=lower,hinge=right,open=true": {
+      "model": "neonward:block/automatic_door_lower_right_true",
+      "y": 0
+    },
+    "facing=east,half=lower,hinge=right,open=true": {
+      "model": "neonward:block/automatic_door_lower_right_true",
+      "y": 90
+    },
+    "facing=south,half=lower,hinge=right,open=true": {
+      "model": "neonward:block/automatic_door_lower_right_true",
+      "y": 180
+    },
+    "facing=west,half=lower,hinge=right,open=true": {
+      "model": "neonward:block/automatic_door_lower_right_true",
+      "y": 270
+    },
+    "facing=north,half=upper,hinge=left,open=false": {
+      "model": "neonward:block/automatic_door_upper_left_false",
+      "y": 0
+    },
+    "facing=east,half=upper,hinge=left,open=false": {
+      "model": "neonward:block/automatic_door_upper_left_false",
+      "y": 90
+    },
+    "facing=south,half=upper,hinge=left,open=false": {
+      "model": "neonward:block/automatic_door_upper_left_false",
+      "y": 180
+    },
+    "facing=west,half=upper,hinge=left,open=false": {
+      "model": "neonward:block/automatic_door_upper_left_false",
+      "y": 270
+    },
+    "facing=north,half=upper,hinge=left,open=true": {
+      "model": "neonward:block/automatic_door_upper_left_true",
+      "y": 0
+    },
+    "facing=east,half=upper,hinge=left,open=true": {
+      "model": "neonward:block/automatic_door_upper_left_true",
+      "y": 90
+    },
+    "facing=south,half=upper,hinge=left,open=true": {
+      "model": "neonward:block/automatic_door_upper_left_true",
+      "y": 180
+    },
+    "facing=west,half=upper,hinge=left,open=true": {
+      "model": "neonward:block/automatic_door_upper_left_true",
+      "y": 270
+    },
+    "facing=north,half=upper,hinge=right,open=false": {
+      "model": "neonward:block/automatic_door_upper_right_false",
+      "y": 0
+    },
+    "facing=east,half=upper,hinge=right,open=false": {
+      "model": "neonward:block/automatic_door_upper_right_false",
+      "y": 90
+    },
+    "facing=south,half=upper,hinge=right,open=false": {
+      "model": "neonward:block/automatic_door_upper_right_false",
+      "y": 180
+    },
+    "facing=west,half=upper,hinge=right,open=false": {
+      "model": "neonward:block/automatic_door_upper_right_false",
+      "y": 270
+    },
+    "facing=north,half=upper,hinge=right,open=true": {
+      "model": "neonward:block/automatic_door_upper_right_true",
+      "y": 0
+    },
+    "facing=east,half=upper,hinge=right,open=true": {
+      "model": "neonward:block/automatic_door_upper_right_true",
+      "y": 90
+    },
+    "facing=south,half=upper,hinge=right,open=true": {
+      "model": "neonward:block/automatic_door_upper_right_true",
+      "y": 180
+    },
+    "facing=west,half=upper,hinge=right,open=true": {
+      "model": "neonward:block/automatic_door_upper_right_true",
+      "y": 270
+    }
+  }
+}

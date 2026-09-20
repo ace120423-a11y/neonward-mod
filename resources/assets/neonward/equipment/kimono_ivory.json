@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "neonward:kimono_ivory"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "neonward:kimono_ivory"
+      }
+    ]
+  }
+}

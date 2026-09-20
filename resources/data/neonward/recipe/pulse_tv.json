@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:glass"
+  ],
+  "result": {
+    "id": "neonward:pulse_tv",
+    "count": 1
+  }
+}

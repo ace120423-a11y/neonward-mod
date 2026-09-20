@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "neonward:block/suite_bath",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "neonward:block/suite_bath",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "neonward:block/suite_bath",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "neonward:block/suite_bath",
+      "y": 270
+    }
+  }
+}

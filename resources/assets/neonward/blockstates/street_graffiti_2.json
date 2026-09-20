@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "neonward:block/street_graffiti_2", "y": 0}, "facing=east": {"model": "neonward:block/street_graffiti_2", "y": 90}, "facing=south": {"model": "neonward:block/street_graffiti_2", "y": 180}, "facing=west": {"model": "neonward:block/street_graffiti_2", "y": 270}}}

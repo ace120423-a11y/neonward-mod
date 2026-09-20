@@ -1,0 +1,1002 @@
+[
+  {
+    "key": "city_0",
+    "x": 59,
+    "z": 160,
+    "role": 0,
+    "name": "企業の会社員"
+  },
+  {
+    "key": "city_1",
+    "x": 159,
+    "z": 126,
+    "role": 1,
+    "name": "街の配達員"
+  },
+  {
+    "key": "city_2",
+    "x": 293,
+    "z": 169,
+    "role": 2,
+    "name": "街の買い物客"
+  },
+  {
+    "key": "city_3",
+    "x": 159,
+    "z": 555,
+    "role": 3,
+    "name": "ネオン和服の住人"
+  },
+  {
+    "key": "city_4",
+    "x": 151,
+    "z": 35,
+    "role": 0,
+    "name": "企業の会社員"
+  },
+  {
+    "key": "city_5",
+    "x": 169,
+    "z": 607,
+    "role": 1,
+    "name": "街の配達員"
+  },
+  {
+    "key": "city_6",
+    "x": 159,
+    "z": 633,
+    "role": 2,
+    "name": "街の買い物客"
+  },
+  {
+    "key": "city_7",
+    "x": 159,
+    "z": 477,
+    "role": 3,
+    "name": "ネオン和服の住人"
+  },
+  {
+    "key": "city_8",
+    "x": 177,
+    "z": 516,
+    "role": 0,
+    "name": "企業の会社員"
+  },
+  {
+    "key": "city_9",
+    "x": 151,
+    "z": 282,
+    "role": 1,
+    "name": "街の配達員"
+  },
+  {
+    "key": "city_10",
+    "x": 150,
+    "z": 169,
+    "role": 2,
+    "name": "街の買い物客"
+  },
+  {
+    "key": "city_11",
+    "x": 145,
+    "z": 516,
+    "role": 3,
+    "name": "ネオン和服の住人"
+  },
+  {
+    "key": "city_12",
+    "x": 189,
+    "z": 140,
+    "role": 0,
+    "name": "企業の会社員"
+  },
+  {
+    "key": "city_13",
+    "x": 169,
+    "z": 399,
+    "role": 1,
+    "name": "街の配達員"
+  },
+  {
+    "key": "city_14",
+    "x": 319,
+    "z": 160,
+    "role": 2,
+    "name": "街の買い物客"
+  },
+  {
+    "key": "city_15",
+    "x": 241,
+    "z": 160,
+    "role": 3,
+    "name": "ネオン和服の住人"
+  },
+  {
+    "key": "city_16",
+    "x": 169,
+    "z": 659,
+    "role": 0,
+    "name": "企業の会社員"
+  },
+  {
+    "key": "city_17",
+    "x": 151,
+    "z": 581,
+    "role": 1,
+    "name": "街の配達員"
+  },
+  {
+    "key": "city_18",
+    "x": 177,
+    "z": 321,
+    "role": 2,
+    "name": "街の買い物客"
+  },
+  {
+    "key": "city_19",
+    "x": 462,
+    "z": 160,
+    "role": 3,
+    "name": "ネオン和服の住人"
+  },
+  {
+    "key": "city_20",
+    "x": 137,
+    "z": 147,
+    "role": 0,
+    "name": "企業の会社員"
+  },
+  {
+    "key": "city_21",
+    "x": 169,
+    "z": 204,
+    "role": 1,
+    "name": "街の配達員"
+  },
+  {
+    "key": "city_22",
+    "x": 169,
+    "z": 295,
+    "role": 2,
+    "name": "街の買い物客"
+  },
+  {
+    "key": "city_23",
+    "x": 176,
+    "z": 169,
+    "role": 3,
+    "name": "ネオン和服の住人"
+  },
+  {
+    "key": "city_24",
+    "x": 540,
+    "z": 160,
+    "role": 0,
+    "name": "企業の会社員"
+  },
+  {
+    "key": "city_25",
+    "x": 169,
+    "z": 230,
+    "role": 1,
+    "name": "街の配達員"
+  },
+  {
+    "key": "city_26",
+    "x": 267,
+    "z": 169,
+    "role": 2,
+    "name": "街の買い物客"
+  },
+  {
+    "key": "city_27",
+    "x": 280,
+    "z": 147,
+    "role": 3,
+    "name": "ネオン和服の住人"
+  },
+  {
+    "key": "slum_0",
+    "x": 254,
+    "z": 863,
+    "role": 4,
+    "name": "横丁の整備工"
+  },
+  {
+    "key": "slum_1",
+    "x": 230,
+    "z": 828,
+    "role": 5,
+    "name": "横丁のバーテンダー"
+  },
+  {
+    "key": "slum_2",
+    "x": 170,
+    "z": 863,
+    "role": 6,
+    "name": "横丁のバイカー"
+  },
+  {
+    "key": "slum_3",
+    "x": 178,
+    "z": 828,
+    "role": 7,
+    "name": "横丁の回収屋"
+  },
+  {
+    "key": "slum_4",
+    "x": 110,
+    "z": 876,
+    "role": 8,
+    "name": "マフィアの幹部"
+  },
+  {
+    "key": "slum_5",
+    "x": 90,
+    "z": 929,
+    "role": 9,
+    "name": "マフィアの用心棒"
+  },
+  {
+    "key": "slum_6",
+    "x": 94,
+    "z": 896,
+    "role": 4,
+    "name": "横丁の整備工"
+  },
+  {
+    "key": "slum_7",
+    "x": 238,
+    "z": 802,
+    "role": 5,
+    "name": "横丁のバーテンダー"
+  },
+  {
+    "key": "slum_8",
+    "x": 70,
+    "z": 802,
+    "role": 6,
+    "name": "横丁のバイカー"
+  },
+  {
+    "key": "slum_9",
+    "x": 246,
+    "z": 896,
+    "role": 7,
+    "name": "横丁の回収屋"
+  },
+  {
+    "key": "slum_10",
+    "x": 190,
+    "z": 863,
+    "role": 8,
+    "name": "マフィアの幹部"
+  },
+  {
+    "key": "slum_11",
+    "x": 154,
+    "z": 896,
+    "role": 9,
+    "name": "マフィアの用心棒"
+  },
+  {
+    "key": "slum_12",
+    "x": 190,
+    "z": 802,
+    "role": 4,
+    "name": "横丁の整備工"
+  },
+  {
+    "key": "slum_13",
+    "x": 154,
+    "z": 958,
+    "role": 5,
+    "name": "横丁のバーテンダー"
+  },
+  {
+    "key": "slum_14",
+    "x": 209,
+    "z": 804,
+    "role": 6,
+    "name": "横丁のバイカー"
+  },
+  {
+    "key": "slum_15",
+    "x": 160,
+    "z": 846,
+    "role": 7,
+    "name": "横丁の回収屋"
+  },
+  {
+    "key": "slum_16",
+    "x": 110,
+    "z": 810,
+    "role": 8,
+    "name": "マフィアの幹部"
+  },
+  {
+    "key": "slum_17",
+    "x": 264,
+    "z": 900,
+    "role": 9,
+    "name": "マフィアの用心棒"
+  },
+  {
+    "key": "slum_18",
+    "x": 210,
+    "z": 958,
+    "role": 4,
+    "name": "横丁の整備工"
+  },
+  {
+    "key": "slum_19",
+    "x": 160,
+    "z": 930,
+    "role": 5,
+    "name": "横丁のバーテンダー"
+  },
+  {
+    "key": "slum_20",
+    "x": 264,
+    "z": 930,
+    "role": 6,
+    "name": "横丁のバイカー"
+  },
+  {
+    "key": "slum_21",
+    "x": 110,
+    "z": 828,
+    "role": 7,
+    "name": "横丁の回収屋"
+  },
+  {
+    "key": "slum_22",
+    "x": 209,
+    "z": 900,
+    "role": 8,
+    "name": "マフィアの幹部"
+  },
+  {
+    "key": "slum_23",
+    "x": 209,
+    "z": 852,
+    "role": 9,
+    "name": "マフィアの用心棒"
+  },
+  {
+    "key": "slum_24",
+    "x": 110,
+    "z": 896,
+    "role": 4,
+    "name": "横丁の整備工"
+  },
+  {
+    "key": "slum_25",
+    "x": 264,
+    "z": 876,
+    "role": 5,
+    "name": "横丁のバーテンダー"
+  },
+  {
+    "key": "staff_10",
+    "x": 80,
+    "z": 97,
+    "role": 10,
+    "name": "受付嬢 ミオ"
+  },
+  {
+    "key": "staff_11",
+    "x": 86,
+    "z": 97,
+    "role": 11,
+    "name": "換金担当 レン"
+  },
+  {
+    "key": "bar_staff_0",
+    "x": 66,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_1",
+    "x": 80,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_2",
+    "x": 93,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_3",
+    "x": 121,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_4",
+    "x": 134,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_5",
+    "x": 176,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_6",
+    "x": 191,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_7",
+    "x": 219,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_8",
+    "x": 232,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_9",
+    "x": 245,
+    "y": 65,
+    "z": 811,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_10",
+    "x": 65,
+    "y": 65,
+    "z": 847,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_11",
+    "x": 78,
+    "y": 65,
+    "z": 851,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_12",
+    "x": 92,
+    "y": 65,
+    "z": 847,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_13",
+    "x": 121,
+    "y": 65,
+    "z": 849,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_14",
+    "x": 134,
+    "y": 65,
+    "z": 851,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_15",
+    "x": 176,
+    "y": 65,
+    "z": 851,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_16",
+    "x": 188,
+    "y": 65,
+    "z": 851,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_17",
+    "x": 200,
+    "y": 65,
+    "z": 851,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_18",
+    "x": 222,
+    "y": 65,
+    "z": 849,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_19",
+    "x": 236,
+    "y": 65,
+    "z": 849,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_20",
+    "x": 248,
+    "y": 65,
+    "z": 851,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_21",
+    "x": 66,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_22",
+    "x": 81,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_23",
+    "x": 96,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_24",
+    "x": 122,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_25",
+    "x": 134,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_26",
+    "x": 177,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_27",
+    "x": 191,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_28",
+    "x": 219,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_29",
+    "x": 233,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_30",
+    "x": 245,
+    "y": 65,
+    "z": 870,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_31",
+    "x": 68,
+    "y": 65,
+    "z": 909,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_32",
+    "x": 81,
+    "y": 65,
+    "z": 911,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_33",
+    "x": 95,
+    "y": 65,
+    "z": 907,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_34",
+    "x": 120,
+    "y": 65,
+    "z": 907,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_35",
+    "x": 133,
+    "y": 65,
+    "z": 909,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_36",
+    "x": 145,
+    "y": 65,
+    "z": 907,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_37",
+    "x": 174,
+    "y": 65,
+    "z": 907,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_38",
+    "x": 188,
+    "y": 65,
+    "z": 909,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_39",
+    "x": 220,
+    "y": 65,
+    "z": 907,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_40",
+    "x": 236,
+    "y": 65,
+    "z": 909,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_41",
+    "x": 250,
+    "y": 65,
+    "z": 911,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 180
+  },
+  {
+    "key": "bar_staff_42",
+    "x": 67,
+    "y": 65,
+    "z": 937,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_43",
+    "x": 82,
+    "y": 65,
+    "z": 937,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_44",
+    "x": 97,
+    "y": 65,
+    "z": 937,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_45",
+    "x": 121,
+    "y": 65,
+    "z": 937,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_46",
+    "x": 137,
+    "y": 65,
+    "z": 937,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_47",
+    "x": 177,
+    "y": 65,
+    "z": 937,
+    "role": 5,
+    "name": "横丁のバーテンダー",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_48",
+    "x": 192,
+    "y": 65,
+    "z": 937,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_51",
+    "x": 249,
+    "y": 65,
+    "z": 937,
+    "role": 5,
+    "name": "横丁の店主",
+    "shopStaff": true,
+    "yaw": 0
+  },
+  {
+    "key": "bar_staff_underground_a",
+    "x": 120,
+    "y": 49,
+    "z": 864,
+    "role": 5,
+    "name": "LOWLIFE バーテンダー",
+    "shopStaff": true,
+    "yaw": 270
+  },
+  {
+    "key": "bar_staff_underground_b",
+    "x": 120,
+    "y": 49,
+    "z": 870,
+    "role": 8,
+    "name": "LOWLIFE 支配人",
+    "shopStaff": true,
+    "yaw": 270
+  },
+  {
+    "key": "bar_staff_arms",
+    "x": 81,
+    "y": 65,
+    "z": 470,
+    "role": 9,
+    "name": "武器屋の店主",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "arms"
+  },
+  {
+    "key": "bar_staff_armor",
+    "x": 220,
+    "y": 65,
+    "z": 434,
+    "role": 4,
+    "name": "防具売場の店員",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "armor"
+  },
+  {
+    "key": "bar_staff_fashion",
+    "x": 248,
+    "y": 65,
+    "z": 483,
+    "role": 3,
+    "name": "服屋の店員",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "fashion"
+  },
+  {
+    "key": "bar_staff_market",
+    "x": 234,
+    "y": 65,
+    "z": 130,
+    "role": 2,
+    "name": "マーケットの店員",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "market"
+  },
+  {
+    "key": "bar_staff_dealer",
+    "x": 344,
+    "y": 65,
+    "z": 579,
+    "role": 0,
+    "name": "NEON MOTOR / 受付",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "dealer"
+  },
+  {
+    "key": "bar_staff_casino",
+    "x": 520,
+    "y": 65,
+    "z": 467,
+    "role": 8,
+    "name": "CASINO / ディーラー",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "casino"
+  },
+  {
+    "key": "casino_blackjack",
+    "x": 498,
+    "y": 65,
+    "z": 463,
+    "role": 8,
+    "name": "CASINO / カードディーラー",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "casino"
+  },
+  {
+    "key": "casino_roulette",
+    "x": 519,
+    "y": 65,
+    "z": 456,
+    "role": 8,
+    "name": "CASINO / ルーレット係",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "casino"
+  }
+]

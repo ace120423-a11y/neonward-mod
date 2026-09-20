@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#minecraft:enchantable/bow",
+    "neonward:pulse_rifle",
+    "neonward:kestrel_pistol",
+    "neonward:oni_handcannon",
+    "neonward:wisp_compact",
+    "neonward:longwatch_sniper",
+    "neonward:storm_machinegun"
+  ]
+}

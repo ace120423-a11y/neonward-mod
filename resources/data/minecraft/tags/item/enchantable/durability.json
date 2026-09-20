@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "neonward:neon_blade",
+    "neonward:kurosame_katana",
+    "neonward:akatsuki_wakizashi",
+    "neonward:raikiri_odachi",
+    "neonward:shock_bat",
+    "neonward:riot_bat",
+    "neonward:coil_hammer",
+    "neonward:pile_maul",
+    "neonward:pulse_rifle",
+    "neonward:kestrel_pistol",
+    "neonward:oni_handcannon",
+    "neonward:wisp_compact",
+    "neonward:longwatch_sniper",
+    "neonward:storm_machinegun"
+  ]
+}

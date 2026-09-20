@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_door",
+    "minecraft:sculk_sensor",
+    "minecraft:redstone"
+  ],
+  "result": {
+    "id": "neonward:automatic_door",
+    "count": 2
+  }
+}

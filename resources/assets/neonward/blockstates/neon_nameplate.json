@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=north,low=false": {
+      "model": "neonward:block/neon_nameplate",
+      "y": 0
+    },
+    "facing=north,low=true": {
+      "model": "neonward:block/neon_nameplate_low",
+      "y": 0
+    },
+    "facing=east,low=false": {
+      "model": "neonward:block/neon_nameplate",
+      "y": 90
+    },
+    "facing=east,low=true": {
+      "model": "neonward:block/neon_nameplate_low",
+      "y": 90
+    },
+    "facing=south,low=false": {
+      "model": "neonward:block/neon_nameplate",
+      "y": 180
+    },
+    "facing=south,low=true": {
+      "model": "neonward:block/neon_nameplate_low",
+      "y": 180
+    },
+    "facing=west,low=false": {
+      "model": "neonward:block/neon_nameplate",
+      "y": 270
+    },
+    "facing=west,low=true": {
+      "model": "neonward:block/neon_nameplate_low",
+      "y": 270
+    }
+  }
+}

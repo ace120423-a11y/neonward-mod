@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "neonward:afterglow"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "neonward:afterglow"
+      }
+    ]
+  }
+}

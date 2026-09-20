@@ -1,0 +1,1 @@
+{"variants": {"facing=north": {"model": "neonward:block/shop_shelf_red_0", "y": 0}, "facing=east": {"model": "neonward:block/shop_shelf_red_0", "y": 90}, "facing=south": {"model": "neonward:block/shop_shelf_red_0", "y": 180}, "facing=west": {"model": "neonward:block/shop_shelf_red_0", "y": 270}}}

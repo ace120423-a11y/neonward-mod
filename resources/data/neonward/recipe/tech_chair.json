@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:oak_stairs"
+  ],
+  "result": {
+    "id": "neonward:tech_chair",
+    "count": 1
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:glass_bottle"
+  ],
+  "result": {
+    "id": "neonward:neon_cans",
+    "count": 1
+  }
+}

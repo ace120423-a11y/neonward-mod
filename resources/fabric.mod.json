@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "neonward",
+  "version": "0.1.0",
+  "name": "Neon Ward: Street Tech",
+  "description": "Original vehicles and a city smartphone for Neon Ward.",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "jp.neonward.NeonWard"
+    ],
+    "client": [
+      "jp.neonward.NeonClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "26.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "mixins": [
+    "neonward.mixins.json"
+  ],
+  "suggests": {
+    "webdisplays": "*",
+    "mcef": "*"
+  }
+}

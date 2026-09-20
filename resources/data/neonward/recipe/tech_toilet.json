@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:quartz_block"
+  ],
+  "result": {
+    "id": "neonward:tech_toilet",
+    "count": 1
+  }
+}

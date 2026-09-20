@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:barrel"
+  ],
+  "result": {
+    "id": "neonward:neon_vendor",
+    "count": 1
+  }
+}

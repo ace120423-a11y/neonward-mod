@@ -1,0 +1,54 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/iron_block",
+      "sprite": "neonward:item/material_iron_block"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/gold_block",
+      "sprite": "neonward:item/material_gold_block"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/emerald_block",
+      "sprite": "neonward:item/material_emerald_block"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/amethyst_block",
+      "sprite": "neonward:item/material_amethyst_block"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/light_blue_concrete",
+      "sprite": "neonward:item/material_light_blue_concrete"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/lime_concrete",
+      "sprite": "neonward:item/material_lime_concrete"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/yellow_concrete",
+      "sprite": "neonward:item/material_yellow_concrete"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/red_concrete",
+      "sprite": "neonward:item/material_red_concrete"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/quartz_block_side",
+      "sprite": "neonward:item/material_quartz_block_side"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "minecraft:block/dark_oak_planks",
+      "sprite": "neonward:item/material_dark_oak_planks"
+    }
+  ]
+}

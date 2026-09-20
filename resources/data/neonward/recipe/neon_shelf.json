@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:bookshelf"
+  ],
+  "result": {
+    "id": "neonward:neon_shelf",
+    "count": 1
+  }
+}

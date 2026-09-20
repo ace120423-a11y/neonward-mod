@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "IDI",
+    " I "
+  ],
+  "key": {
+    "G": "minecraft:glowstone",
+    "I": "minecraft:iron_ingot",
+    "D": "minecraft:cyan_dye"
+  },
+  "result": {
+    "id": "neonward:streetlight_cyan",
+    "count": 2
+  }
+}

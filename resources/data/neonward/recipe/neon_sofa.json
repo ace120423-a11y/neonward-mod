@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:redstone",
+    "minecraft:purple_wool"
+  ],
+  "result": {
+    "id": "neonward:neon_sofa",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "neonward:block/neon_shelf",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "neonward:block/neon_shelf",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "neonward:block/neon_shelf",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "neonward:block/neon_shelf",
+      "y": 270
+    }
+  }
+}
