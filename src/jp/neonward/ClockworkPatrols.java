@@ -17,8 +17,10 @@ public final class ClockworkPatrols {
   String tag="nw_patrol_"+stage;var existing=NightSpire.enemies(l,f).stream().filter(e->e.entityTags().contains(tag)).toList();
   // Entity chunks may already contain a wave after recovery from an interrupted save.
   if(existing.isEmpty()){
-   int i=0;for(var pos:DungeonLayout.patrol(f,stage)){
-    var spawned=NightSpire.spawn(l,f,pos[0]+.5-SpireSite.X,pos[1]+.5-SpireSite.Z,HostileRoster.ALL[(f+stage*3+i++)%11],false);
+   boolean bomber=false;for(var pos:DungeonLayout.patrol(f,stage)){
+    var kind=HostileRoster.choose(java.util.concurrent.ThreadLocalRandom.current());
+    if(kind.id().equals("neon_bomber")){if(bomber)kind=HostileRoster.ALL[13];else bomber=true;}
+    var spawned=NightSpire.spawn(l,f,pos[0]+.5-SpireSite.X,pos[1]+.5-SpireSite.Z,kind,false);
     spawned.addTag(tag);
    }
   }

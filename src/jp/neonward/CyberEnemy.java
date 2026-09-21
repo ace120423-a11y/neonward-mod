@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 public class CyberEnemy extends Zombie implements RangedAttackMob {
  @Override public boolean hurtServer(net.minecraft.server.level.ServerLevel l,net.minecraft.world.damagesource.DamageSource source,float amount){float before=getHealth();boolean result=super.hurtServer(l,source,amount);float lost=Math.max(0,before-getHealth());if(source.getEntity() instanceof net.minecraft.server.level.ServerPlayer&&lost>0)CombatFeedback.hit(this,lost);return result;}
 
- private Vec3 aim;private int charge;private LivingEntity aimedTarget;private int ability;
+ private Vec3 aim;private int charge;private LivingEntity aimedTarget;private int ability;private int fuse;
  public HostileRoster.Kind kind(){return NeonHostiles.KINDS.get(getType());}
  public CyberEnemy(EntityType<? extends Zombie> type,Level level){
   super(type,level);setCanPickUpLoot(false);setCanBreakDoors(false);
@@ -50,6 +50,17 @@ public class CyberEnemy extends Zombie implements RangedAttackMob {
   super.tick();if(!(level() instanceof ServerLevel l)||!isAlive())return;
   if(CityProtection.contains(l,blockPosition())||NeonZones.safeOutpost(l,blockPosition())){discard();return;}
   var target=getTarget();setAggressive(target!=null);if(target!=null&&!canAttack(target)){setTarget(null);getNavigation().stop();charge=0;aim=null;aimedTarget=null;}
+  if(kind().id().equals("neon_bomber")){
+   if(target==null||!canAttack(target)||distanceToSqr(target)>36||!hasLineOfSight(target)){fuse=0;}
+   else if(fuse>0||distanceToSqr(target)<9){
+    getNavigation().stop();fuse++;
+    if(fuse%10==1){playSound(net.minecraft.sounds.SoundEvents.NOTE_BLOCK_PLING.value(),.5f,1+fuse/40f);for(int i=0;i<20;i++){double a=i*Math.PI/10;l.sendParticles(new DustParticleOptions(0xed5b43,1),getX()+Math.cos(a)*4,getY()+.2,getZ()+Math.sin(a)*4,1,0,0,0,0);}}
+    if(fuse>=40){
+     for(var p:l.getEntitiesOfClass(Player.class,getBoundingBox().inflate(4)))if(canAttack(p)&&distanceToSqr(p)<=16&&hasLineOfSight(p))p.hurtServer(l,damageSources().mobAttack(this),(float)getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE));
+     l.sendParticles(net.minecraft.core.particles.ParticleTypes.EXPLOSION,getX(),getY()+1,getZ(),1,0,0,0,0);playSound(net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE.value(),.7f,1.1f);discard();return;
+    }
+   }
+  }
   if(charge>0){
    if(aimedTarget==null||!aimedTarget.isAlive()||!canAttack(aimedTarget)){charge=0;aim=null;}
    else {
@@ -60,6 +71,7 @@ public class CyberEnemy extends Zombie implements RangedAttackMob {
      if(aimedTarget.getBoundingBox().inflate(.12).clip(from,end).isPresent()){
       aimedTarget.hurtServer(l,damageSources().mobAttack(this),(float)getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE));
       if(kind().id().equals("arc_trooper")||kind().id().equals("hex_netrunner"))aimedTarget.addEffect(new MobEffectInstance(MobEffects.SLOWNESS,kind().id().equals("hex_netrunner")?60:25,0),this);
+      if(kind().id().equals("signal_hacker")){aimedTarget.addEffect(new MobEffectInstance(MobEffects.SLOWNESS,40,0),this);aimedTarget.addEffect(new MobEffectInstance(MobEffects.DARKNESS,30,0),this);}
      }
      aim=null;aimedTarget=null;
     }
@@ -67,6 +79,13 @@ public class CyberEnemy extends Zombie implements RangedAttackMob {
   }
   if(++ability>=100){
    ability=0;
+   if(kind().id().equals("mirage_stalker")&&target!=null&&canAttack(target)&&distanceToSqr(target)<144&&hasLineOfSight(target)){
+    var back=target.position().subtract(Vec3.directionFromRotation(0,target.getYRot()).scale(2.5));var at=net.minecraft.core.BlockPos.containing(back);
+    var destination=getBoundingBox().move(back.subtract(position()));
+    if(l.hasChunkAt(at)&&!CityProtection.contains(l,at)&&!NeonZones.safeOutpost(l,at)&&Math.abs(back.y-getY())<2&&l.getBlockState(at.below()).isFaceSturdy(l,at.below(),net.minecraft.core.Direction.UP)&&l.noCollision(this,destination)&&!l.containsAnyLiquid(destination)&&l.clip(new ClipContext(getEyePosition(),back.add(0,1,0),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,this)).getType()==HitResult.Type.MISS){
+     l.sendParticles(net.minecraft.core.particles.ParticleTypes.PORTAL,getX(),getY()+1,getZ(),16,.3,.5,.3,.1);teleportTo(back.x,back.y,back.z);getNavigation().stop();addEffect(new MobEffectInstance(MobEffects.INVISIBILITY,20,0));
+    }
+   }
    if(kind().id().equals("patch_medic")){
     CyberEnemy injured=null;
     for(var ally:l.getEntitiesOfClass(CyberEnemy.class,getBoundingBox().inflate(10)))if(ally!=this&&ally.isAlive()&&ally.getHealth()<ally.getMaxHealth()&&getSensing().hasLineOfSight(ally)&&(injured==null||ally.getHealth()/ally.getMaxHealth()<injured.getHealth()/injured.getMaxHealth()))injured=ally;

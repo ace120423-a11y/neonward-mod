@@ -15,7 +15,7 @@ public class CyberEnemyRenderer extends ZombieRenderer {
  @Override public Identifier getTextureLocation(ZombieRenderState state){return texture;}
  @Override protected HumanoidModel.ArmPose getArmPose(net.minecraft.world.entity.monster.zombie.Zombie mob,net.minecraft.world.entity.HumanoidArm arm){if(mob instanceof CyberEnemy enemy&&enemy.kind().interval()>0&&mob.isAggressive())return HumanoidModel.ArmPose.CROSSBOW_HOLD;return super.getArmPose(mob,arm);}
  public static void init(){
-  for(var k:HostileRoster.ALL){var layer=new ModelLayerLocation(NeonWard.id(k.id()),"main");ModelLayerRegistry.registerModelLayer(layer,()->mesh(k));EntityRendererRegistry.register(NeonHostiles.TYPES.get(k.id()),ctx->new CyberEnemyRenderer(ctx,layer,k.id()));}
+  for(var k:HostileRoster.ALL){var layer=new ModelLayerLocation(NeonWard.id(k.id()),"main");ModelLayerRegistry.registerModelLayer(layer,()->mesh(k));String skin=switch(k.id()){case "neon_bomber"->"pile_breaker";case "mirage_stalker"->"ghost_sniper";case "signal_hacker"->"hex_netrunner";default->k.id();};EntityRendererRegistry.register(NeonHostiles.TYPES.get(k.id()),ctx->new CyberEnemyRenderer(ctx,layer,skin));}
  }
  static void box(PartDefinition parent,String name,int u,int v,float x,float y,float z,float w,float h,float d){parent.addOrReplaceChild(name,CubeListBuilder.create().texOffs(u,v).addBox(x,y,z,w,h,d),PartPose.ZERO);}
  static LayerDefinition mesh(HostileRoster.Kind k){

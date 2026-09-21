@@ -44,9 +44,13 @@ jobs:
           if gh release view "v${VERSION}" >/dev/null 2>&1; then
             gh release upload "v${VERSION}" "$asset" --clobber
           else
-            gh release create "v${VERSION}" "$asset" \
-              --title "NeonWard v${VERSION}" \
-              --generate-notes
+            if [ -f "release/v${VERSION}.md" ]; then
+              gh release create "v${VERSION}" "$asset" \
+                --title "NeonWard v${VERSION}" --notes-file "release/v${VERSION}.md"
+            else
+              gh release create "v${VERSION}" "$asset" \
+                --title "NeonWard v${VERSION}" --generate-notes
+            fi
           fi
           jar="neonward-0.1.0-v${VERSION}.jar"
           cp distribution/neonward-0.1.0.jar "$jar"

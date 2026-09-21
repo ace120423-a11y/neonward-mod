@@ -43,7 +43,10 @@ public final class NeonHostiles {
      if(!NeonZones.isField(l,new BlockPos(x,80,z))||!l.hasChunk(x>>4,z>>4))continue;
      int y=l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,x,z);var pos=new BlockPos(x,y,z);
      if(!l.getBlockState(pos.below()).isFaceSturdy(l,pos.below(),Direction.UP)||!l.getFluidState(pos).isEmpty()||l.players().stream().anyMatch(q->q.distanceToSqr(x+.5,y,z+.5)<24*24))continue;
-     var biome=l.getBiome(pos).unwrapKey().map(key->key.identifier().getPath()).orElse("plains");var k=HostileRoster.chooseForBiome(java.util.concurrent.ThreadLocalRandom.current(),biome);var mob=new CyberEnemy(TYPES.get(k.id()),l);mob.setPos(x+.5,y,z+.5);
+     var biome=l.getBiome(pos).unwrapKey().map(key->key.identifier().getPath()).orElse("plains");var k=HostileRoster.chooseForBiome(java.util.concurrent.ThreadLocalRandom.current(),biome);
+     if((k.id().equals("neon_bomber")||k.id().equals("mirage_stalker")||k.id().equals("signal_hacker"))&&l.getMaxLocalRawBrightness(pos)>7)continue;
+     if(k.id().equals("neon_bomber")&&!l.getEntitiesOfClass(CyberEnemy.class,new net.minecraft.world.phys.AABB(pos).inflate(48),e->e.isAlive()&&e.kind().id().equals("neon_bomber")).isEmpty())continue;
+     var mob=new CyberEnemy(TYPES.get(k.id()),l);mob.setPos(x+.5,y,z+.5);
      if(!l.noCollision(mob,mob.getBoundingBox())||l.containsAnyLiquid(mob.getBoundingBox()))continue;
      if(l.addFreshEntity(mob))total++;break;
     }

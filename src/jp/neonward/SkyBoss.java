@@ -16,23 +16,23 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.effect.*;
 
 /** Server-owned, telegraphed arena combat. No block destruction and no unmarked contact damage. */
-public class SpireBoss extends CyberEnemy {
+public class SkyBoss extends CyberEnemy {
  static final double MOVEMENT_MULTIPLIER=3.0;
- static final EntityDataAccessor<Integer> CAST=SynchedEntityData.defineId(SpireBoss.class,EntityDataSerializers.INT);
- static final EntityDataAccessor<Integer> PHASE=SynchedEntityData.defineId(SpireBoss.class,EntityDataSerializers.INT);
+ static final EntityDataAccessor<Integer> CAST=SynchedEntityData.defineId(SkyBoss.class,EntityDataSerializers.INT);
+ static final EntityDataAccessor<Integer> PHASE=SynchedEntityData.defineId(SkyBoss.class,EntityDataSerializers.INT);
  final List<BossHazard> hazards=new ArrayList<>();
  private final Map<UUID,Integer> lastHit=new HashMap<>();
  private ServerBossEvent bar;
  int combatTicks,cycle,casts,moveSkillCooldown;boolean engaged;Vec3 dashFrom,dashTo;int dashAt;
- public SpireBoss(EntityType<? extends Zombie> type,Level level){super(type,level);setPersistenceRequired();xpReward=70+spec().floor()*4;}
- public BossRoster.Kind spec(){return SpireBosses.KINDS.get(getType());}
+ public SkyBoss(EntityType<? extends Zombie> type,Level level){super(type,level);setPersistenceRequired();xpReward=70+spec().floor()*4;}
+ public SkyRoster.Kind spec(){return SkyBosses.KINDS.get(getType());}
  @Override public HostileRoster.Kind kind(){return spec().legacy();}
  @Override protected void registerGoals(){} // Movement and targeting belong to the arena controller.
  @Override protected void defineSynchedData(SynchedEntityData.Builder b){super.defineSynchedData(b);b.define(CAST,0);b.define(PHASE,0);}
  public int castVisual(){return entityData.get(CAST);}
  public int phase(){return entityData.get(PHASE);}
  @Override public boolean causeFallDamage(double d,float multiplier,DamageSource source){return false;}
- @Override public boolean canAttack(LivingEntity p){return p instanceof Player player&&!player.isCreative()&&!player.isSpectator()&&p.isAlive()&&p.level()==level()&&p.getX()>=SpireSite.X-63&&p.getX()<=SpireSite.X+51&&p.getZ()>=SpireSite.Z+24&&p.getZ()<=SpireSite.Z+51&&DungeonLayout.floor(p.getY())==spec().floor()&&super.canAttack(p);}
+ @Override public boolean canAttack(LivingEntity p){return p instanceof Player player&&!player.isCreative()&&!player.isSpectator()&&p.isAlive()&&p.level()==level()&&p.getX()>=SkySite.X-63&&p.getX()<=SkySite.X+51&&p.getZ()>=SkySite.Z+24&&p.getZ()<=SkySite.Z+51&&DungeonLayout.floor(p.getY())==spec().floor()&&super.canAttack(p);}
  static final String[] VOICES={"block.note_block.bit","block.note_block.bell","block.note_block.chime","block.note_block.xylophone","block.note_block.iron_xylophone","block.note_block.pling","block.note_block.basedrum","block.note_block.bass","block.note_block.hat","block.note_block.flute"};
  net.minecraft.sounds.SoundEvent voice(){return net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getValue(net.minecraft.resources.Identifier.withDefaultNamespace(VOICES[(spec().floor()-1)%VOICES.length]));}
  @Override protected net.minecraft.sounds.SoundEvent getAmbientSound(){return null;}
@@ -43,21 +43,21 @@ public class SpireBoss extends CyberEnemy {
   super.tick();if(!(level() instanceof ServerLevel l)||!isAlive()||isRemoved())return;
   int f=spec().floor(),base=DungeonLayout.base(f)+1;var max=getAttribute(Attributes.MAX_HEALTH);if(max!=null&&max.getBaseValue()<spec().hp()*4.5){max.setBaseValue(spec().hp()*4.5);setHealth(getMaxHealth());}
   // Bosses stay in their own chamber; players may retreat into the maze safely.
-  if(l.dimension()!=NeonZones.TOWER||!entityTags().contains("nw_spire_boss"))return;
-  if(getY()<base-.5||getY()>base+4||getX()<SpireSite.X-63||getX()>SpireSite.X+51||getZ()<SpireSite.Z+24||getZ()>SpireSite.Z+51)setPos(SpireSite.X+32.5,base,SpireSite.Z+32.5);
+  if(l.dimension()!=SkySpire.DIM||!entityTags().contains("nw_sky_boss"))return;
+  if(getY()<base-.5||getY()>base+4||getX()<SkySite.X-63||getX()>SkySite.X+51||getZ()<SkySite.Z+24||getZ()>SkySite.Z+51)setPos(SkySite.X+32.5,base,SkySite.Z+32.5);
   if(bar==null)bar=new ServerBossEvent(getUUID(),Component.literal(spec().name()),BossEvent.BossBarColor.PURPLE,BossEvent.BossBarOverlay.PROGRESS);
-  var audience=l.players().stream().filter(p->SpireSite.contains(l,p.blockPosition())&&!p.isSpectator()&&p.isAlive()&&DungeonLayout.floor(p.getY())==f&&p.distanceToSqr(this)<24*24).toList();
+  var audience=l.players().stream().filter(p->SkySite.contains(l,p.blockPosition())&&!p.isSpectator()&&p.isAlive()&&DungeonLayout.floor(p.getY())==f&&p.distanceToSqr(this)<24*24).toList();
   for(var p:new ArrayList<>(bar.getPlayers()))if(!audience.contains(p))bar.removePlayer(p);
   for(var p:audience)bar.addPlayer(p);
   int phase=getHealth()<=getMaxHealth()*.5?1:0;entityData.set(PHASE,phase);bar.setProgress(getHealth()/getMaxHealth());
-  var target=l.players().stream().filter(p->canAttack(p)&&p.getX()>=SpireSite.X-63&&p.getX()<=SpireSite.X+51&&p.getZ()>=SpireSite.Z+24&&p.getZ()<=SpireSite.Z+51&&getSensing().hasLineOfSight(p)).min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
+  var target=l.players().stream().filter(p->canAttack(p)&&p.getX()>=SkySite.X-63&&p.getX()<=SkySite.X+51&&p.getZ()>=SkySite.Z+24&&p.getZ()<=SkySite.Z+51&&getSensing().hasLineOfSight(p)).min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
   if(target==null){if(engaged){hazards.clear();dashTo=null;cycle=0;entityData.set(CAST,0);}engaged=false;setTarget(null);setDeltaMovement(0,getDeltaMovement().y,0);bar.setName(Component.literal(f+"F  "+spec().name()+" / "+spec().form()));return;}
   if(!engaged){engaged=true;cycle=55;target.sendSystemMessage(Component.literal(spec().name()+"："+spec().hint()).withColor(spec().color()));}
   setTarget(target);combatTicks++;
   var dir=target.position().subtract(position());float yaw=(float)(Math.toDegrees(Math.atan2(dir.z,dir.x))-90);setYRot(yaw);setYHeadRot(yaw);setYBodyRot(yaw);
   boolean casting=!hazards.isEmpty();entityData.set(CAST,casting?1:0);
   bar.setName(Component.literal(f+"F  "+spec().name()+" / "+(phase==1?"OVERDRIVE / ":"")+(casting?spec().attack():"冷却中")));
-  if(--cycle<=0){planAttack(target.position());casts++;cycle=phase==1?165:185;}
+  if(--cycle<=0){planAttack(target.position());if(f%3==0)ring(position(),2.5,55);else if(f%3==1)disc(target.position(),.65,60,1);else line(position(),target.position(),.3,65);casts++;cycle=phase==1?165:185;}
   if(--moveSkillCooldown<=0){useMoveSkill(l,target);moveSkillCooldown=210+(f%5)*18;}
   tickHazards(l);
   if(dashTo!=null&&combatTicks>=dashAt){move(MoverType.SELF,dashTo.subtract(position()).multiply(1,0,1).scale(.24));if(combatTicks>dashAt+14)dashTo=null;}
@@ -67,8 +67,8 @@ public class SpireBoss extends CyberEnemy {
  void useMoveSkill(ServerLevel l,Player target){
   Vec3 toward=target.position().subtract(position()).multiply(1,0,1);double d=toward.length();if(d<.01)return;
   var unit=toward.scale(1/d);double distance=spec().motion().equals("rush")?Math.min(7,d+2.5):4.5;
-  double nx=Math.max(SpireSite.X-61,Math.min(SpireSite.X+49,getX()+unit.x*distance));
-  double nz=Math.max(SpireSite.Z+26,Math.min(SpireSite.Z+49,getZ()+unit.z*distance));
+  double nx=Math.max(SkySite.X-61,Math.min(SkySite.X+49,getX()+unit.x*distance));
+  double nz=Math.max(SkySite.Z+26,Math.min(SkySite.Z+49,getZ()+unit.z*distance));
   boolean blink=spec().motion().equals("orbit")||spec().motion().equals("float")||spec().floor()%7==0;
   if(blink){
    l.sendParticles(new DustParticleOptions(spec().color(),.8f),getX(),getY()+.5,getZ(),6,.25,.35,.25,.02);
@@ -91,20 +91,20 @@ public class SpireBoss extends CyberEnemy {
   // Scale the whole movement vector, including orbit distance correction, before arena bounds checks.
   delta=delta.scale(MOVEMENT_MULTIPLIER);
   double pad=spec().width()/2+.15;
-  if(getX()+delta.x<SpireSite.X-63+pad||getX()+delta.x>SpireSite.X+51-pad)delta=new Vec3(0,0,delta.z);
-  if(getZ()+delta.z<SpireSite.Z+24+pad||getZ()+delta.z>SpireSite.Z+51-pad)delta=new Vec3(delta.x,0,0);
+  if(getX()+delta.x<SkySite.X-63+pad||getX()+delta.x>SkySite.X+51-pad)delta=new Vec3(0,0,delta.z);
+  if(getZ()+delta.z<SkySite.Z+24+pad||getZ()+delta.z>SkySite.Z+51-pad)delta=new Vec3(delta.x,0,0);
   move(MoverType.SELF,delta);
  }
  Vec3 floor(Vec3 p){return new Vec3(p.x,DungeonLayout.base(spec().floor())+1.1,p.z);}
- double localX(double x){return 32.5+(x-SpireSite.X-32.5)/2.4;}
- double localZ(double z){return 32.5+(z-SpireSite.Z-32.5)/2.4;}
- Vec3 point(double x,double z){return floor(new Vec3(SpireSite.X+32.5+(x-32.5)*2.4,0,SpireSite.Z+32.5+(z-32.5)*2.4));}
+ double localX(double x){return 32.5+(x-SkySite.X-32.5)/2.4;}
+ double localZ(double z){return 32.5+(z-SkySite.Z-32.5)/2.4;}
+ Vec3 point(double x,double z){return floor(new Vec3(SkySite.X+32.5+(x-32.5)*2.4,0,SkySite.Z+32.5+(z-32.5)*2.4));}
  void disc(Vec3 p,double r,int delay,float power){hazards.add(new BossHazard(0,floor(p),Vec3.ZERO,r*6,0,combatTicks+delay,6,power,false,0));}
  void ring(Vec3 p,double r,int delay){hazards.add(new BossHazard(1,floor(p),Vec3.ZERO,r*6,0,combatTicks+delay,6,1,true,0));}
  void line(Vec3 a,Vec3 b,double r,int delay){hazards.add(new BossHazard(2,floor(a),floor(b),r*4.5,0,combatTicks+delay,7,1,false,0));}
  void cone(Vec3 a,double angle,double half,double radius,int delay){hazards.add(new BossHazard(3,floor(a),new Vec3(half,0,0),radius*6,angle,combatTicks+delay,7,1.1f,false,0));}
  Vec3 radial(Vec3 center,double angle,double distance){return center.add(Math.cos(angle)*distance,0,Math.sin(angle)*distance);}
- void charge(Vec3 a,Vec3 target,int delay){Vec3 end=target;double pad=spec().width()/2+.2;end=new Vec3(Math.max(SpireSite.X-63+pad,Math.min(SpireSite.X+51-pad,end.x)),getY(),Math.max(SpireSite.Z+24+pad,Math.min(SpireSite.Z+51-pad,end.z)));line(a,end,.8,delay);dashFrom=a;dashTo=end;dashAt=combatTicks+delay;}
+ void charge(Vec3 a,Vec3 target,int delay){Vec3 end=target;double pad=spec().width()/2+.2;end=new Vec3(Math.max(SkySite.X-63+pad,Math.min(SkySite.X+51-pad,end.x)),getY(),Math.max(SkySite.Z+24+pad,Math.min(SkySite.Z+51-pad,end.z)));line(a,end,.8,delay);dashFrom=a;dashTo=end;dashAt=combatTicks+delay;}
  /** The thirty cases are intentionally distinct encounter programs, not random recolors. */
  void planAttack(Vec3 target){
   playSound(voice(),.8f,getVoicePitch());
@@ -161,7 +161,7 @@ public class SpireBoss extends CyberEnemy {
   }}
   hazards.removeIf(h->combatTicks>=h.start()+h.live());
  }
- void dot(ServerLevel l,Vec3 p,int color){if(p.x<SpireSite.X-63||p.x>SpireSite.X+51||p.z<SpireSite.Z+24||p.z>SpireSite.Z+51)return;l.sendParticles(new DustParticleOptions(color,.7f),p.x,p.y,p.z,1,0,0,0,0);}
+ void dot(ServerLevel l,Vec3 p,int color){if(p.x<SkySite.X-63||p.x>SkySite.X+51||p.z<SkySite.Z+24||p.z>SkySite.Z+51)return;l.sendParticles(new DustParticleOptions(color,.7f),p.x,p.y,p.z,1,0,0,0,0);}
  void segment(ServerLevel l,Vec3 a,Vec3 b,int color){int count=Math.max(1,Math.min(26,(int)(a.distanceTo(b)*2)));for(int i=0;i<=count;i++)dot(l,a.lerp(b,(double)i/count),color);}
  void draw(ServerLevel l,BossHazard h,int color){
   if(h.shape()==BossHazard.LINE){var v=h.b().subtract(h.a()).multiply(1,0,1).normalize();var side=new Vec3(-v.z,0,v.x).scale(h.radius());segment(l,h.a().add(side),h.b().add(side),color);segment(l,h.a().subtract(side),h.b().subtract(side),color);}

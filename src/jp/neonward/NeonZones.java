@@ -20,7 +20,7 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 
 public final class NeonZones {
  public static final ResourceKey<Level> WILDS=ResourceKey.create(Registries.DIMENSION,NeonWard.id("wilds")),TOWER=ResourceKey.create(Registries.DIMENSION,NeonWard.id("clockwork_interior"));
- public static Block ENTRY,EXIT,NEXT;public static final BlockPos ENTRY_POS=new BlockPos(184,65,154);
+ public static Block ENTRY,EXIT,NEXT;public static final BlockPos ENTRY_POS=new BlockPos(269,65,11);
  static final int[][] DEST={{160,-46},{590,154},{160,718},{-46,154}};
  static final int[][] INSIDE={{160,-8},{552,154},{160,680},{-8,154}};
  static final Map<UUID,Long> cooldown=new HashMap<>();
@@ -31,13 +31,14 @@ public final class NeonZones {
   ENTRY=terminal("spire_access_terminal");EXIT=terminal("city_return_terminal");NEXT=terminal("spire_ascent_terminal");
   NightSpire.init();ClockworkPuzzles.init();
   UseBlockCallback.EVENT.register((p,l,h,hit)->{var b=l.getBlockState(hit.getBlockPos()).getBlock();if(b!=ENTRY&&b!=EXIT&&b!=NEXT)return InteractionResult.PASS;if(p instanceof ServerPlayer sp&&!p.isSpectator()){
-   if(b==ENTRY){if(hit.getBlockPos().equals(ENTRY_POS)){move(sp,sp.level().getServer().overworld(),new Vec3(SpireSite.OUTER_X+3.5,65,SpireSite.OUTER_Z-8.5),0);sp.sendSystemMessage(Component.literal("NIGHT SPIRE / 東門の外に建つ30階の塔です。正面入口から入れます。"));}else NightSpire.enter(sp,p.isShiftKeyDown());}else if(b==EXIT)NightSpire.leave(sp);else if(SpireSite.contains(l,sp.blockPosition()))NightSpire.ascend(sp);
+   if(b==ENTRY){if(l.dimension()==CompactShops.DIM&&hit.getBlockPos().equals(ENTRY_POS)){move(sp,sp.level().getServer().overworld(),new Vec3(SpireSite.OUTER_X+3.5,65,SpireSite.OUTER_Z-8.5),0);sp.sendSystemMessage(Component.literal("NIGHT SPIRE / 東門の外に建つ30階の塔です。正面入口から入れます。"));}else NightSpire.enter(sp,p.isShiftKeyDown());}else if(b==EXIT)NightSpire.leave(sp);else if(SpireSite.contains(l,sp.blockPosition()))NightSpire.ascend(sp);
   }return InteractionResult.SUCCESS;});
   ServerLifecycleEvents.SERVER_STOPPED.register(s->cooldown.clear());
   ServerTickEvents.END_SERVER_TICK.register(server->{
    if(server.getTickCount()%20!=0)return;
    var city=server.overworld();
-   if(city.hasChunkAt(ENTRY_POS)&&city.getBlockState(ENTRY_POS).isAir()){city.setBlock(ENTRY_POS,ENTRY.defaultBlockState(),3);sign(city,ENTRY_POS.above(),"NIGHT SPIRE","東門の外・30階の塔","右クリック：塔の正面","入口から攻略開始");}
+   TowerGuides.removeStreetGuides(city);
+   var lobby=server.getLevel(CompactShops.DIM);if(lobby!=null)TowerGuides.install(lobby);
    // Vanilla monsters are also removed inside the safe city.
    for(var e:city.getAllEntities())if(e instanceof Enemy&&CityProtection.contains(city,e.blockPosition()))e.discard();
    for(var p:server.getPlayerList().getPlayers()){
@@ -51,7 +52,7 @@ public final class NeonZones {
   });
  }
  static int gate(double x,double z){if(Math.abs(x-160)<=16&&z<=-18&&z>=-36)return 0;if(Math.abs(z-154)<=16&&x>=562&&x<=580)return 1;if(Math.abs(x-160)<=16&&z>=690&&z<=708)return 2;if(Math.abs(z-154)<=16&&x<=-18&&x>=-36)return 3;return -1;}
- public static boolean isField(Level l,BlockPos p){return l.dimension()==Level.OVERWORLD&&!CityProtection.contains(l,p)&&!SpireSite.structure(l,p);}
+ public static boolean isField(Level l,BlockPos p){return l.dimension()==Level.OVERWORLD&&!CityProtection.contains(l,p)&&!SpireSite.structure(l,p)&&!SkySpire.exterior(l,p);}
  public static boolean safeOutpost(Level l,BlockPos p){if(l.dimension()!=WILDS)return false;if(HostileRoster.insideCity(p.getX(),p.getZ()))return true;for(var c:DEST)if(Math.abs(p.getX()-c[0])<=16&&Math.abs(p.getZ()-c[1])<=16)return true;return false;}
  static void wilds(ServerPlayer p,int gate){
   var l=p.level().getServer().overworld();int x=DEST[gate][0],z=DEST[gate][1];

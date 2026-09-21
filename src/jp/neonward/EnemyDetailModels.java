@@ -132,6 +132,19 @@ final class EnemyDetailModels {
     for(int i=0;i<3;i++)p(b,"radiator"+i,6,-4,1+i*2.5f,6,8,1.5f,1);
     p(b,"exhaust_l",1,-5,-5,3,2,7,2);p(b,"exhaust_r",1,3,-5,3,2,7,2);
    }
+   case "neon_bomber" -> {
+    for(int i=0;i<3;i++)p(b,"charge"+i,7,-4+i*3,1,2.5f,2.5f,9,4);
+    p(b,"timer",3,-2,2,-4,4,3,1);p(h,"warning",3,-1,-10,-1,2,2,2);
+   }
+   case "mirage_stalker" -> {
+    p(h,"hood",4,-5,-9,-4.5f,10,2,9);
+    for(int i=0;i<4;i++)p(b,"cloak"+i,4,-4+i*2,1,2.5f,1.8f,15-i%2,1);
+    p(b,"phase_core",3,-2,3,3.5f,4,4,1);
+   }
+   case "signal_hacker" -> {
+    p(b,"router",0,-4,0,2,8,9,4);p(h,"antenna_l",2,-5,-13,1,1,10,1);p(h,"antenna_r",2,4,-11,1,1,8,1);
+    p(l,"terminal",5,-2,3,-4,6,5,1);p(h,"visor",3,-4,-6,-5,8,2,1);
+   }
    default -> throw new IllegalArgumentException(id);
   }
  }

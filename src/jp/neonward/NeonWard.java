@@ -28,7 +28,11 @@ public class NeonWard implements ModInitializer {
  public static final Item PHONE=item("phone",0),BIKE_KEY=item("bike_key",1),CAR_KEY=item("car_key",2);
  static Item item(String name,int kind){var key=ResourceKey.create(Registries.ITEM,id(name));return Registry.register(BuiltInRegistries.ITEM,key,new TechItem(new Item.Properties().setId(key).stacksTo(1),kind));}
  public void onInitialize(){
-  NeonFurniture.init();CityProtection.init();NeonArsenal.init();NeonHostiles.init();SpireBosses.init();NeonZones.init();StreetFashion.init();GuildServices.init();
+  net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STARTED.register(server->{
+   for(var level:server.getAllLevels())
+    level.getGameRules().set(net.minecraft.world.level.gamerules.GameRules.KEEP_INVENTORY,true,server);
+  });
+  NeonFurniture.init();CityProtection.init();NeonArsenal.init();NeonHostiles.init();SpireBosses.init();SkyBosses.init();SkySpire.init();NeonZones.init();StreetFashion.init();GuildServices.init();
   VanillaEnemyFilter.init();VendingMachines.init();StockMarket.init();Cyberware.init();if(MediaBridge.available()){NeonTelevision.init();PortableTelevision.init();}
   GlitchSigns.init();HologramFish.init();ClockworkMachinery.init();
   StreetLights.init();PulseNeon.init();SouthMaterials.init();

@@ -5,6 +5,7 @@
   "mixins": [
     "PhoneHandMixin",
     "PhoneActionsMixin",
+    "UiCommandSpamMixin",
     "MeterTextAccess",
     "LiftDisplayAccess",
     "CityExplosionMixin",

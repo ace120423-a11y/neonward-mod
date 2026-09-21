@@ -15,7 +15,10 @@ public final class HostileRoster {
   new Kind("arc_trooper","アーク・トルーパー",38,5,.24,4,"pulse_rifle",55,23,0x5ffff4,6,"命中時に短時間の移動低下を与える電撃兵"),
   new Kind("hex_netrunner","ヘックス・ネットランナー",28,2,.27,2,"wisp_compact",65,20,0xee61ff,5,"照準を当てて移動を妨害するハッカー"),
   new Kind("patch_medic","パッチ・メディック",34,3,.26,3,"kestrel_pistol",65,18,0x65ff94,5,"近くの敵一体を定期的に修復する支援兵"),
-  new Kind("iron_colossus","アイアン・コロッサス",180,12,.18,12,"pile_maul",0,0,0xff4242,1,"大型強敵。予告の後、周囲に衝撃波")
+  new Kind("iron_colossus","アイアン・コロッサス",180,12,.18,12,"pile_maul",0,0,0xff4242,1,"大型強敵。予告の後、周囲に衝撃波"),
+  new Kind("neon_bomber","ネオン・ボマー",34,2,.24,12,"pile_maul",0,0,0xffed5b43,7,"接近すると警告音を鳴らして自爆"),
+  new Kind("mirage_stalker","ミラージュ・ストーカー",28,1,.31,5,"akatsuki_wakizashi",0,0,0xffb86cff,7,"短い間隔で姿を消して背後へ跳ぶ"),
+  new Kind("signal_hacker","シグナル・ハッカー",30,2,.26,3,"wisp_compact",65,20,0xff36d9ff,6,"通信妨害で暗闇と移動低下を与える")
  };
  public static Kind choose(java.util.random.RandomGenerator random){int n=random.nextInt(java.util.Arrays.stream(ALL).mapToInt(Kind::weight).sum());for(var k:ALL){n-=k.weight();if(n<0)return k;}throw new AssertionError();}
  public static boolean insideCity(int x,int z){return x>=-32&&x<=575&&z>=-32&&z<=703;}
@@ -28,7 +31,7 @@ public final class HostileRoster {
   return "平原・海岸";
  }
  public static int[] pool(String biome){return switch(habitat(biome)){
-  case "荒野"->new int[]{0,3,4,7,11};case "雪原"->new int[]{5,6,8,10,11};case "湿地"->new int[]{2,8,9,10};
-  case "森林"->new int[]{1,2,5,9};case "山岳"->new int[]{5,6,7,8,11};default->new int[]{0,1,3,4,10};};}
+  case "荒野"->new int[]{0,3,4,7,11,12,14};case "雪原"->new int[]{5,6,8,10,11,13,14};case "湿地"->new int[]{2,8,9,10,12,13};
+  case "森林"->new int[]{1,2,5,9,12,13};case "山岳"->new int[]{5,6,7,8,11,12,13};default->new int[]{0,1,3,4,10,12,13,14};};}
  public static Kind chooseForBiome(java.util.random.RandomGenerator random,String biome){var pool=pool(biome);int total=0;for(int i:pool)total+=ALL[i].weight();int n=random.nextInt(total);for(int i:pool){n-=ALL[i].weight();if(n<0)return ALL[i];}throw new AssertionError();}
 }
