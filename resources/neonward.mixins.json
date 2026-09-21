@@ -3,6 +3,8 @@
   "package": "jp.neonward.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "MeleeAttackMixin",
+    "MeleeStunMixin",
     "PhoneHandMixin",
     "PhoneActionsMixin",
     "UiCommandSpamMixin",

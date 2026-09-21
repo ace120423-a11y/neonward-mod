@@ -40,7 +40,7 @@ public class SpireBoss extends CyberEnemy {
  @Override protected net.minecraft.sounds.SoundEvent getDeathSound(){return net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE.value();}
  @Override public float getVoicePitch(){return .65f+(spec().floor()-1)/10*.35f;}
  @Override public void tick(){
-  super.tick();if(!(level() instanceof ServerLevel l)||!isAlive()||isRemoved())return;
+  super.tick();if(!(level() instanceof ServerLevel l)||!isAlive()||isRemoved())return;if(MeleeElements.stunned(this))return;
   int f=spec().floor(),base=DungeonLayout.base(f)+1;var max=getAttribute(Attributes.MAX_HEALTH);if(max!=null&&max.getBaseValue()<spec().hp()*4.5){max.setBaseValue(spec().hp()*4.5);setHealth(getMaxHealth());}
   // Bosses stay in their own chamber; players may retreat into the maze safely.
   if(l.dimension()!=NeonZones.TOWER||!entityTags().contains("nw_spire_boss"))return;

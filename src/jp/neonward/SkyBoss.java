@@ -40,7 +40,7 @@ public class SkyBoss extends CyberEnemy {
  @Override protected net.minecraft.sounds.SoundEvent getDeathSound(){return net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE.value();}
  @Override public float getVoicePitch(){return .65f+(spec().floor()-1)/10*.35f;}
  @Override public void tick(){
-  super.tick();if(!(level() instanceof ServerLevel l)||!isAlive()||isRemoved())return;
+  super.tick();if(!(level() instanceof ServerLevel l)||!isAlive()||isRemoved())return;if(MeleeElements.stunned(this))return;
   int f=spec().floor(),base=DungeonLayout.base(f)+1;var max=getAttribute(Attributes.MAX_HEALTH);if(max!=null&&max.getBaseValue()<spec().hp()*4.5){max.setBaseValue(spec().hp()*4.5);setHealth(getMaxHealth());}
   String frostName=f+"F / "+spec().name();if(getCustomName()==null||!getCustomName().getString().equals(frostName))setCustomName(Component.literal(frostName).withColor(spec().color()));
   // Bosses stay in their own chamber; players may retreat into the maze safely.

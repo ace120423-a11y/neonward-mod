@@ -47,7 +47,7 @@ public class CyberEnemy extends Zombie implements RangedAttackMob {
   for(int i=0;i<=n;i++){var p=from.add(delta.scale((double)i/n));l.sendParticles(new DustParticleOptions(color,.65f),p.x,p.y,p.z,1,0,0,0,0);}
  }
  @Override public void tick(){
-  super.tick();if(!(level() instanceof ServerLevel l)||!isAlive())return;
+  super.tick();if(!(level() instanceof ServerLevel l)||!isAlive())return;if(MeleeElements.stunned(this))return;
   if(CityProtection.contains(l,blockPosition())||NeonZones.safeOutpost(l,blockPosition())){discard();return;}
   var target=getTarget();setAggressive(target!=null);if(target!=null&&!canAttack(target)){setTarget(null);getNavigation().stop();charge=0;aim=null;aimedTarget=null;}
   if(kind().id().equals("neon_bomber")){
