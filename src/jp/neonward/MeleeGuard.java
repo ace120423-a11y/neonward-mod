@@ -19,6 +19,7 @@ public final class MeleeGuard {
   return MeleeElements.kind(p.getMainHandItem())==MeleeElements.Kind.WAVE?.55f:1f;
  }
  public static void updateSpeed(Player p){
+  MeleeReach.update(p);
   var attribute=p.getAttribute(Attributes.MOVEMENT_SPEED);if(attribute==null)return;
   var id=NeonWard.id("melee_blade_speed");var kind=MeleeElements.kind(p.getMainHandItem());
   boolean active=p.isAlive()&&!p.isSpectator()&&kind!=null&&kind!=MeleeElements.Kind.WAVE;
