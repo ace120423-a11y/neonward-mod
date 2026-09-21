@@ -523,5 +523,11 @@
   "block.neonward.parlor_shoji": "Shoji",
   "block.neonward.display_aquarium": "Aqua Display Tank",
   "key.neonward.objectives": "Toggle Guide and Quests",
-  "key.categories.neonward.objectives": "NEON / GUIDE"
+  "key.categories.neonward.objectives": "NEON / GUIDE",
+  "item.neonward.neon_tetra": "Neon Tetra",
+  "item.neonward.clownfish": "Clownfish",
+  "item.neonward.royal_betta": "Royal Betta",
+  "item.neonward.angel_fish": "Angel Fish",
+  "item.neonward.kohaku_koi": "Kohaku Koi",
+  "item.neonward.moon_jelly": "Moon Jelly"
 }

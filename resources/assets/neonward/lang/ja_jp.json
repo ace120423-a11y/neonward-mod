@@ -548,5 +548,11 @@
   "block.neonward.med_counter": "薬品販売カウンター",
   "block.neonward.display_aquarium": "アクア・展示水槽",
   "key.neonward.objectives": "案内・クエスト表示の切替",
-  "key.categories.neonward.objectives": "NEON / GUIDE"
+  "key.categories.neonward.objectives": "NEON / GUIDE",
+  "item.neonward.neon_tetra": "ネオンテトラ",
+  "item.neonward.clownfish": "カクレクマノミ",
+  "item.neonward.royal_betta": "ロイヤルベタ",
+  "item.neonward.angel_fish": "エンゼルフィッシュ",
+  "item.neonward.kohaku_koi": "紅白錦鯉",
+  "item.neonward.moon_jelly": "ミズクラゲ"
 }

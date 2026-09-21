@@ -1009,5 +1009,27 @@
     "shopStaff": true,
     "yaw": 0,
     "job": "casino"
+  },
+  {
+    "key": "fishing_buyer",
+    "x": 323,
+    "y": 65,
+    "z": 637,
+    "role": 0,
+    "name": "釣果買取・ナギ",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "fishing_buyer"
+  },
+  {
+    "key": "fishing_rods",
+    "x": 331,
+    "y": 65,
+    "z": 637,
+    "role": 2,
+    "name": "釣り竿販売・ハル",
+    "shopStaff": true,
+    "yaw": 0,
+    "job": "fishing_rods"
   }
 ]
