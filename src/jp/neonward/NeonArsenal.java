@@ -32,18 +32,18 @@ public final class NeonArsenal {
  public static void init(){
   CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("neongun").then(Commands.literal("fire").executes(ctx->{var p=ctx.getSource().getPlayerOrException();if(p.isSpectator()||!p.isAlive())return 0;var hand=gunHand(p);if(p.getItemInHand(hand).getItem() instanceof Rifle gun){long now=System.currentTimeMillis(),gap=automatic(p.getItemInHand(hand))?280:140,last=LAST_SHOT.getOrDefault(p.getUUID(),0L);if(now-last<gap)return 0;LAST_SHOT.put(p.getUUID(),now);return gun.fire(p.level(),p,hand)==InteractionResult.FAIL?0:1;}return 0;}))));
   CELL=add("energy_cell",new Item(properties("energy_cell")));
-  BLADE=add("neon_blade",new Item(properties("neon_blade").sword(ToolMaterial.DIAMOND,4,-2.2f).repairable(Items.IRON_INGOT)));
+  BLADE=add("neon_blade",new MeleeGuard.Weapon(properties("neon_blade").sword(ToolMaterial.DIAMOND,4,-2.2f).repairable(Items.IRON_INGOT)));
   RIFLE=add("pulse_rifle",new Rifle(properties("pulse_rifle").durability(900).enchantable(15).repairable(Items.IRON_INGOT)));
-  add("kurosame_katana",new Item(properties("kurosame_katana").sword(ToolMaterial.DIAMOND,4,-2.4f).repairable(Items.IRON_INGOT)));
-  add("akatsuki_wakizashi",new Item(properties("akatsuki_wakizashi").sword(ToolMaterial.IRON,3,-1.8f).repairable(Items.IRON_INGOT)));
-  add("raikiri_odachi",new Item(properties("raikiri_odachi").sword(ToolMaterial.NETHERITE,6,-3f).repairable(Items.IRON_INGOT)));
+  add("kurosame_katana",new MeleeGuard.Weapon(properties("kurosame_katana").sword(ToolMaterial.DIAMOND,4,-2.4f).repairable(Items.IRON_INGOT)));
+  add("akatsuki_wakizashi",new MeleeGuard.Weapon(properties("akatsuki_wakizashi").sword(ToolMaterial.IRON,3,-1.8f).repairable(Items.IRON_INGOT)));
+  add("raikiri_odachi",new MeleeGuard.Weapon(properties("raikiri_odachi").sword(ToolMaterial.NETHERITE,6,-3f).repairable(Items.IRON_INGOT)));
   add("kestrel_pistol",new Rifle(properties("kestrel_pistol").durability(700).enchantable(15).repairable(Items.IRON_INGOT),7,7,40,0x5dfff0,1.9f));
   add("oni_handcannon",new Rifle(properties("oni_handcannon").durability(850).enchantable(15).repairable(Items.IRON_INGOT),12,16,48,0xffbf58,1.25f));
   add("wisp_compact",new Rifle(properties("wisp_compact").durability(550).enchantable(15).repairable(Items.IRON_INGOT),5,5,28,0xff59b4,2f));
-  add("shock_bat",new Item(properties("shock_bat").sword(ToolMaterial.IRON,3,-1.7f).repairable(Items.IRON_INGOT)));
-  add("riot_bat",new Item(properties("riot_bat").sword(ToolMaterial.DIAMOND,4,-2.2f).repairable(Items.IRON_INGOT)));
-  add("coil_hammer",new Item(properties("coil_hammer").sword(ToolMaterial.DIAMOND,7,-3.0f).repairable(Items.IRON_INGOT)));
-  add("pile_maul",new Item(properties("pile_maul").sword(ToolMaterial.NETHERITE,10,-3.3f).repairable(Items.IRON_INGOT)));
+  add("shock_bat",new MeleeGuard.Weapon(properties("shock_bat").sword(ToolMaterial.IRON,3,-1.7f).repairable(Items.IRON_INGOT)));
+  add("riot_bat",new MeleeGuard.Weapon(properties("riot_bat").sword(ToolMaterial.DIAMOND,4,-2.2f).repairable(Items.IRON_INGOT)));
+  add("coil_hammer",new MeleeGuard.Weapon(properties("coil_hammer").sword(ToolMaterial.DIAMOND,7,-3.0f).repairable(Items.IRON_INGOT)));
+  add("pile_maul",new MeleeGuard.Weapon(properties("pile_maul").sword(ToolMaterial.NETHERITE,10,-3.3f).repairable(Items.IRON_INGOT)));
   add("longwatch_sniper",new Rifle(properties("longwatch_sniper").durability(950).enchantable(15).repairable(Items.IRON_INGOT),28,36,160,0x79eaff,.85f));
   add("storm_machinegun",new Rifle(properties("storm_machinegun").durability(1600).enchantable(15).repairable(Items.IRON_INGOT),6,3,64,0xffbb55,1.6f));
   DROPS.addAll(ITEMS.values().stream().filter(i->i!=CELL).toList());
