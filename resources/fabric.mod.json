@@ -12,7 +12,8 @@
     "client": [
       "jp.neonward.NeonClient",
       "jp.neonward.MarketInteriorClient",
-      "jp.neonward.CyberwareGachaClient"
+      "jp.neonward.CyberwareGachaClient",
+      "jp.neonward.WeaponSalesClient"
     ]
   },
   "depends": {

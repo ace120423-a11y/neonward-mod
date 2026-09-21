@@ -47,7 +47,7 @@ display={
  'firstperson_righthand':pose([0,180,8],[-2,-1,-3],.85),
  'firstperson_lefthand':pose([0,180,8],[2,-1,-3],.85)}
 model={'gui_light':'front','textures':{k:'neonward:item/arsenal_'+k for k in ['armor','edge','cyan','dark']},'display':display,'elements':parts}
-model['textures'].update(amber='minecraft:block/yellow_concrete',particle='neonward:item/arsenal_armor')
+model['textures'].update(amber='neonward:item/material_yellow_concrete',particle='neonward:item/arsenal_armor')
 blocking={'parent':'neonward:item/sentinel_shield','display':{
  'thirdperson_righthand':pose([25,130,0],[-1,4,2],.8),
  'thirdperson_lefthand':pose([25,130,0],[1,4,2],.8),

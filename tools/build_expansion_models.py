@@ -23,7 +23,9 @@ for name,(ja,en,parts) in weapons.items():
         elements.append(dict(from_=[x,y,z],to=[X,Y,Z],faces={side:{'texture':'#'+texture,'uv':[2,2,14,14]} for side in ['up','down','north','south','east','west']}))
     elements=[{('from' if k=='from_' else k):v for k,v in e.items()} for e in elements]
     template=base if list(weapons).index(name)<5 else gun
-    textures={k:('minecraft:block/'+v.split('material_',1)[1] if v.startswith('neonward:item/material_') else v) for k,v in base['textures'].items()}
+    # material_* are item-atlas aliases, not missing PNG files. Keep these aliases:
+    # mixing direct block-atlas sprites with item sprites breaks baking in 26.2.
+    textures=dict(base['textures'])
     model={'textures':textures,'elements':elements,'display':template['display']}
     (ROOT/f'models/item/{name}.json').write_text(json.dumps(model,indent=2),encoding='utf-8')
     (ROOT/f'items/{name}.json').write_text(json.dumps({'model':{'type':'minecraft:model','model':f'neonward:item/{name}'}},indent=2),encoding='utf-8')

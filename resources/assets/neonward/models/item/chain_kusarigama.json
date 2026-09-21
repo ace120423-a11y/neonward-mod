@@ -5,11 +5,11 @@
     "cyan": "neonward:item/arsenal_cyan",
     "pink": "neonward:item/arsenal_pink",
     "dark": "neonward:item/arsenal_dark",
-    "silver": "minecraft:block/iron_block",
-    "gold": "minecraft:block/gold_block",
-    "red": "minecraft:block/red_concrete",
-    "ivory": "minecraft:block/quartz_block_side",
-    "wood": "minecraft:block/dark_oak_planks",
+    "silver": "neonward:item/material_iron_block",
+    "gold": "neonward:item/material_gold_block",
+    "red": "neonward:item/material_red_concrete",
+    "ivory": "neonward:item/material_quartz_block_side",
+    "wood": "neonward:item/material_dark_oak_planks",
     "particle": "neonward:item/arsenal_dark"
   },
   "elements": [

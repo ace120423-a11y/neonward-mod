@@ -5,7 +5,7 @@
     "edge": "neonward:item/arsenal_edge",
     "cyan": "neonward:item/arsenal_cyan",
     "dark": "neonward:item/arsenal_dark",
-    "amber": "minecraft:block/yellow_concrete",
+    "amber": "neonward:item/material_yellow_concrete",
     "particle": "neonward:item/arsenal_armor"
   },
   "display": {
