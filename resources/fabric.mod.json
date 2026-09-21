@@ -13,7 +13,8 @@
       "jp.neonward.NeonClient",
       "jp.neonward.MarketInteriorClient",
       "jp.neonward.CyberwareGachaClient",
-      "jp.neonward.WeaponSalesClient"
+      "jp.neonward.WeaponSalesClient",
+      "jp.neonward.WestLandClient"
     ]
   },
   "depends": {

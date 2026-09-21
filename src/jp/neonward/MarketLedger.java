@@ -3,6 +3,8 @@ import java.util.*;
 
 /** Fictional market. Integer credits and server-owned accounts; no real securities. */
 public final class MarketLedger {
+ public static class LandOwner {public String uuid,name;public LandOwner(String u,String n){uuid=u;name=n;}}
+ public Map<Integer,LandOwner> westLand=new HashMap<>();public int westLandColumns;
  public static final String[] SYMBOLS={"NOVA","CHRM","PULS","GRID","MEDX","NITE"};
  public static final String[] NAMES={"ノヴァ・重工","クローム武装","パルス通信","グリッド輸送","メディックス","ナイト電力"};
  public MahjongRound mahjong=new MahjongRound();public KoiRound koi=new KoiRound();public ParlorGames.DiceRound dice=new ParlorGames.DiceRound();
@@ -32,6 +34,8 @@ public final class MarketLedger {
   for(int i=0;i<6;i++){int old=prices[i];double move=(r.nextDouble()-.5)*.05+(i==featured?event*.035:0);prices[i]=Math.max(5,Math.min(10000,(int)Math.round(old*(1+move))));var h=history.get(i);h.add(prices[i]);while(h.size()>60)h.removeFirst();}
  }
  public void validate(){
+  if(westLand==null||westLandColumns<0||westLandColumns>216)throw new IllegalStateException("Invalid west land save");
+  for(var e:westLand.entrySet()){if(e.getKey()<0||e.getKey()>=8||e.getValue()==null||e.getValue().name==null)throw new IllegalStateException("Invalid land owner");UUID.fromString(e.getValue().uuid);}
   var cityFloors=new HashSet<Integer>();for(var a:accounts.values())if(a.cityFloor!=0&&(a.cityFloor<2||a.cityFloor>20||!cityFloors.add(a.cityFloor)))throw new IllegalStateException("Invalid city apartment ownership");
   var farmSlots=new HashSet<Integer>();for(var a:accounts.values())if(a.farmSlot<0||a.farmSlot>=262144||a.farmSlot>0&&!farmSlots.add(a.farmSlot))throw new IllegalStateException("Invalid farm ownership");var houseSlots=new HashSet<Integer>();for(var a:accounts.values())if(a.homeSlot<0||a.homeSlot>=262144||a.homeSlot>0&&!houseSlots.add(a.homeSlot))throw new IllegalStateException("Invalid home ownership");
   if(prices==null||prices.length!=6||history==null||history.size()!=6||accounts==null||step<0)throw new IllegalStateException("Invalid market save");

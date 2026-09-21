@@ -32,7 +32,7 @@ public class NeonWard implements ModInitializer {
    for(var level:server.getAllLevels())
     level.getGameRules().set(net.minecraft.world.level.gamerules.GameRules.KEEP_INVENTORY,true,server);
   });
-  OrnamentalFish.init();FishingShop.init();NeonFurniture.init();CityProtection.init();NeonArsenal.init();NeonHostiles.init();SpireBosses.init();SkyBosses.init();SkySpire.init();NeonZones.init();StreetFashion.init();GuildServices.init();
+  WestLand.init();OrnamentalFish.init();FishingShop.init();NeonFurniture.init();CityProtection.init();NeonArsenal.init();NeonHostiles.init();SpireBosses.init();SkyBosses.init();SkySpire.init();NeonZones.init();StreetFashion.init();GuildServices.init();
   VanillaEnemyFilter.init();VendingMachines.init();StockMarket.init();Cyberware.init();if(MediaBridge.available()){NeonTelevision.init();PortableTelevision.init();}
   GlitchSigns.init();HologramFish.init();ClockworkMachinery.init();
   StreetLights.init();PulseNeon.init();SouthMaterials.init();
