@@ -33,6 +33,7 @@ public final class MeleeGuard {
   @Override public ItemUseAnimation getUseAnimation(ItemStack stack){return ItemUseAnimation.BLOCK;}
   @Override public InteractionResult use(Level level,Player player,InteractionHand hand){
    if(hand!=InteractionHand.MAIN_HAND||player.isSpectator())return InteractionResult.PASS;
+   if(NeonShield.offhandReady(player))return InteractionResult.PASS;
    player.startUsingItem(hand);return InteractionResult.CONSUME;
   }
  }

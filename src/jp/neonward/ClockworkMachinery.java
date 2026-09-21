@@ -28,8 +28,13 @@ public final class ClockworkMachinery {
   var wheelId=NeonWard.id("clockwork_handwheel");Registry.register(BuiltInRegistries.BLOCK,wheelId,new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK,wheelId)).noCollision().noOcclusion().strength(-1,3600000)));
   var terminalId=NeonWard.id("clockwork_hint_terminal");Registry.register(BuiltInRegistries.BLOCK,terminalId,new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK,terminalId)).noCollision().noOcclusion().strength(-1,3600000)));
   for(String name:new String[]{"clockwork_pipe_straight","clockwork_pipe_elbow","clockwork_mirror"}){var meshId=NeonWard.id(name);Registry.register(BuiltInRegistries.BLOCK,meshId,new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK,meshId)).noCollision().noOcclusion().strength(-1,3600000)));}
-  ServerTickEvents.END_SERVER_TICK.register(s->{if(s.getTickCount()%8!=0)return;var l=s.getLevel(NeonZones.TOWER);
-   if(l!=null&&NightSpire.progress!=null){var floors=new HashSet<Integer>();for(var p:l.players())if(SpireSite.contains(l,p.blockPosition()))floors.add(DungeonLayout.floor(p.getY()));
+  ServerTickEvents.END_SERVER_TICK.register(s->{var l=s.getLevel(NeonZones.TOWER);
+   var floors=new HashSet<Integer>();if(l!=null)for(var p:l.players())if(p.isAlive()&&SpireSite.contains(l,p.blockPosition()))floors.add(DungeonLayout.floor(p.getY()));
+   if(l!=null&&NightSpire.progress!=null&&s.getTickCount()%20==0)ClockworkDisplays.prune(l,floors);
+   if(s.getTickCount()%8!=0)return;
+   if(l!=null&&NightSpire.progress!=null){
+    // Finish already-triggered doors even if everybody leaves the floor mid-animation.
+    for(int key:new ArrayList<>(ClockworkFeedback.OPENING.keySet())){int f=key/3;if(!floors.contains(f))ClockworkFeedback.door(l,f,key%3,(int)(l.getGameTime()-ClockworkFeedback.OPENING.get(key)));}
     for(int f:floors){if(NightSpire.progress.built<f)continue;int y=DungeonLayout.base(f);
      ClockworkFeedback.tick(l,f);
     }

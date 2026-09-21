@@ -14,6 +14,22 @@ final class ClockworkDisplays {
  static int updates;
  static void reset(){CACHE.clear();PUBLISHED.clear();POSES.clear();updates=0;}
  static boolean initialized(Display d){return PUBLISHED.contains(d);}
+ /** Only generated, reconstructible tower decorations; never mobs or player displays. */
+ static boolean decoration(Entity e){
+  return e instanceof Display&&SpireSite.contains(e.level(),e.blockPosition())&&e.entityTags().stream().anyMatch(t->t.startsWith("nw_feedback_")||t.startsWith("nw_gear_at_")||t.startsWith("nw_handwheel_v2_"));
+ }
+ static boolean nearby(int floor,Set<Integer> occupied){return occupied.stream().anyMatch(f->Math.abs(f-floor)<=1);}
+ static int prune(ServerLevel l,Set<Integer> occupied){
+  var stale=new ArrayList<Display>();
+  for(var e:l.getAllEntities())if(decoration(e)&&!nearby(DungeonLayout.floor(e.getY()),occupied)){
+   stale.add((Display)e);if(stale.size()>=256)break;
+  }
+  for(var d:stale){PUBLISHED.remove(d);POSES.remove(d);d.discard();}
+  var cache=CACHE.get(l);if(cache!=null)cache.values().removeIf(Entity::isRemoved);
+  ClockworkMachinery.ANGLES.keySet().removeIf(Entity::isRemoved);
+  ClockworkMachinery.WHEEL_TICKS.keySet().removeIf(Entity::isRemoved);
+  return stale.size();
+ }
  static <T extends Display>T find(ServerLevel l,String id,Vec3 at,Class<T> type){
   if(!l.isPositionEntityTicking(BlockPos.containing(at)))return null;
   var cache=CACHE.computeIfAbsent(l,k->new HashMap<>());var cached=cache.get(id);

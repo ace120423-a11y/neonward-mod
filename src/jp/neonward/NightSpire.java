@@ -54,7 +54,7 @@ public final class NightSpire {
   var l=p.level().getServer().getLevel(NeonZones.TOWER);if(l==null){p.sendSystemMessage(Component.literal("塔の反映にはゲームの再起動が必要です"));return;}
   if(l.getDifficulty()==Difficulty.PEACEFUL){p.sendSystemMessage(Component.literal("ピースフルではボスが出ないため、イージー以上に変更してね"));return;}
   if(first&&!restart(p,l))return;
-  int f=first?1:checkpoint(p);var tower=p.level().getServer().getLevel(NeonZones.TOWER);if(!first&&tower!=null){for(var q:tower.players())if(!q.isSpectator()&&q.isAlive()&&SpireSite.contains(tower,q.blockPosition())){f=DungeonLayout.floor(q.getY());break;}}
+  int f=first?1:checkpoint(p); // A normal entry always respects this player's saved floor.
   if(progress.built<f){waiting.put(p.getUUID(),first);p.sendSystemMessage(Component.literal("塔を建設中です（"+progress.built+" / 30階）。準備できたら移動します。"));return;}arrive(p,f);
  }
  static void arrive(ServerPlayer p,int f){var l=p.level().getServer().getLevel(NeonZones.TOWER);if(l==null)return;resetFloor(l,f);NeonZones.move(p,l,new Vec3(40.5,DungeonLayout.base(f)+1,9.5),-30);p.sendSystemMessage(Component.literal("NIGHT SPIRE / "+f+"階。最奥のボス撃破でゲートが出現します。3つの機関を復旧して進もう。入口の端末で塔の外へ帰還できます。"));}

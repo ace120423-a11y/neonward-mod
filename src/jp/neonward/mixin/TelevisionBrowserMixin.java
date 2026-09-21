@@ -18,4 +18,6 @@ public class TelevisionBrowserMixin {
  private void neonLateBrowser(WDClientBrowser browser,CallbackInfo ci){if(neonClosed){TelevisionPlaybackClient.destroy(browser);ci.cancel();}}
  @ModifyVariable(method="setVolume",at=@At("HEAD"),argsOnly=true)
  private float neonVolumeLimit(float requested){float limit=((ScreenData)(Object)this).autoVolumeMaxLevel;return Float.isFinite(requested)&&Float.isFinite(limit)?Math.clamp(requested,0f,Math.clamp(limit,0f,.25f)):0f;}
+ @Inject(method="setVolume",at=@At("HEAD"))
+ private void neonTwitchVolume(float requested,CallbackInfo ci){var data=(ScreenData)(Object)this;if(data.browser==null||!jp.neonward.TelevisionUrl.twitch(data.url))return;float volume=neonVolumeLimit(requested);data.browser.executeJavaScript("document.querySelectorAll('video,audio').forEach(v=>{v.volume="+volume+";v.muted="+(volume==0)+";});",data.url,0);}
 }

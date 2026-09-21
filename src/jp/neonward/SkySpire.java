@@ -116,7 +116,7 @@ public final class SkySpire {
   if(p.isSpectator()||l.getDifficulty()==Difficulty.PEACEFUL){message(p,"イージー以上で挑戦してください。");return;}
   int f=progress.checkpoint.getOrDefault(key(p),1);
   if(restart){int old=cleared(p),cp=f;progress.cleared.put(key(p),0);progress.checkpoint.put(key(p),1);try{save();f=1;}catch(Exception e){progress.cleared.put(key(p),old);progress.checkpoint.put(key(p),cp);message(p,"保存に失敗しました。");return;}}
-  else for(var other:l.players())if(other!=p&&other.isAlive()&&!other.isSpectator()){f=floor(other);break;}
+  // Other players' current floors must not override this player's checkpoint.
   f=Math.max(1,Math.min(30,f));if(progress.built<f){waiting.put(p.getUUID(),f);message(p,"階層を建設しています。完成後に移動します。");}else arrive(p,f);
  }
  static void arrive(ServerPlayer p,int f){var l=p.level().getServer().getLevel(DIM);steps.put(p.getUUID(),0);NeonZones.move(p,l,new Vec3(padX(f,0)+.5,DungeonLayout.base(f)+6,10.5),0);message(p,f+"階 / 光る足場を順に渡り、奥の専用ボスを倒そう。");}

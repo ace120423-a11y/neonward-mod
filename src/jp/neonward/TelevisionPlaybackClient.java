@@ -15,9 +15,12 @@ public final class TelevisionPlaybackClient {
  private static Key key(ScreenBlockEntity be){return new Key(be.getLevel().dimension().identifier().toString(),be.getBlockPos());}
  public static boolean blank(String url){return url==null||url.isBlank()||url.equalsIgnoreCase("about:blank");}
  public static boolean room(ScreenBlockEntity be){var mc=Minecraft.getInstance();if(mc.player==null||mc.level==null||be.getLevel()!=mc.level||be.isRemoved())return false;var at=be.getBlockPos();var p=mc.player.blockPosition();
+  // Purchased TVs place their WebDisplays screen one block above the furniture.
+  var base=at.below();var id=net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(mc.level.getBlockState(base).getBlock());boolean portable=id.getNamespace().equals("neonward")&&id.getPath().startsWith("shop_tv_");
+  if(portable&&!TelevisionRoomPolicy.portableRange(base.getX(),base.getY(),base.getZ(),mc.player.getX(),mc.player.getY(),mc.player.getZ()))return false;
   if(CityApartments.area(mc.level,at))return TelevisionRoomPolicy.apartment(at.getX(),at.getY(),at.getZ(),mc.player.getX(),mc.player.getY(),mc.player.getZ());
   if(mc.level.dimension()==PrivateHomes.DIMENSION){int x=Math.floorDiv(at.getX(),1024)*1024,z=Math.floorDiv(at.getZ(),1024)*1024;return p.getX()>x&&p.getX()<x+30&&p.getZ()>z&&p.getZ()<z+19&&p.getY()>=64&&p.getY()<82;}
-  if(mc.level.dimension()==PrivateFarms.DIM)return Math.floorDiv(p.getX(),128)==Math.floorDiv(at.getX(),128)&&Math.floorDiv(p.getZ(),128)==Math.floorDiv(at.getZ(),128)&&p.distSqr(at)<=64;
+  if(mc.level.dimension()==PrivateFarms.DIM)return Math.floorDiv(p.getX(),128)==Math.floorDiv(at.getX(),128)&&Math.floorDiv(p.getZ(),128)==Math.floorDiv(at.getZ(),128)&&(portable||p.distSqr(at)<=64);
   return false; // Unclassified screens must not leak audio into the city.
  }
  public static boolean allowed(ScreenData data,ScreenBlockEntity be){return be.getLevel()!=null&&!blank(data.url)&&!OFF.contains(key(be))&&room(be);}

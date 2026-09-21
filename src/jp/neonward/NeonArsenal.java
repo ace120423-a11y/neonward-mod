@@ -46,15 +46,16 @@ public final class NeonArsenal {
   add("pile_maul",new MeleeGuard.Weapon(properties("pile_maul").sword(ToolMaterial.NETHERITE,10,-3.3f).repairable(Items.IRON_INGOT)));
   add("longwatch_sniper",new Rifle(properties("longwatch_sniper").durability(950).enchantable(15).repairable(Items.IRON_INGOT),28,36,160,0x79eaff,.85f));
   add("storm_machinegun",new Rifle(properties("storm_machinegun").durability(1600).enchantable(15).repairable(Items.IRON_INGOT),6,3,64,0xffbb55,1.6f));
+  ArsenalExpansion.register();NeonShield.register();
   DROPS.addAll(ITEMS.values().stream().filter(i->i!=CELL).toList());
   net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AFTER_DEATH.register((entity,source)->{if(!Underworld.hunter(entity)&&entity instanceof net.minecraft.world.entity.monster.Enemy&&source.getEntity() instanceof net.minecraft.server.level.ServerPlayer&&entity.level() instanceof ServerLevel level){var random=java.util.concurrent.ThreadLocalRandom.current();int index=WeaponLoot.roll(random,DROPS.size(),NeonLoot.profile(entity),GunEnchantments.looting(source,level));if(index>=0)level.addFreshEntity(new net.minecraft.world.entity.item.ItemEntity(level,entity.getX(),entity.getY()+.3,entity.getZ(),RolledWeapons.create(DROPS.get(index),random,NeonLoot.profile(entity))));}});
   for(var type:List.of(ArmorType.HELMET,ArmorType.CHESTPLATE,ArmorType.LEGGINGS,ArmorType.BOOTS)){String name="sentinel_"+type.getName();add(name,new Item(StreetFashion.cosmetic(properties(name),"sentinel",type.getSlot())));}
   CreativeModeTabEvents.modifyOutputEvent(ResourceKey.create(Registries.CREATIVE_MODE_TAB,net.minecraft.resources.Identifier.withDefaultNamespace("combat"))).register(e->ITEMS.values().forEach(e::accept));
   CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("neon").then(Commands.literal("arsenal").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(ctx->{var p=ctx.getSource().getPlayerOrException();for(var i:ITEMS.values()){if(i==CELL)continue;var stack=new ItemStack(i);if(!p.getInventory().add(stack))p.drop(stack,false);}p.sendSystemMessage(Component.literal("NEON ARSENAL：武器・防具一式（弾無限）。刀は左クリック、銃は右長押しで構え、左で発射（マシンガンは長押し連射）。"));return 1;}))));
-  ServerTickEvents.END_SERVER_TICK.register(server->{for(var p:server.getPlayerList().getPlayers())for(int i=0;i<p.getInventory().getContainerSize();i++){var s=p.getInventory().getItem(i);if(ITEMS.containsValue(s.getItem()))s.set(DataComponents.DAMAGE,0);}});
+  ServerTickEvents.END_SERVER_TICK.register(server->{for(var p:server.getPlayerList().getPlayers())for(int i=0;i<p.getInventory().getContainerSize();i++){var s=p.getInventory().getItem(i);if(ITEMS.containsValue(s.getItem())&&s.getItem()!=NeonShield.ITEM)s.set(DataComponents.DAMAGE,0);}});
  }
  public static boolean isGun(ItemStack stack){return stack.getItem() instanceof Rifle;}
- public static boolean automatic(ItemStack stack){return stack.is(ITEMS.get("storm_machinegun"));}
+ public static boolean automatic(ItemStack stack){return stack.is(ITEMS.get("storm_machinegun"))||stack.is(ITEMS.get("cryo_projector"));}
  public static boolean sniper(ItemStack stack){return stack.is(ITEMS.get("longwatch_sniper"));}
  public static InteractionHand gunHand(Player p){return isGun(p.getMainHandItem())?InteractionHand.MAIN_HAND:InteractionHand.OFF_HAND;}
  public static class Rifle extends Item {

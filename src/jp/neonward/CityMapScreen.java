@@ -40,7 +40,8 @@ public class CityMapScreen extends Screen {
   addRenderableWidget(new PhoneScreen.NeonButton(l+10,t+h-25,28,18,"+",b->zoom=Math.min(6,zoom*1.5)));
   addRenderableWidget(new PhoneScreen.NeonButton(l+42,t+h-25,28,18,"-",b->zoom=Math.max(1,zoom/1.5)));
   addRenderableWidget(new PhoneScreen.NeonButton(l+76,t+h-25,52,18,"全体",b->{follow=false;cx=272;cz=484;zoom=1;selected=-1;}));
-  addRenderableWidget(new PhoneScreen.NeonButton(l+134,t+h-25,62,18,"現在地",b->{locate();}));
+  int travelWidth=Math.max(38,Math.min(100,w-272));
+  addRenderableWidget(new PhoneScreen.NeonButton(l+134,t+h-25,travelWidth,18,travelWidth>=92?"ファストトラベル":"転送",b->minecraft.gui.setScreen(new PhoneTravelScreen())));
   addRenderableWidget(new PhoneScreen.NeonButton(sx,t+h-25,102,18,"ホームに戻る",b->onClose()));
  }
  int px(double x){return mx+mw/2+(int)Math.round((x-cx)*scale);}

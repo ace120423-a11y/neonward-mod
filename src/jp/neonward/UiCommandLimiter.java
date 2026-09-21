@@ -4,8 +4,8 @@ import java.util.Set;
 
 /** Per-connection limiter; called only on the server thread. Never grants permissions. */
 public final class UiCommandLimiter {
- private static final Set<String> ROOTS=Set.of("neonarms","neonslot","neoncasino",
-  "neonfish","neoncyber","neonfarm","neonfashion","neonfriends","neongarage","neonmotor",
+ private static final Set<String> ROOTS=Set.of("neongacha","neonarms","neonslot","neoncasino",
+  "neontravel","neonfish","neoncyber","neonfarm","neonfashion","neonfriends","neongarage","neonmotor",
   "neonguild","neongun","neonhome","interiors","neonlift","neonmed","neonphone",
   "parlor","neoncall","neonmarket","neontv","interiortv","neonvend","tutorial","underworld");
  private long nextUi, nextGun;

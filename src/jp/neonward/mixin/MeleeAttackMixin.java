@@ -10,5 +10,5 @@ import org.spongepowered.asm.mixin.injection.*;
 @Mixin(Player.class)
 public class MeleeAttackMixin {
  @Redirect(method="attack",at=@At(value="INVOKE",target="Lnet/minecraft/world/entity/Entity;hurtOrSimulate(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
- private boolean neonMeleeHit(Entity target,DamageSource source,float amount){var p=(Player)(Object)this;var weapon=p.getWeaponItem();boolean melee=MeleeElements.kind(weapon)!=null;float damage=melee?amount*2f:amount;boolean hit=target.hurtOrSimulate(source,damage);if(hit&&melee&&p instanceof ServerPlayer sp&&target instanceof LivingEntity living)MeleeElements.impact(sp,living,weapon,damage);return hit;}
+ private boolean neonMeleeHit(Entity target,DamageSource source,float amount){var p=(Player)(Object)this;var weapon=p.getWeaponItem();boolean expanded=jp.neonward.ArsenalExpansion.melee(weapon),melee=MeleeElements.kind(weapon)!=null||expanded;float damage=melee?amount*2f:amount;boolean hit=target.hurtOrSimulate(source,damage);if(hit&&melee&&p instanceof ServerPlayer sp&&target instanceof LivingEntity living){if(expanded)jp.neonward.ArsenalExpansion.impact(sp,living,weapon,damage);else MeleeElements.impact(sp,living,weapon,damage);}return hit;}
 }

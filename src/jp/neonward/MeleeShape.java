@@ -10,6 +10,11 @@ public final class MeleeShape {
   case "neon_blade","kurosame_katana"->new Profile(Shape.BLADE,4,0,.65);
   case "raikiri_odachi"->new Profile(Shape.BLADE,4.5,0,.75);
   case "akatsuki_wakizashi"->new Profile(Shape.WAKIZASHI,2.25,0,.35);
+  case "volt_spear"->new Profile(Shape.BLADE,4.5,0,.3);
+  case "chain_kusarigama"->new Profile(Shape.BAT,3.5,0,0);
+  case "neon_dualblades"->new Profile(Shape.WAKIZASHI,2.5,0,.35);
+  case "reaper_scythe"->new Profile(Shape.BAT,3.6,0,0);
+  case "impact_gauntlet"->new Profile(Shape.BLADE,2.1,0,.5);
   default->null;
  };}
  public static boolean contains(Profile p,double forward,double side,double impactDistance,double height){
