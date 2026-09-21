@@ -46,7 +46,7 @@ public final class StreetFashion {
   CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("neonfashion").then(Commands.argument("x",IntegerArgumentType.integer()).then(Commands.argument("y",IntegerArgumentType.integer()).then(Commands.argument("z",IntegerArgumentType.integer()).then(Commands.argument("product",IntegerArgumentType.integer(-1,IDS.length*4-1)).executes(ctx->request(ctx.getSource().getPlayerOrException(),new BlockPos(IntegerArgumentType.getInteger(ctx,"x"),IntegerArgumentType.getInteger(ctx,"y"),IntegerArgumentType.getInteger(ctx,"z")),IntegerArgumentType.getInteger(ctx,"product")))))))));
  }
  static int request(ServerPlayer p,BlockPos pos,int product){
-  if(p.isSpectator()||p.distanceToSqr(Vec3.atCenterOf(pos))>36||!p.level().getBlockState(pos).is(COUNTER))return 0;
+  if(p.isSpectator()||p.distanceToSqr(Vec3.atCenterOf(pos))>36||!p.level().getBlockState(pos).is(COUNTER)||!TerminalRoutes.roomAllowed(p.level(),pos,1))return 0;
   if(StockMarket.ledger==null){reply(p,0,"口座を読み込めません");return 0;}
   var ledger=StockMarket.ledger;var account=ledger.account(p.getStringUUID());String msg="服は外見専用・防御力なし";
   if(product>=0){

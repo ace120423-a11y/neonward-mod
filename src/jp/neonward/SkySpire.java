@@ -24,6 +24,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 public final class SkySpire {
  public static final ResourceKey<Level> DIM=ResourceKey.create(Registries.DIMENSION,NeonWard.id("sky_spire"));
  public static final BlockPos ENTRANCE=new BlockPos(912,65,216);
+ public static final BlockPos CITY_RETURN=new BlockPos(914,65,214);
  public static final BlockPos CITY_GUIDE=new BlockPos(272,65,11);
  public static Block ENTRY,EXIT;
  public static net.minecraft.world.item.Item SEAL;
@@ -37,18 +38,46 @@ public final class SkySpire {
  static int floor(ServerPlayer p){return DungeonLayout.floor(p.getY());}
  static String key(ServerPlayer p){return p.getStringUUID();}
  static int cleared(ServerPlayer p){return progress.cleared.getOrDefault(key(p),0);}
- public static boolean exterior(Level l,BlockPos p){return l.dimension()==Level.OVERWORLD&&p.getX()>=898&&p.getX()<=926&&p.getZ()>=216&&p.getZ()<=244;}
+ public static boolean exterior(Level l,BlockPos p){return l.dimension()==Level.OVERWORLD&&p.getX()>=898&&p.getX()<=926&&p.getZ()>=209&&p.getZ()<=244;}
  static void save()throws Exception{Files.createDirectories(file.getParent());Path tmp=file.resolveSibling("sky_spire.json.tmp");Files.writeString(tmp,JSON.toJson(progress));Files.move(tmp,file,StandardCopyOption.REPLACE_EXISTING,StandardCopyOption.ATOMIC_MOVE);}
  static void message(ServerPlayer p,String text){p.sendSystemMessage(Component.literal("FROST CITADEL / 雪城 / "+text));}
+ // Arrival is outside the castle shell. Build its own approach BEFORE teleporting.
+ static boolean prepareLanding(ServerLevel l){
+  for(int x=910;x<=914;x++)for(int z=211;z<=218;z++){
+   var floor=new BlockPos(x,64,z);l.getChunkAt(floor);
+   if(l.isEmptyBlock(floor))l.setBlock(floor,Blocks.QUARTZ_BRICKS.defaultBlockState(),3);
+  }
+  var feet=new BlockPos(912,65,213);
+  if(!l.getBlockState(feet.below()).isFaceSturdy(l,feet.below(),net.minecraft.core.Direction.UP)||!l.isEmptyBlock(feet)||!l.isEmptyBlock(feet.above()))return false;
+  if(l.isEmptyBlock(ENTRANCE))l.setBlock(ENTRANCE,ENTRY.defaultBlockState(),3);
+  if(!l.getBlockState(ENTRANCE).is(ENTRY))return false;
+  NeonZones.sign(l,ENTRANCE.above(),"FROST CITADEL / 雪城","30階・アスレチック","右クリックで挑戦","Shiftで1階から再挑戦");
+  if(l.isEmptyBlock(CITY_RETURN)&&l.isEmptyBlock(CITY_RETURN.above()))l.setBlock(CITY_RETURN,EXIT.defaultBlockState(),3);
+  if(l.getBlockState(CITY_RETURN).is(EXIT))NeonZones.sign(l,CITY_RETURN.above(),"街へ戻る / NEON WARD","企業ビルの受付へ","右クリックで帰還","攻略記録はそのまま");
+  return true;
+ }
+ static void returnToCity(ServerPlayer p){
+  if(p.isPassenger())p.stopRiding();
+  if(CompactShops.enter(p,2)){waiting.remove(p.getUUID());steps.remove(p.getUUID());p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);message(p,"企業ビルの受付へ帰還しました。攻略記録は保持されています。");}
+ }
+ static boolean visitFront(ServerPlayer p){
+  var l=p.level().getServer().overworld();
+  if(!prepareLanding(l)){message(p,"転送先に障害物があります。安全を確認できないため移動を中止しました。");return false;}
+  p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);NeonZones.move(p,l,new Vec3(912.5,65,213.5),0);p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);return true;
+ }
  public static void init(){
+  CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("skyspire").then(Commands.literal("repair").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(ctx->prepareLanding(ctx.getSource().getServer().overworld())?1:0))));
+  CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("skyspire").then(Commands.literal("town").executes(ctx->{var p=ctx.getSource().getPlayerOrException();if(p.level().dimension()==DIM||exterior(p.level(),p.blockPosition())){returnToCity(p);return 1;}return 0;}))));
   ENTRY=NeonZones.terminal("sky_spire_entry");EXIT=NeonZones.terminal("sky_spire_exit");
   var sealKey=net.minecraft.resources.ResourceKey.create(Registries.ITEM,NeonWard.id("sky_spire_seal"));
   SEAL=net.minecraft.core.Registry.register(net.minecraft.core.registries.BuiltInRegistries.ITEM,sealKey,new net.minecraft.world.item.Item(new net.minecraft.world.item.Item.Properties().setId(sealKey)));
   ServerLifecycleEvents.SERVER_STARTED.register(server->{cursor=0;exteriorCursor=0;steps.clear();waiting.clear();emptySince.clear();file=server.getWorldPath(LevelResource.ROOT).resolve("neonward/sky_spire.json");try{progress=Files.exists(file)?JSON.fromJson(Files.readString(file),Progress.class):new Progress();if(progress==null||progress.checkpoint==null||progress.cleared==null||progress.built<0||progress.built>30)throw new IllegalStateException("Invalid SKY SPIRE progress");}catch(Exception e){progress=null;System.err.println("[Sky Spire] Progress unavailable: "+e);}});
   ServerLifecycleEvents.SERVER_STOPPED.register(server->{progress=null;file=null;steps.clear();waiting.clear();emptySince.clear();});
   CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("skyspire").executes(ctx->{enter(ctx.getSource().getPlayerOrException(),false);return 1;}).then(Commands.literal("restart").executes(ctx->{enter(ctx.getSource().getPlayerOrException(),true);return 1;})).then(Commands.literal("leave").executes(ctx->{var p=ctx.getSource().getPlayerOrException();if(p.level().dimension()==DIM)leave(p);return 1;}))));
-  UseBlockCallback.EVENT.register((p,l,h,hit)->{var b=l.getBlockState(hit.getBlockPos()).getBlock();if(b!=ENTRY&&b!=EXIT)return InteractionResult.PASS;if(h==InteractionHand.MAIN_HAND&&p instanceof ServerPlayer sp&&!p.isSpectator()){if(b==ENTRY){if(l.dimension()==CompactShops.DIM&&hit.getBlockPos().equals(CITY_GUIDE)){NeonZones.move(sp,sp.level().getServer().overworld(),new Vec3(912.5,65,213.5),0);message(sp,"雪と氷の30階城です。正面の入口からアスレチックに挑戦できます。");}else enter(sp,p.isShiftKeyDown());}else if(l.dimension()==DIM)leave(sp);}return InteractionResult.SUCCESS;});
+  UseBlockCallback.EVENT.register((p,l,h,hit)->{var b=l.getBlockState(hit.getBlockPos()).getBlock();if(b!=ENTRY&&b!=EXIT)return InteractionResult.PASS;if(h==InteractionHand.MAIN_HAND&&p instanceof ServerPlayer sp&&!p.isSpectator()){if(b==ENTRY){if(l.dimension()==CompactShops.DIM&&hit.getBlockPos().equals(CITY_GUIDE)){if(visitFront(sp))message(sp,"雪と氷の30階城です。正面の入口からアスレチックに挑戦できます。");}else enter(sp,p.isShiftKeyDown());}else if(l.dimension()==DIM)leave(sp);else if(l.dimension()==Level.OVERWORLD&&hit.getBlockPos().equals(CITY_RETURN))returnToCity(sp);}return InteractionResult.SUCCESS;});
   ServerTickEvents.END_SERVER_TICK.register(server->{
+   if(server.getTickCount()%20==0&&server.overworld().hasChunkAt(CITY_RETURN)&&!server.overworld().getBlockState(CITY_RETURN).is(EXIT)&&server.overworld().players().stream().anyMatch(p->exterior(p.level(),p.blockPosition())))prepareLanding(server.overworld());
+   if(server.getTickCount()%10==0)for(var p:new ArrayList<>(server.overworld().players()))if(p.isAlive()&&!p.isSpectator()&&p.getX()>=898&&p.getX()<=926&&p.getZ()>=209&&p.getZ()<=244&&p.getY()<63){if(!visitFront(p)){p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);NeonZones.city(p);}}
    if(progress==null)return;var l=server.getLevel(DIM);if(l==null)return;
    if(progress.snowFloors<progress.built||!waiting.isEmpty()||!l.players().isEmpty())build(l);
    for(var id:new ArrayList<>(waiting.keySet())){var p=server.getPlayerList().getPlayer(id);if(p==null){waiting.remove(id);continue;}int f=waiting.get(id);if(progress.built>=f){waiting.remove(id);arrive(p,f);}}
@@ -93,7 +122,7 @@ public final class SkySpire {
  static void arrive(ServerPlayer p,int f){var l=p.level().getServer().getLevel(DIM);steps.put(p.getUUID(),0);NeonZones.move(p,l,new Vec3(padX(f,0)+.5,DungeonLayout.base(f)+6,10.5),0);message(p,f+"階 / 光る足場を順に渡り、奥の専用ボスを倒そう。");}
  static void reset(ServerPlayer p,int f,int step){int checkpoint=(Math.max(0,step-1)/8)*8;steps.put(p.getUUID(),checkpoint);p.fallDistance=0;NeonZones.move(p,p.level(),new Vec3(padX(f,checkpoint)+.5,DungeonLayout.base(f)+6,padZ(checkpoint)+.5),0);}
  static void ascend(ServerPlayer p,int f){if(f==30){leave(p);return;}int old=progress.checkpoint.getOrDefault(key(p),1);progress.checkpoint.put(key(p),Math.max(old,f+1));try{save();if(progress.built<f+1)waiting.put(p.getUUID(),f+1);else arrive(p,f+1);}catch(Exception e){progress.checkpoint.put(key(p),old);message(p,"保存に失敗したため移動を中止しました。");}}
- static void leave(ServerPlayer p){waiting.remove(p.getUUID());steps.remove(p.getUUID());NeonZones.move(p,p.level().getServer().overworld(),new Vec3(912.5,65,213.5),180);}
+ static void leave(ServerPlayer p){if(visitFront(p)){waiting.remove(p.getUUID());steps.remove(p.getUUID());}}
  static void gate(ServerLevel l,int f){int y=DungeonLayout.base(f);for(int x=96;x<=101;x++)for(int dy=0;dy<5;dy++)if(x==96||x==101||dy==0||dy==4)l.setBlock(new BlockPos(x,y+dy,174),Blocks.SEA_LANTERN.defaultBlockState(),3);}
  static void build(ServerLevel l){
   boolean renovate=progress.snowFloors<progress.built;

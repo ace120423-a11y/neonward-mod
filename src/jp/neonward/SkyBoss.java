@@ -42,6 +42,7 @@ public class SkyBoss extends CyberEnemy {
  @Override public void tick(){
   super.tick();if(!(level() instanceof ServerLevel l)||!isAlive()||isRemoved())return;
   int f=spec().floor(),base=DungeonLayout.base(f)+1;var max=getAttribute(Attributes.MAX_HEALTH);if(max!=null&&max.getBaseValue()<spec().hp()*4.5){max.setBaseValue(spec().hp()*4.5);setHealth(getMaxHealth());}
+  String frostName=f+"F / "+spec().name();if(getCustomName()==null||!getCustomName().getString().equals(frostName))setCustomName(Component.literal(frostName).withColor(spec().color()));
   // Bosses stay in their own chamber; players may retreat into the maze safely.
   if(l.dimension()!=SkySpire.DIM||!entityTags().contains("nw_sky_boss"))return;
   if(getY()<base-.5||getY()>base+4||getX()<SkySite.X-63||getX()>SkySite.X+51||getZ()<SkySite.Z+24||getZ()>SkySite.Z+51)setPos(SkySite.X+32.5,base,SkySite.Z+32.5);

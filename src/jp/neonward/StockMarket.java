@@ -22,6 +22,7 @@ public final class StockMarket {
   public Type<? extends CustomPacketPayload> type(){return TYPE;}
  }
  public static boolean isPC(net.minecraft.world.level.block.state.BlockState s){return s.is(NeonFurniture.BLOCKS.get("terminal_desk"))||s.is(NeonFurniture.BLOCKS.get("hacker_desk"))||s.is(NeonFurniture.BLOCKS.get("work_desk"));}
+ public static boolean canUseTerminal(net.minecraft.world.level.Level l,BlockPos p){return isPC(l.getBlockState(p))&&(l.dimension()!=CompactShops.DIM||(CompactShops.room(l,p)==4&&p.equals(CompactShops.counter(4))));}
  public static void init(){
   PayloadTypeRegistry.clientboundPlay().register(Snapshot.TYPE,Snapshot.CODEC);
   ServerLifecycleEvents.SERVER_STARTED.register(server->{file=server.getWorldPath(LevelResource.ROOT).resolve("neonward/market.json");ticks=0;fault="";try{ledger=Files.exists(file)?JSON.fromJson(Files.readString(file),MarketLedger.class):new MarketLedger();ledger.validate();}catch(Exception e){ledger=null;fault="市場データを読み込めません。取引を停止しています";System.err.println("[Neon market] "+e);}});
@@ -35,8 +36,8 @@ public final class StockMarket {
  }
  static void save() throws Exception {Files.createDirectories(file.getParent());Path tmp=file.resolveSibling("market.json.tmp");Files.writeString(tmp,JSON.toJson(ledger));Files.move(tmp,file,StandardCopyOption.REPLACE_EXISTING,StandardCopyOption.ATOMIC_MOVE);fault="";}
  static int request(ServerPlayer p,BlockPos pos,String action,int stock,int count,int quote){
-  if(p.isSpectator()||p.distanceToSqr(Vec3.atCenterOf(pos))>49||!isPC(p.level().getBlockState(pos)))return 0;
-  JsonObject out=new JsonObject();String msg=fault;
+  if(p.isSpectator()||p.distanceToSqr(Vec3.atCenterOf(pos))>49||!canUseTerminal(p.level(),pos))return 0;
+  JsonObject out=new JsonObject();out.addProperty("market_ui",true);String msg=fault;
   if(ledger!=null){String before=JSON.toJson(ledger);boolean fresh=!ledger.accounts.containsKey(p.getStringUUID());var a=ledger.account(p.getStringUUID());
    if(!action.equals("view"))msg=ledger.trade(p.getStringUUID(),stock,count,action.equals("buy"),quote);
    if(fresh||!action.equals("view")){try{save();}catch(Exception ex){ledger=JSON.fromJson(before,MarketLedger.class);msg="保存できなかったため注文を取り消しました";}}

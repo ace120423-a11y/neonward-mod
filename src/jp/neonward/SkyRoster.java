@@ -6,7 +6,7 @@ public final class SkyRoster {
   public double damage(){return 5+floor*.3;}
   public HostileRoster.Kind legacy(){return new HostileRoster.Kind(id,name,hp(),4+floor*.2,.23,damage(),"",0,0,color,0,"sky_boss");}
  }
- public static final Kind[] ALL={
+ private static final Kind[] BASE={
   new Kind(1,"sky_guardian_1","風甲の門番","六脚装甲ガニ","双鋏圧砕","左右の鋏を避け、中央の追撃から離れる","stalk",0xff9944,2.6f,1.7f),
   new Kind(2,"sky_guardian_2","スカイ・ローター","四連ローター十字機","十字照射","十字の線の間に立つ","orbit",0x40eaff,2.8f,2.2f),
   new Kind(3,"sky_guardian_3","風切りの針妃","尾針サソリ","尾針穿孔","足元の印を離れ、尾針の直線から横へ","stalk",0xe668ff,2.2f,2.9f),
@@ -39,5 +39,21 @@ public final class SkyRoster {
   new Kind(30,"sky_guardian_30","天空王アストラ","機械竜と王冠炉心","王域終焉","扇状ブレス、着弾円、衝撃輪の順に対応","stalk",0xff5bba,3f,4.2f),
  };
  private static final String[] MODELS={"boss_clamp_warden","boss_cross_drone","boss_needle_empress","boss_razor_hound","boss_bastion_crawler","boss_jelly_oracle","boss_scythe_mantis","boss_coil_serpent","boss_mono_reaper","boss_prism_eye","boss_iron_centaur","boss_echo_wraith","boss_spiral_hermit","boss_kraken_router","boss_forge_golem","boss_mirror_moth","boss_obelisk_zero","boss_glacier_ram","boss_rail_leviathan","boss_clock_archon","boss_carrion_vulture","boss_blood_bloom","boss_drill_mole","boss_funeral_bell","boss_oni_executioner","boss_solar_scarab","boss_abyss_ray","boss_crown_hydra","boss_seraph_engine","boss_night_sovereign"};
- static String model(Kind k){return MODELS[k.floor()-1];}
+ public static final Kind[] ALL=frostRoster();
+ private static Kind[] frostRoster(){
+  try(var in=SkyRoster.class.getResourceAsStream("/assets/neonward/bosses/frost_catalog.json")){
+   if(in==null)throw new IllegalStateException("Missing Frost Citadel roster");
+   var data=com.google.gson.JsonParser.parseReader(new java.io.InputStreamReader(in,java.nio.charset.StandardCharsets.UTF_8)).getAsJsonArray();
+   if(data.size()!=30)throw new IllegalStateException("Expected 30 frost bosses");
+   Kind[] result=new Kind[30];
+   String[] motions={"stalk","stalk","rush","stalk","stalk","rush","float","stalk","rush","stalk","float","rush","patrol","stalk","float","float","strafe","stalk","stalk","stalk","float","float","float","stalk","stalk","stalk","rush","float","float","float"};
+   for(int i=0;i<30;i++){
+    var k=BASE[i];var o=data.get(i).getAsJsonObject();var bounds=o.getAsJsonArray("bounds");var low=bounds.get(0).getAsJsonArray();var high=bounds.get(1).getAsJsonArray();
+    float width=Math.max(high.get(0).getAsFloat()-low.get(0).getAsFloat(),high.get(2).getAsFloat()-low.get(2).getAsFloat());
+    String name=o.get("name").getAsString();result[i]=new Kind(k.floor(),k.id(),name,name,k.attack(),k.hint(),motions[i],0x9be8f5,width,high.get(1).getAsFloat());
+   }
+   return result;
+  }catch(Exception e){throw new IllegalStateException("Cannot load frost bosses",e);}
+ }
+ static String model(Kind k){return String.format(java.util.Locale.ROOT,"frost_%02d",k.floor());}
 }

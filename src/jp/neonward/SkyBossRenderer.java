@@ -21,19 +21,21 @@ public class SkyBossRenderer extends MobRenderer<SkyBoss,SkyBossRenderer.State,S
  static final Map<String,Shape> SHAPES=new HashMap<>();
  private final Identifier texture;
  SkyBossRenderer(EntityRendererProvider.Context c,SkyRoster.Kind k){
-  super(c,new Rig(mesh(SHAPES.get(k.id())),SHAPES.get(k.id())),k.width()*.35f);texture=NeonWard.id("textures/entity/"+SkyRoster.model(k)+".png");
-  addLayer(new net.minecraft.client.renderer.entity.layers.EyesLayer<State,Rig>(this){public net.minecraft.client.renderer.rendertype.RenderType renderType(){return net.minecraft.client.renderer.rendertype.RenderTypes.eyes(NeonWard.id("textures/entity/"+SkyRoster.model(k)+"_glow.png"));}});
+  super(c,new Rig(mesh(SHAPES.get(k.id())),SHAPES.get(k.id())),k.width()*.35f);texture=NeonWard.id("textures/entity/frost_materials.png");
+  addLayer(new net.minecraft.client.renderer.entity.layers.EyesLayer<State,Rig>(this){public net.minecraft.client.renderer.rendertype.RenderType renderType(){return net.minecraft.client.renderer.rendertype.RenderTypes.eyes(NeonWard.id("textures/entity/frost_materials_glow.png"));}});
  }
  public State createRenderState(){return new State();}
  public Identifier getTextureLocation(State s){return texture;}
  @Override public void extractRenderState(SkyBoss e,State s,float partial){super.extractRenderState(e,s,partial);s.casting=e.castVisual();s.phase=e.phase();}
  static class Rig extends EntityModel<State> {
   final Shape shape;final java.util.function.Function<String,ModelPart> lookup;
-  Rig(ModelPart root,Shape shape){super(root);this.shape=shape;this.lookup=root.createPartLookup();}
+  Rig(ModelPart root,Shape shape){super(root,net.minecraft.client.renderer.rendertype.RenderTypes::entityTranslucent);this.shape=shape;this.lookup=root.createPartLookup();}
   @Override public void setupAnim(State s){super.setupAnim(s);float t=s.ageInTicks;
    for(var p:shape.parts){var part=lookup.apply(p.name);String a=p.anim;if(a==null||a.isEmpty())continue;
     if(a.equals("rotor"))part.yRot+=t*.35f;
-    else if(a.equals("hand"))part.zRot+=t*.045f;
+    else if(a.equals("hand"))part.zRot+=(float)Math.sin(t*.05)*.12f+(s.casting==1?.18f:0);
+    else if(a.equals("wheel"))part.zRot+=t*.025f;
+    else if(a.equals("hover"))part.y+=(float)Math.sin(t*.055)*1.4f;
     else if(a.startsWith("wing"))part.zRot+=(float)Math.sin(t*.09)*(a.endsWith("-1")?-.13f:.13f);
     else if(a.startsWith("tail"))part.zRot+=(float)Math.sin(t*.07+Math.abs(a.hashCode()%7))*.14f;
     else if(a.startsWith("leg"))part.xRot+=(float)Math.sin(t*.18+Math.abs(a.hashCode()%2)*Math.PI)*.18f;
@@ -75,5 +77,5 @@ public class SkyBossRenderer extends MobRenderer<SkyBoss,SkyBossRenderer.State,S
   }
   shape.parts=parts.toArray(Part[]::new);return shape;
  }
- public static void init(){for(var k:SkyRoster.ALL){SHAPES.put(k.id(),skyShape(k));EntityRendererRegistry.register(SkyBosses.TYPES.get(k.id()),c->new SkyBossRenderer(c,k));}}
+ public static void init(){for(var k:SkyRoster.ALL){SHAPES.put(k.id(),read(SkyRoster.model(k)));EntityRendererRegistry.register(SkyBosses.TYPES.get(k.id()),c->new SkyBossRenderer(c,k));}}
 }
