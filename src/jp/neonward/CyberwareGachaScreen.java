@@ -18,7 +18,7 @@ public final class CyberwareGachaScreen extends Screen {
   g.fill(x+w/2-28,cy,x+w/2+28,cy+42,0xff142d3b);g.outline(x+w/2-28,cy,56,42,anim?0xff66ffee:color);g.centeredText(font,anim?"◇ "+"・".repeat((int)(now/180%4)):prize>=0?"GET!":"?",x+w/2,cy+17,anim?0xff66ffee:color);
   String name=prize>=0&&!anim?CyberwareCatalog.PARTS[prize].name():anim?"カプセルを解析中…":"CYBERWARE COLLECTION";g.centeredText(font,name,x+w/2,cy+47,color);
   if(prize>=0&&!anim)g.centeredText(font,CyberwareCatalog.RARITIES[CyberwareCatalog.PARTS[prize].tier()]+" / "+CyberwareCatalog.effect(prize,value),x+w/2,cy+60,color);
-  String[] lines={"コモン41.5% / アンコモン30% / レア20%","エピック8% / レジェンダリー0.5%","部位・系統は均等 / 重複あり / 空き1枠必要",anim?"結果のアイテムはすでに持ち物へ受け取り済み":message};for(int i=0;i<lines.length;i++)g.centeredText(font,lines[i],x+w/2,y+h-104+i*12,i==3?0xffffd684:0xffa8c7d8);
+  String[] lines={"コモン41.9% / アンコモン30% / レア20%","エピック8% / レジェンダリー0.1%","部位・系統は均等 / 重複あり / 空き1枠必要",anim?"結果のアイテムはすでに持ち物へ受け取り済み":message};for(int i=0;i<lines.length;i++)g.centeredText(font,lines[i],x+w/2,y+h-104+i*12,i==3?0xffffd684:0xffa8c7d8);
   super.extractRenderState(g,mx,my,delta);
  }
 }

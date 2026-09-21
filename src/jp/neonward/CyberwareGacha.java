@@ -19,8 +19,8 @@ import net.minecraft.world.InteractionResult;
 /** A separate casino terminal; opening never charges, the server owns all rolls. */
 public final class CyberwareGacha {
  static final int PRICE=1000;
- static final int[] WEIGHTS={415,300,200,80,5};
- static final String ODDS="コモン41.5% / アンコモン30% / レア20% / エピック8% / レジェンダリー0.5%";
+ static final int[] WEIGHTS={419,300,200,80,1};
+ static final String ODDS="コモン41.9% / アンコモン30% / レア20% / エピック8% / レジェンダリー0.1%";
  static final double X=514,Y=65,Z=447;
  static final String TOUCH="nw_casino_touch_cyber_capsule";
  static final java.security.SecureRandom RANDOM=new java.security.SecureRandom();
