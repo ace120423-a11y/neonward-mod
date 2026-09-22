@@ -6,11 +6,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 
-/** Two separate guides in the corporate guild lobby, clear of counters and doors. */
+/** Separate guides in the corporate guild lobby, clear of counters and doors. */
 final class TowerGuides {
  static void install(ServerLevel lobby){
   install(lobby,NeonZones.ENTRY_POS,NeonZones.ENTRY,"NIGHT SPIRE","機関とボスの塔・30階","右クリック：塔の正面");
   install(lobby,SkySpire.CITY_GUIDE,SkySpire.ENTRY,"FROST CITADEL","雪城・アスレチック30階","右クリック：城の正面");
+  install(lobby,VolcanicSpire.GUIDE,VolcanicSpire.ENTRY,"VOLCANIC TOWER","火山・討伐とボス30階","右クリック：火山の正面");
  }
  private static void install(ServerLevel l,BlockPos p,Block block,String title,String detail,String action){
   if(l.dimension()!=CompactShops.DIM||!l.hasChunkAt(p))return;

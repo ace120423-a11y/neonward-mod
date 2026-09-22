@@ -1,10 +1,13 @@
 """Read-only copy of live city terrain; all teleports/building tests run in a new isolated save."""
 from pathlib import Path
-import os, shutil, subprocess, threading, queue, time, json, zipfile
+import os, shutil, subprocess, threading, queue, time, json, zipfile, sys
+volcano='--volcano' in sys.argv
+qa_name='VolcanoIntegration' if volcano else 'PhoneTravelIntegration'
+prefix='VOLCANO_' if volcano else 'TRAVEL_'
 root=Path(__file__).resolve().parents[1]
 mc=Path(os.environ['APPDATA'])/'.minecraft'
 jdk=Path(os.environ['LOCALAPPDATA'])/'Packages/Microsoft.4297127D64EC6_8wekyb3d8bbwe/LocalCache/Local/runtime/java-runtime-epsilon/windows-x64/java-runtime-epsilon/bin'
-test=root/('build/travel-integration-'+time.strftime('%Y%m%d-%H%M%S'))
+test=root/('build/'+('volcano' if volcano else 'travel')+'-integration-'+time.strftime('%Y%m%d-%H%M%S'))
 (test/'mods').mkdir(parents=True)
 shutil.copy2(root/'build/neonward-0.1.0.jar',test/'mods/neonward.jar')
 shutil.copy2(mc/'neonward-26.2/mods/fabric-api-0.160.0+26.2.jar',test/'mods/fabric-api.jar')
@@ -13,15 +16,15 @@ for dep in (live/'mods').glob('*.jar'):
  if dep.name not in ('neonward-0.1.0.jar','fabric-api-0.160.0+26.2.jar'):shutil.copy2(dep,test/'mods'/dep.name)
 shutil.copy2(live/'eula.txt',test/'eula.txt')
 regions=test/'world/dimensions/minecraft/overworld/region';regions.mkdir(parents=True)
-for x,z in [(-1,-1),(-1,0),(0,-1),(0,0),(0,1),(1,0),(1,1)]:
+for x,z in ([] if volcano else [(-1,-1),(-1,0),(0,-1),(0,0),(0,1),(1,0),(1,1)]):
  src=live/f'world/dimensions/minecraft/overworld/region/r.{x}.{z}.mca'
  if src.exists():shutil.copy2(src,regions/src.name)
-(test/'server.properties').write_text('server-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nmax-tick-time=-1\nlevel-type=minecraft:flat\n',encoding='utf-8')
+(test/'server.properties').write_text('server-port=0\nonline-mode=false\npause-when-empty-seconds=0\nview-distance=2\nsimulation-distance=2\nmax-tick-time=-1\nlevel-type=minecraft:flat\n',encoding='utf-8')
 qa=test/'qa';qa.mkdir()
 cp=(root/'build/javac.args').read_text(encoding='utf-8').splitlines()[6].strip('"')+';'+str(root/'build/classes')
-subprocess.run([str(jdk/'javac.exe'),'-proc:none','-encoding','UTF-8','-cp',cp,'-d',str(qa),str(root/'tests/WestLandIntegration.java'),str(root/'tests/PhoneTravelIntegration.java')],check=True)
+subprocess.run([str(jdk/'javac.exe'),'-proc:none','-encoding','UTF-8','-cp',cp,'-d',str(qa),str(root/'tests/WestLandIntegration.java'),str(root/('tests/'+qa_name+'.java'))],check=True)
 with zipfile.ZipFile(test/'mods/travel-qa.jar','w') as z:
- z.writestr('fabric.mod.json',json.dumps(dict(schemaVersion=1,id='neon_travel_qa',version='1',environment='server',entrypoints=dict(main=['jp.neonward.PhoneTravelIntegration']))))
+ z.writestr('fabric.mod.json',json.dumps(dict(schemaVersion=1,id='neon_travel_qa',version='1',environment='server',entrypoints=dict(main=['jp.neonward.'+qa_name]))))
  for f in qa.rglob('*.class'):z.write(f,f.relative_to(qa))
 cp=[mc/'versions/26.2/26.2.jar',*mc.joinpath('libraries').rglob('*.jar')]
 args=['-Xmx3G','-Dfile.encoding=UTF-8','-Dfabric.gameJarPath='+str(cp[0]),'-cp',';'.join(map(str,cp)),'net.fabricmc.loader.impl.launch.knot.KnotServer','--nogui']
@@ -32,15 +35,15 @@ def read():
  for line in p.stdout:lines.append(line);q.put(line)
 threading.Thread(target=read,daemon=True).start()
 try:
- deadline=time.monotonic()+240
+ deadline=time.monotonic()+(600 if volcano else 240)
  while time.monotonic()<deadline:
   try:line=q.get(timeout=1)
   except queue.Empty:
    if p.poll() is not None:raise RuntimeError('Test server exited')
    continue
-  if 'TRAVEL_' in line:print(line.rstrip())
-  if 'TRAVEL_TEST_FAILED' in line:raise RuntimeError('Travel integration failed; inspect smoke.log')
-  if 'TRAVEL_TEST_COMPLETE' in line:break
+  if prefix in line:print(line.rstrip(),flush=True)
+  if prefix+'TEST_FAILED' in line:raise RuntimeError('Integration failed; inspect smoke.log')
+  if prefix+'TEST_COMPLETE' in line:break
  else:raise TimeoutError('Travel integration timeout')
 finally:
  if p.poll() is None:

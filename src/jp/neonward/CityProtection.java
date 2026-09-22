@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 public final class CityProtection {
  public static boolean southQuarter(BlockPos p){return p.getX()>=124&&p.getX()<=196&&p.getZ()>=704&&p.getZ()<=803 || p.getX()>=48&&p.getX()<=272&&p.getZ()>=795&&p.getZ()<=968;}
  public static boolean contains(Level l,BlockPos p){return WestLand.area(l,p)||l.dimension()==CompactShops.DIM||l.dimension()==Level.OVERWORLD&&(p.getX()>=-32&&p.getX()<=575&&p.getZ()>=-32&&p.getZ()<=703 || southQuarter(p));}
- public static boolean structure(Level l,BlockPos p){return l.dimension()==CompactShops.DIM||l.dimension()==PrivateFarms.DIM||l.dimension()==PrivateHomes.DIMENSION||contains(l,p)||SpireSite.structure(l,p)||l.dimension()==NeonZones.TOWER||l.dimension()==SkySpire.DIM||SkySpire.exterior(l,p);}
+ public static boolean structure(Level l,BlockPos p){return l.dimension()==VolcanicSpire.DIM||l.dimension()==CompactShops.DIM||l.dimension()==PrivateFarms.DIM||l.dimension()==PrivateHomes.DIMENSION||contains(l,p)||SpireSite.structure(l,p)||l.dimension()==NeonZones.TOWER||l.dimension()==SkySpire.DIM||SkySpire.exterior(l,p);}
  public static boolean decoration(net.minecraft.world.entity.Entity e){String id=net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).getPath();return e instanceof Display||e instanceof ArmorStand||id.equals("item_frame")||id.equals("glow_item_frame")||id.equals("painting");}
  public static void init(){
   AttackBlockCallback.EVENT.register((p,l,hand,pos,face)->{if(HomeBuildingRules.canBreak(l,p,pos))return InteractionResult.PASS;if(l.isClientSide())p.sendOverlayMessage(Component.literal("建物・固定設備は保護されています（右クリックで使用）"));return InteractionResult.FAIL;});

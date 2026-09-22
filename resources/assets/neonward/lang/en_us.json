@@ -1,4 +1,6 @@
 {
+  "block.neonward.volcano_entry": "Volcanic Tower Entrance",
+  "block.neonward.volcano_exit": "Volcanic Tower Return to Guild",
   "key.neonward.attachments": "Weapon attachments",
   "key.category.neonward.attachments": "NeonWard / Attachments",
   "key.neonward.reload": "Reload weapon",

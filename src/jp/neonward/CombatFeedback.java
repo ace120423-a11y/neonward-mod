@@ -19,7 +19,7 @@ public final class CombatFeedback {
  static Display.TextDisplay text(ServerLevel l,double x,double y,double z,float scale){
   var e=new TransientText(l);ClockworkFeedback.load(e,l,"{text:{text:''},billboard:'center',background:-1274542030,brightness:{block:15,sky:15},Invulnerable:1b,line_width:240,teleport_duration:1,view_range:0.75f,Tags:['nw_combat_feedback'],transformation:{scale:["+scale+"f,"+scale+"f,"+scale+"f]}}");e.setPos(x,y,z);l.addFreshEntity(e);return e;
  }
- static void hit(CyberEnemy enemy,float damage){
+ static void hit(LivingEntity enemy,float damage){
   if(!(enemy.level() instanceof ServerLevel l)||!Float.isFinite(damage)||damage<=0)return;
   while(hits.size()>=256)hits.removeFirst().text().discard();
   double side=(hits.size()%3-1)*.3;var e=text(l,enemy.getX()+side,enemy.getY()+enemy.getBbHeight()+.5,enemy.getZ(),.9f);

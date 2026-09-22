@@ -7,6 +7,8 @@ chain='--chain' in sys.argv
 vfx='--vfx' in sys.argv
 gacha='--gacha' in sys.argv
 qa_class='AttachmentQA' if '--attachments' in sys.argv else 'GunReloadQA' if '--reload' in sys.argv else 'GunPresentationQA' if '--guns' in sys.argv else 'HousingSalesQA' if '--housing' in sys.argv else 'CasinoGachaQA' if gacha else 'ElementVfxQA' if vfx else 'ChainPullQA' if chain else 'WeaponMotionQA' if motion else 'PairedClientQA'
+if '--volcano' in sys.argv:qa_class='VolcanoQA'
+if '--volcano-tour' in sys.argv:qa_class='VolcanoTourQA'
 root=Path(__file__).resolve().parents[1]
 mc=Path(os.environ['APPDATA'])/'.minecraft'
 jdk=Path(os.environ['LOCALAPPDATA'])/'Packages/Microsoft.4297127D64EC6_8wekyb3d8bbwe/LocalCache/Local/runtime/java-runtime-epsilon/windows-x64/java-runtime-epsilon/bin'
@@ -17,6 +19,7 @@ with zipfile.ZipFile(test/'mods/neonward-0.1.0.jar') as check:
  assert check.testzip() is None,'Build must finish before starting QA'
 shutil.copy2(mc/'neonward-26.2/mods/fabric-api-0.160.0+26.2.jar',test/'mods')
 world=sorted(root.glob('build/land-integration-*/world'),key=lambda p:p.stat().st_mtime)[-1]
+if '--volcano-tour' in sys.argv:world=sorted(root.glob('build/volcano-integration-*/world'),key=lambda p:p.stat().st_mtime)[-1]
 shutil.copytree(world,test/'saves/Paired-QA')
 (test/'options.txt').write_text('renderDistance:4\nsimulationDistance:4\nmaxFps:60\nguiScale:2\nfullscreen:false\npauseOnLostFocus:false\n',encoding='utf-8')
 if '--left' in sys.argv:
@@ -45,5 +48,5 @@ text=(test/'client.log').read_text(encoding='utf-8',errors='replace')
 print('Client log:',test/'client.log')
 print(text[-4500:])
 assert proc.returncode==0 and 'PAIRED_CLIENT_QA_COMPLETE' in text,'Client QA failed'
-assert len(list((test/'screenshots').glob('*.png')))==(12 if '--attachments' in sys.argv else 44 if '--reload' in sys.argv else 12 if '--guns' in sys.argv else 10 if vfx else 6 if chain or gacha else 4*len(focus.split(',')) if focus else 100 if motion else 4)
+assert len(list((test/'screenshots').glob('*.png')))==(33 if '--volcano' in sys.argv else 12 if '--attachments' in sys.argv else 44 if '--reload' in sys.argv else 12 if '--guns' in sys.argv else 10 if vfx else 6 if chain or gacha else 4*len(focus.split(',')) if focus else 100 if motion else 4)
 print('PAIRED_CLIENT_PASS',test/'screenshots')

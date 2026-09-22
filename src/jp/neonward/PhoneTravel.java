@@ -19,6 +19,7 @@ public final class PhoneTravel {
   var l=p.level();double x=p.getX(),y=p.getY(),z=p.getZ();
   if(l.dimension()==Level.OVERWORLD)return city(x,y,z)||CityApartments.area(l,p.blockPosition())||front(x,y,z,SpireSite.OUTER_X+3.5,SpireSite.OUTER_Z-8.5)||front(x,y,z,912,214);
   if(l.dimension()==PrivateHomes.DIMENSION)return PrivateHomes.insidePosition(p);
+  if(l.dimension()==VolcanicSpire.DIM)return VolcanicSpire.front(p)||VolcanicSpire.floor(p)>0&&p.getZ()<11;
   if(l.dimension()==NeonZones.TOWER)return foyer(x,y,z,40.5,9.5);
   if(l.dimension()==SkySpire.DIM)return foyer(x,y,z,SkySpire.padX(1,0)+.5,10.5);
   return l.dimension()==CompactShops.DIM&&CompactShops.room(l,p.blockPosition())>=0;
@@ -70,6 +71,7 @@ public final class PhoneTravel {
   // Arrival is outside door triggers. A travel throttle must not lock building entrances.
   NeonZones.cooldown.remove(p.getUUID());CompactShops.cooldown.remove(p.getUUID());PrivateHomes.cooldown.remove(p.getUUID());
   NightSpire.waiting.remove(p.getUUID());SkySpire.waiting.remove(p.getUUID());SkySpire.steps.remove(p.getUUID());
+  VolcanicSpire.WAITING.remove(p.getUUID());
   message(p,dest.name()+"へ移動しました");return 1;
  }
  public static void init(){CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("neontravel").then(Commands.argument("point",IntegerArgumentType.integer(0,POINTS.size()-1)).executes(ctx->travel(ctx.getSource().getPlayerOrException(),IntegerArgumentType.getInteger(ctx,"point"))))));ServerPlayConnectionEvents.DISCONNECT.register((h,s)->NEXT.remove(h.player.getUUID()));ServerLifecycleEvents.SERVER_STOPPED.register(s->NEXT.clear());}

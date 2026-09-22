@@ -1,4 +1,6 @@
 {
+  "block.neonward.volcano_entry": "火山の塔・入口",
+  "block.neonward.volcano_exit": "火山の塔・ギルドへ帰還",
   "key.neonward.attachments": "銃のアタッチメント",
   "key.category.neonward.attachments": "NeonWard / アタッチメント",
   "key.neonward.reload": "武器をリロード",
