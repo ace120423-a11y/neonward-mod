@@ -108,7 +108,8 @@ public final class WeaponMotion {
   if(f.kind==Kind.DUAL||f.kind==Kind.FIST)arm(other,base-breath,-spread,-tilt);
   else if(f.support()&&free)arm(other,base-.10f,sign*.80f,-sign*.12f);
   if(use&&!f.gun()){
-   if(f.kind==Kind.SPEAR||f.kind==Kind.FIST){float charge=Math.min(1,s.ticksUsingItem/30f);main.xRot-=charge*.5f;main.yRot-=sign*charge*.2f;}
+   if(f.kind==Kind.DUAL){arm(model.rightArm,-1.25f+look*.5f,-.55f,.65f);arm(model.leftArm,-1.25f+look*.5f,.55f,-.65f);}
+   else if(f.kind==Kind.SPEAR||f.kind==Kind.FIST){float charge=Math.min(1,s.ticksUsingItem/30f);main.xRot-=charge*.5f;main.yRot-=sign*charge*.2f;}
    else {arm(main,-1.2f,-sign*.65f,sign*.12f);if(f.support()&&free)arm(other,-1.15f,sign*.55f,-sign*.1f);}
   }else if(!f.gun()&&s.attackTime>0){
    var active=s.attackArm==HumanoidArm.RIGHT?model.rightArm:model.leftArm;int attackSign=s.attackArm==HumanoidArm.RIGHT?1:-1;

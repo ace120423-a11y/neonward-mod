@@ -68,7 +68,7 @@ public class CyberEnemy extends Zombie implements RangedAttackMob {
     if(charge%4==0)beam(l,from,end,kind().color(),1.4);
     if(--charge==0){
      beam(l,from,end,kind().color(),.4);playSound(net.minecraft.sounds.SoundEvents.FIREWORK_ROCKET_BLAST,.5f,1.5f);
-     if(aimedTarget.getBoundingBox().inflate(.12).clip(from,end).isPresent()){
+     if(aimedTarget.getBoundingBox().inflate(.12).clip(from,end).isPresent()&&!DualGuard.hitscan(aimedTarget,from)){
       aimedTarget.hurtServer(l,damageSources().mobAttack(this),(float)getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE));
       if(kind().id().equals("arc_trooper")||kind().id().equals("hex_netrunner"))aimedTarget.addEffect(new MobEffectInstance(MobEffects.SLOWNESS,kind().id().equals("hex_netrunner")?60:25,0),this);
       if(kind().id().equals("signal_hacker")){aimedTarget.addEffect(new MobEffectInstance(MobEffects.SLOWNESS,40,0),this);aimedTarget.addEffect(new MobEffectInstance(MobEffects.DARKNESS,30,0),this);}

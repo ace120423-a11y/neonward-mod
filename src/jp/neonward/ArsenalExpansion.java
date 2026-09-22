@@ -33,7 +33,7 @@ public final class ArsenalExpansion {
  static Item.Properties described(Item.Properties p,String text){return p.component(DataComponents.LORE,new net.minecraft.world.item.component.ItemLore(List.of(Component.literal(text).withColor(0x80ffee))));}
  public static void register(){
   float[] damage={5,4,2,6,5},speed={-2.6f,-2.4f,-1.5f,-2.9f,-2.3f};
-  String[] meleeTips={"50%軽減 / 長リーチ突き / 右長押し→離す：溜め突進","50%軽減 / 右クリック：敵を引き寄せ / ボスは引き寄せ無効","45%軽減 / 出血：5秒間・毎秒2ダメージ / 右：横ステップ","50%軽減 / 広い横薙ぎ・撃破時回復 / 右：薙ぎ払い","50%軽減 / 爆破＋ノックバック・地形破壊なし / 右長押し：溜めパンチ"};
+  String[] meleeTips={"50%軽減 / 長リーチ突き / 右長押し→離す：溜め突進","50%軽減 / 右クリック：敵を引き寄せ / ボスは引き寄せ無効","45%軽減 / 出血：5秒間・毎秒2ダメージ / 右長押し：クロスガード・正面の弾を弾く","50%軽減 / 広い横薙ぎ・撃破時回復 / 右：薙ぎ払い","50%軽減 / 爆破＋ノックバック・地形破壊なし / 右長押し：溜めパンチ"};
   String[] gunTips={"右長押し1秒→左：貫通射撃","左：低速プラズマ弾 / 範囲爆発・地形破壊なし","左：最大4体へ連鎖電撃","左長押し：冷気連射 / ボスは弱い減速のみ","左：ボルト発射 / しゃがみ＋右：爆発・毒・電撃切替"};
   for(int i=0;i<MELEE.length;i++)NeonArsenal.add(MELEE[i],new Blade(described(NeonArsenal.properties(MELEE[i]).sword(ToolMaterial.DIAMOND,damage[i],speed[i]).repairable(Items.IRON_INGOT),meleeTips[i]),i));
   for(int i=0;i<RANGED.length;i++)NeonArsenal.add(RANGED[i],new Launcher(described(NeonArsenal.properties(RANGED[i]).durability(1200).enchantable(15).repairable(Items.IRON_INGOT),gunTips[i]),i));
@@ -62,12 +62,11 @@ public final class ArsenalExpansion {
  public static class Blade extends Item {
   final int type;Blade(Properties p,int t){super(p);type=t;}
   public int getUseDuration(ItemStack s,LivingEntity e){return 72000;}
-  public ItemUseAnimation getUseAnimation(ItemStack s){return ItemUseAnimation.BOW;}
-  public InteractionResult use(Level l,Player p,InteractionHand hand){if(hand!=InteractionHand.MAIN_HAND||p.isSpectator()||p.getCooldowns().isOnCooldown(p.getItemInHand(hand)))return InteractionResult.FAIL;if(type==0||type==4)p.startUsingItem(hand);else if(p instanceof ServerPlayer sp)skill(sp,p.getItemInHand(hand),type,1);return InteractionResult.CONSUME;}
-  public boolean releaseUsing(ItemStack s,Level l,LivingEntity e,int remaining){int charge=72000-remaining;if(e instanceof ServerPlayer p&&p.getMainHandItem()==s&&charge>=10&&!p.getCooldowns().isOnCooldown(s)){skill(p,s,type,Math.min(1.75f,1+charge/40f));return true;}return false;}
+  public ItemUseAnimation getUseAnimation(ItemStack s){return type==2?ItemUseAnimation.BLOCK:ItemUseAnimation.BOW;}
+  public InteractionResult use(Level l,Player p,InteractionHand hand){if(hand!=InteractionHand.MAIN_HAND||p.isSpectator()||p.getCooldowns().isOnCooldown(p.getItemInHand(hand)))return InteractionResult.FAIL;if(type==0||type==2||type==4)p.startUsingItem(hand);else if(p instanceof ServerPlayer sp)skill(sp,p.getItemInHand(hand),type,1);return InteractionResult.CONSUME;}
+  public boolean releaseUsing(ItemStack s,Level l,LivingEntity e,int remaining){int charge=72000-remaining;if((type==0||type==4)&&e instanceof ServerPlayer p&&p.getMainHandItem()==s&&charge>=10&&!p.getCooldowns().isOnCooldown(s)){skill(p,s,type,Math.min(1.75f,1+charge/40f));return true;}return false;}
  }
- static void skill(ServerPlayer p,ItemStack s,int type,float power){if(!p.isAlive()||p.isPassenger())return;p.getCooldowns().addCooldown(s,type==2?25:45);var front=MeleeReach.facing(p);
-  if(type==2){dash(p,new Vec3(front.z,0,-front.x),2);return;}
+ static void skill(ServerPlayer p,ItemStack s,int type,float power){if(type==2||!p.isAlive()||p.isPassenger())return;p.getCooldowns().addCooldown(s,45);var front=MeleeReach.facing(p);
   if(type==1){var victims=targets(p,9,.35);ChainPull.launch(p,victims.isEmpty()?null:victims.getFirst(),scaled(p,s,7));return;}
   if(type==0)dash(p,front,3.5);
   var ts=targets(p,type==1?9:type==0?5:type==3?3.8:2.8,type==1?.35:type==0?.25:1.2);

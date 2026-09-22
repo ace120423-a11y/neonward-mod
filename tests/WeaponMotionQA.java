@@ -19,6 +19,7 @@ public class WeaponMotionQA implements ClientModInitializer {
   if(ticks<30)return;int index=(ticks-30)/50,step=(ticks-30)%50;
   if(index>=ids.size()){System.out.println("PAIRED_CLIENT_QA_COMPLETE WEAPON_MOTION_PASS count="+ids.size());mc.stop();return;}
   String id=ids.get(index);
+  if(step>=20&&step<36)mc.options.keyUse.setDown(true);
   if(step==0){mc.options.keyUse.setDown(false);mc.options.setCameraType(CameraType.FIRST_PERSON);mc.player.stopUsingItem();
    mc.getSingleplayerServer().execute(()->{try{
     var server=mc.getSingleplayerServer();var p=server.getPlayerList().getPlayers().getFirst();var level=server.overworld();
@@ -30,10 +31,10 @@ public class WeaponMotionQA implements ClientModInitializer {
    }catch(Throwable t){failure=t;}});
   }
   if(step==15)shot(mc,id+"-first-rest");
-  if(step==20){mc.options.keyUse.setDown(true);mc.player.startUsingItem(InteractionHand.MAIN_HAND);mc.getSingleplayerServer().execute(()->mc.getSingleplayerServer().getPlayerList().getPlayers().getFirst().startUsingItem(InteractionHand.MAIN_HAND));}
+  if(step==20){mc.options.keyUse.setDown(true);mc.gameMode.useItem(mc.player,InteractionHand.MAIN_HAND);}
   if(step==25)shot(mc,id+"-first-use");
   if(step==28)mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT);
-  if(step==33)shot(mc,id+"-third-use");
+  if(step==33){if(id.equals("neon_dualblades")&&!DualGuard.guarding(mc.player))throw new AssertionError("Dual guard must remain active while key held");shot(mc,id+"-third-use");}
   if(step==36){mc.options.keyUse.setDown(false);mc.player.stopUsingItem();mc.getSingleplayerServer().execute(()->mc.getSingleplayerServer().getPlayerList().getPlayers().getFirst().stopUsingItem());}
   if(step==39){mc.player.swing(InteractionHand.MAIN_HAND);}
   if(step==42)shot(mc,id+"-third-attack");
