@@ -29,7 +29,7 @@ public final class NeonArsenal {
  public static final java.util.List<Item> DROPS=new java.util.ArrayList<>();
  static Item.Properties properties(String name){return new Item.Properties().setId(ResourceKey.create(Registries.ITEM,NeonWard.id(name)));}
  static Item add(String name,Item item){Registry.register(BuiltInRegistries.ITEM,NeonWard.id(name),item);ITEMS.put(name,item);return item;}
- public static void init(){
+ public static void init(){GunVfx.init();
   CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("neongun").then(Commands.literal("fire").executes(ctx->{var p=ctx.getSource().getPlayerOrException();if(p.isSpectator()||!p.isAlive())return 0;var hand=gunHand(p);if(p.getItemInHand(hand).getItem() instanceof Rifle gun){long now=System.currentTimeMillis(),gap=automatic(p.getItemInHand(hand))?280:140,last=LAST_SHOT.getOrDefault(p.getUUID(),0L);if(now-last<gap)return 0;LAST_SHOT.put(p.getUUID(),now);var result=gun.fire(p.level(),p,hand);if(result!=InteractionResult.FAIL)p.swing(hand,true);return result==InteractionResult.FAIL?0:1;}return 0;}))));
   CELL=add("energy_cell",new Item(properties("energy_cell")));
   BLADE=add("neon_blade",new MeleeGuard.Weapon(properties("neon_blade").sword(ToolMaterial.DIAMOND,4,-2.2f).repairable(Items.IRON_INGOT)));
@@ -74,9 +74,7 @@ public final class NeonArsenal {
    var wall=l.clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));end=wall.getLocation();
    var hit=ProjectileUtil.getEntityHitResult(p,start,end,p.getBoundingBox().expandTowards(end.subtract(start)).inflate(1),e->e instanceof LivingEntity&&!(e instanceof Player)&&!(e instanceof net.minecraft.world.entity.decoration.ArmorStand)&&e.isAlive()&&!e.isSpectator(),start.distanceToSqr(end));
    if(hit!=null){end=hit.getLocation();hit.getEntity().invulnerableTime=0;var cyber=p.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).getModifier(NeonWard.id("cyberware_2"));boolean damaged=hit.getEntity().hurtServer(l,p.damageSources().playerAttack(p),GunEnchantments.damage(l,gun,damage*(float)RolledWeapons.multiplier(gun)*(1+(cyber==null?0:(float)cyber.amount()))));if(damaged&&hit.getEntity() instanceof LivingEntity victim)GunEnchantments.impact(l,gun,victim,p.getLookAngle());}
-   Vec3 ray=end.subtract(start);int steps=Math.max(1,(int)(ray.length()*2));
-   for(int i=1;i<=steps;i++){Vec3 at=start.add(ray.scale((double)i/steps));l.sendParticles(new DustParticleOptions(color,1.1f),at.x,at.y,at.z,1,0,0,0,0);}
-   l.playSound(null,p.blockPosition(),SoundEvents.FIREWORK_ROCKET_BLAST,SoundSource.PLAYERS,.55f,pitch);
+   if(p instanceof net.minecraft.server.level.ServerPlayer sp){GunVfx.send(sp,gun,0,0,start,end);if(hit!=null||wall.getType()!=net.minecraft.world.phys.HitResult.Type.MISS)GunVfx.send(sp,gun,1,0,start,end);}
    if(NeonArsenal.automatic(gun))net.minecraft.world.item.component.CustomData.update(DataComponents.CUSTOM_DATA,gun,t->{t.putInt("neon_magazine",t.getIntOr("neon_magazine",0)+1);});return InteractionResult.SUCCESS;
   }
  }

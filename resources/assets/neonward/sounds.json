@@ -1,0 +1,114 @@
+{
+  "gun.pulse": {
+    "sounds": [
+      {
+        "name": "neonward:guns/pulse",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.pistol": {
+    "sounds": [
+      {
+        "name": "neonward:guns/pistol",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.handcannon": {
+    "sounds": [
+      {
+        "name": "neonward:guns/handcannon",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.compact": {
+    "sounds": [
+      {
+        "name": "neonward:guns/compact",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.sniper": {
+    "sounds": [
+      {
+        "name": "neonward:guns/sniper",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.machinegun": {
+    "sounds": [
+      {
+        "name": "neonward:guns/machinegun",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.rail": {
+    "sounds": [
+      {
+        "name": "neonward:guns/rail",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.plasma": {
+    "sounds": [
+      {
+        "name": "neonward:guns/plasma",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.arc": {
+    "sounds": [
+      {
+        "name": "neonward:guns/arc",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.cryo": {
+    "sounds": [
+      {
+        "name": "neonward:guns/cryo",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.crossbow": {
+    "sounds": [
+      {
+        "name": "neonward:guns/crossbow",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.charge": {
+    "sounds": [
+      {
+        "name": "neonward:guns/charge",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.impact": {
+    "sounds": [
+      {
+        "name": "neonward:guns/impact",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "gun.detonate": {
+    "sounds": [
+      {
+        "name": "neonward:guns/detonate",
+        "attenuation_distance": 24
+      }
+    ]
+  }
+}

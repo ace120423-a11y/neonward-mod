@@ -11,6 +11,7 @@
     ],
     "client": [
       "jp.neonward.ElementVfxClient",
+      "jp.neonward.GunVfxClient",
       "jp.neonward.ChainPullClient",
       "jp.neonward.NeonClient",
       "jp.neonward.MarketInteriorClient",
