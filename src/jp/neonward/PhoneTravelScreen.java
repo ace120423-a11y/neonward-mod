@@ -13,5 +13,5 @@ public class PhoneTravelScreen extends Screen {
   addRenderableWidget(new PhoneScreen.NeonButton(x+w-62,y+h-49,50,19,"次へ",b->{page=(page+1)%pages;clearWidgets();init();}));
   addRenderableWidget(new PhoneScreen.NeonButton(x+12,y+h-25,w-24,19,"マップへ戻る",b->onClose()));
  }
- @Override public void extractRenderState(GuiGraphicsExtractor g,int mx,int my,float delta){g.fill(x-3,y-3,x+w+3,y+h+3,0xff08131f);g.outline(x-3,y-3,w+6,h+6,0xff61efe0);g.text(font,"NEON TRAVEL / ファストトラベル",x+12,y+10,0xff82fff0);g.text(font,"街中・塔の入口から利用可能 / 無料",x+12,y+27,0xffb9d4de);g.centeredText(font,(page+1)+" / "+((PhoneTravel.POINTS.size()+rows-1)/rows),x+w/2,y+h-43,0xffb9d4de);super.extractRenderState(g,mx,my,delta);}
+ @Override public void extractRenderState(GuiGraphicsExtractor g,int mx,int my,float delta){g.fill(x-3,y-3,x+w+3,y+h+3,0xff08131f);g.outline(x-3,y-3,w+6,h+6,0xff61efe0);g.text(font,"NEON TRAVEL / ファストトラベル",x+12,y+10,0xff82fff0);g.text(font,"街中・家の中・塔の入口 / 無料",x+12,y+27,0xffb9d4de);g.centeredText(font,(page+1)+" / "+((PhoneTravel.POINTS.size()+rows-1)/rows),x+w/2,y+h-43,0xffb9d4de);super.extractRenderState(g,mx,my,delta);}
 }
