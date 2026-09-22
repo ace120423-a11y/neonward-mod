@@ -4,7 +4,8 @@ import os,json,zipfile,shutil,subprocess,time,sys
 focus=next((a.split('=',1)[1] for a in sys.argv if a.startswith('--focus=')),'')
 motion='--motion' in sys.argv or bool(focus)
 chain='--chain' in sys.argv
-qa_class='ChainPullQA' if chain else 'WeaponMotionQA' if motion else 'PairedClientQA'
+vfx='--vfx' in sys.argv
+qa_class='ElementVfxQA' if vfx else 'ChainPullQA' if chain else 'WeaponMotionQA' if motion else 'PairedClientQA'
 root=Path(__file__).resolve().parents[1]
 mc=Path(os.environ['APPDATA'])/'.minecraft'
 jdk=Path(os.environ['LOCALAPPDATA'])/'Packages/Microsoft.4297127D64EC6_8wekyb3d8bbwe/LocalCache/Local/runtime/java-runtime-epsilon/windows-x64/java-runtime-epsilon/bin'
@@ -43,5 +44,5 @@ text=(test/'client.log').read_text(encoding='utf-8',errors='replace')
 print('Client log:',test/'client.log')
 print(text[-4500:])
 assert proc.returncode==0 and 'PAIRED_CLIENT_QA_COMPLETE' in text,'Client QA failed'
-assert len(list((test/'screenshots').glob('*.png')))==(6 if chain else 4*len(focus.split(',')) if focus else 100 if motion else 4)
+assert len(list((test/'screenshots').glob('*.png')))==(10 if vfx else 6 if chain else 4*len(focus.split(',')) if focus else 100 if motion else 4)
 print('PAIRED_CLIENT_PASS',test/'screenshots')

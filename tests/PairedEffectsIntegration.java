@@ -53,6 +53,20 @@ public final class PairedEffectsIntegration {
    PairedEffects.BLEEDS.put(primary,new PairedEffects.Bleed(p,now-1,now));PairedEffects.tick();
    check(primary.getHealth()==96&&PairedEffects.BLEEDS.isEmpty(),"expired bleed never damages");
    PairedEffects.bleed(p,primary);p.setPos(500,65,8);PairedEffects.tick();check(PairedEffects.BLEEDS.isEmpty(),"leaving combat cleans up bleed");
+   p.setPos(3050,65,8);MeleeElements.DOT.clear();MeleeElements.STUN.clear();MeleeElements.RESIST.clear();
+   MeleeElements.applyElement(p,primary,MeleeElements.Kind.FIRE,now);
+   check(MeleeElements.DOT.get(primary).end()==now+80,"fire still lasts 4 seconds");
+   MeleeElements.applyElement(p,primary,MeleeElements.Kind.POISON,now);
+   check(MeleeElements.DOT.get(primary).end()==now+100,"poison still lasts 5 seconds");
+   MeleeElements.applyElement(p,primary,MeleeElements.Kind.THUNDER,now);
+   check(MeleeElements.STUN.get(primary)==now+20,"normal stun still lasts 1 second");
+   ElementVfx.BUDGET.clear();for(int i=0;i<100;i++)ElementVfx.emit(p,primary,ElementVfx.FIRE,10,false);
+   check(ElementVfx.BUDGET.get(l)[1]==24,"visual network budget capped at 24 per level per tick");
+   check(!new ElementVfx.Visual(9,0,0,0,0,0,12,false).valid(),"bad effect kind rejected");
+   check(!new ElementVfx.Visual(1,0,Double.NaN,0,0,0,12,false).valid(),"nonfinite position rejected");
+   check(!new ElementVfx.Visual(1,0,0,0,0,0,101,false).valid(),"unbounded duration rejected");
+   MeleeElements.DOT.clear();MeleeElements.STUN.clear();MeleeElements.RESIST.clear();ElementVfx.BUDGET.clear();
+   System.out.println("ELEMENT_VFX_SERVER_PASS: bounded cosmetic events, valid payloads, fire/poison/stun durations unchanged");
    System.out.println("PAIRED_EFFECTS_QA_PASS: explosion knockback/splash, wall and terrain safety, friendly exclusion, cooldown, dual bleed dispatch, refresh, 2 damage/second, immunity window, expiry and cleanup");
   }finally{p.setPos(before);for(var e:spawned)e.discard();PairedEffects.BLEEDS.clear();ArsenalExpansion.MELEE_NEXT.clear();ArsenalExpansion.ECHOES.clear();}
  }
