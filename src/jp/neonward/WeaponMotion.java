@@ -48,7 +48,7 @@ public final class WeaponMotion {
  static Map.Entry<String,Profile> e(String id,Kind k,float r,float y,float z,float w,float kick){return Map.entry(id,new Profile(k,r,y,z,w,kick));}
  public static Profile profile(ItemStack s){if(s.isEmpty())return null;var id=BuiltInRegistries.ITEM.getKey(s.getItem());return id.getNamespace().equals("neonward")?PROFILES.get(id.getPath()):null;}
  public static float strike(float t){return (float)Math.sin(Math.PI*Math.max(0,Math.min(1,t)));}
- public static float recoil(AbstractClientPlayer p,ItemStack item,float delta){float c=p.getCooldowns().getCooldownPercent(item,delta);return c<.55f?0:(c-.55f)/.45f;}
+ public static float recoil(AbstractClientPlayer p,ItemStack item,float delta){float c=p.getCooldowns().getCooldownPercent(item,delta);return (c<.55f?0:(c-.55f)/.45f)*GunAttachments.recoil(item);}
  public static void first(AbstractClientPlayer p,InteractionHand hand,ItemStack item,float swing,float delta,PoseStack pose){
   var f=profile(item);if(f==null||p.isFallFlying()||p.isVisuallySwimming())return;
   int side=(hand==InteractionHand.MAIN_HAND?p.getMainArm():p.getMainArm().getOpposite())==HumanoidArm.RIGHT?1:-1;

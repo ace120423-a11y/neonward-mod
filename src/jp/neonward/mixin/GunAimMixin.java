@@ -22,6 +22,7 @@ public class GunAimMixin {
   // Use the live held stack: vanilla's equipped snapshot can lag component-only ammo updates.
   if(NeonArsenal.isGun(stack)){
    var live=player.getItemInHand(hand);if(live.is(stack.getItem()))stack=live;
+   int optic=GunAttachments.installed(stack,0);if(GunControls.aiming()&&optic>=0&&!GunReload.reloading(stack)){ci.cancel();return;}
    boolean loading=GunReload.reloading(stack);float t=loading?GunReload.progress(stack):0;
    var arm=hand==InteractionHand.MAIN_HAND?player.getMainArm():player.getMainArm().getOpposite();int side=arm==HumanoidArm.RIGHT?1:-1;
    if(!player.isInvisible()){
@@ -31,8 +32,9 @@ public class GunAimMixin {
    var renderer=(ItemInHandRenderer)(Object)this;
    pose.pushPose();GunReloadMotion.body(pose,stack,side,t);
    if(!loading){float kick=WeaponMotion.recoil(player,stack,delta);var f=WeaponMotion.profile(stack);pose.translate(0,kick*.025,kick*.08);if(f!=null)pose.mulPose(Axis.XP.rotationDegrees(-kick*f.kick()));}
-   if(!loading){renderer.renderItem(player,stack,ItemDisplayContext.NONE,pose,nodes,light);pose.popPose();ci.cancel();return;}
-   renderer.renderItem(player,GunReloadMotion.mesh(stack,"body"),ItemDisplayContext.NONE,pose,nodes,light);
+   if(!loading){renderer.renderItem(player,GunAttachmentVisual.base(stack,false),ItemDisplayContext.NONE,pose,nodes,light);GunAttachmentVisual.draw(renderer,player,stack,pose,nodes,light,side,0,false);pose.popPose();ci.cancel();return;}
+   renderer.renderItem(player,GunAttachmentVisual.base(stack,true),ItemDisplayContext.NONE,pose,nodes,light);
+   GunAttachmentVisual.draw(renderer,player,stack,pose,nodes,light,side,t,true);
    pose.pushPose();GunReloadMotion.part(pose,stack,side,t);renderer.renderItem(player,GunReloadMotion.mesh(stack,"part"),ItemDisplayContext.NONE,pose,nodes,light);pose.popPose();
    int k=GunVfx.profile(stack);if(k>=1&&k<=3||k==10&&t>=.45f){pose.pushPose();GunReloadMotion.action(pose,stack,side,t);renderer.renderItem(player,GunReloadMotion.mesh(stack,"aux"),ItemDisplayContext.NONE,pose,nodes,light);pose.popPose();}
    if(k==0||k>=4&&k<=9){pose.pushPose();GunReloadMotion.mechanism(pose,stack,side,t);renderer.renderItem(player,GunReloadMotion.mesh(stack,"bolt"),ItemDisplayContext.NONE,pose,nodes,light);pose.popPose();}

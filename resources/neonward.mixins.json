@@ -26,6 +26,7 @@
     "FishingCollectibleMixin"
   ],
   "client": [
+    "ScopeCrosshairMixin",
     "ChainPoseStateMixin",
     "WeaponMotionMixin",
     "WeaponBodyPoseMixin",

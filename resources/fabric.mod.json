@@ -10,6 +10,7 @@
       "jp.neonward.NeonWard"
     ],
     "client": [
+      "jp.neonward.AttachmentClient",
       "jp.neonward.ElementVfxClient",
       "jp.neonward.GunVfxClient",
       "jp.neonward.ChainPullClient",

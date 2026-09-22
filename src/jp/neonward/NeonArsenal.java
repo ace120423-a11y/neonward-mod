@@ -71,7 +71,7 @@ public final class NeonArsenal {
    if(!(world instanceof ServerLevel l))return InteractionResult.SUCCESS;
    if(!(p instanceof net.minecraft.server.level.ServerPlayer player)||!GunReload.take(player,gun))return InteractionResult.FAIL;
    p.getCooldowns().addCooldown(gun,delay);
-   Vec3 start=p.getEyePosition(),end=start.add(p.getLookAngle().scale(range));
+   Vec3 start=p.getEyePosition(),end=start.add(p.getLookAngle().scale(range*GunAttachments.range(gun)));
    var wall=l.clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));end=wall.getLocation();
    var hit=ProjectileUtil.getEntityHitResult(p,start,end,p.getBoundingBox().expandTowards(end.subtract(start)).inflate(1),e->e instanceof LivingEntity&&!(e instanceof Player)&&!(e instanceof net.minecraft.world.entity.decoration.ArmorStand)&&e.isAlive()&&!e.isSpectator(),start.distanceToSqr(end));
    if(hit!=null){end=hit.getLocation();hit.getEntity().invulnerableTime=0;var cyber=p.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).getModifier(NeonWard.id("cyberware_2"));boolean damaged=hit.getEntity().hurtServer(l,p.damageSources().playerAttack(p),GunEnchantments.damage(l,gun,damage*(float)RolledWeapons.multiplier(gun)*(1+(cyber==null?0:(float)cyber.amount()))));if(damaged&&hit.getEntity() instanceof LivingEntity victim)GunEnchantments.impact(l,gun,victim,p.getLookAngle());}

@@ -11,7 +11,7 @@ public final class GunReload {
  public record Profile(int capacity,int millis){}
  static final Profile[] PROFILES={new Profile(30,2600),new Profile(12,2000),new Profile(6,2300),new Profile(20,2100),new Profile(5,3600),new Profile(100,4800),new Profile(3,3200),new Profile(6,3300),new Profile(15,2800),new Profile(40,3600),new Profile(1,1800)};
  static final String USED="neon_magazine",UNTIL="neon_reload_until";
- public static Profile profile(ItemStack s){return PROFILES[GunVfx.profile(s)];}
+ public static Profile profile(ItemStack s){var base=PROFILES[GunVfx.profile(s)];return new Profile(GunAttachments.capacity(s,base.capacity()),GunAttachments.reloadMillis(s,base.millis()));}
  static net.minecraft.nbt.CompoundTag data(ItemStack s){return s.getOrDefault(DataComponents.CUSTOM_DATA,CustomData.EMPTY).copyTag();}
  static long until(ItemStack s){return data(s).getLongOr(UNTIL,0);}
  static int used(ItemStack s){return Math.clamp(data(s).getIntOr(USED,0),0,profile(s).capacity());}

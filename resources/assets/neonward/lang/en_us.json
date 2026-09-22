@@ -1,4 +1,6 @@
 {
+  "key.neonward.attachments": "Weapon attachments",
+  "key.category.neonward.attachments": "NeonWard / Attachments",
   "key.neonward.reload": "Reload weapon",
   "key.category.neonward.guns": "NeonWard / Guns",
   "entity.neonward.sky_guardian_1": "Key Warden",

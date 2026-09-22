@@ -36,7 +36,7 @@ public class NeonWard implements ModInitializer {
   VanillaEnemyFilter.init();VendingMachines.init();StockMarket.init();Cyberware.init();if(MediaBridge.available()){NeonTelevision.init();PortableTelevision.init();}
   GlitchSigns.init();HologramFish.init();ClockworkMachinery.init();
   StreetLights.init();PulseNeon.init();SouthMaterials.init();
-  AutoDoors.init();CyberwareGacha.init();WeaponSales.init();
+  AutoDoors.init();CyberwareGacha.init();WeaponSales.init();GunAttachments.init();
   LiftSystem.init();
   PhoneEquipment.init();
   PhoneTravel.init();PhoneGarage.init();PrivateHomes.init();SupportedSmallBlock.init();CityResidents.init();NeonCasino.init();ParlorGames.init();InteriorShop.init();PrivateFarms.init();Medicine.init();PhoneFriends.init();PhoneServices.init();PhoneCalls.init();RealEstate.init();CityApartments.init();CombatFeedback.init();MeleeElements.init();MotorWorks.init();Underworld.init();Aquariums.init();WelcomeTutorial.init();ObjectiveTracker.init();CompactShops.init();

@@ -18,7 +18,7 @@ public final class GunVfx {
    public Visual decode(RegistryFriendlyByteBuf b){return new Visual(b.readVarInt(),b.readVarInt(),b.readVarInt(),b.readVarInt(),new Vec3(b.readDouble(),b.readDouble(),b.readDouble()),new Vec3(b.readDouble(),b.readDouble(),b.readDouble()));}
    public void encode(RegistryFriendlyByteBuf b,Visual v){b.writeVarInt(v.owner);b.writeVarInt(v.kind);b.writeVarInt(v.phase);b.writeVarInt(v.mode);b.writeDouble(v.from.x);b.writeDouble(v.from.y);b.writeDouble(v.from.z);b.writeDouble(v.to.x);b.writeDouble(v.to.y);b.writeDouble(v.to.z);}
   };public Type<? extends CustomPacketPayload> type(){return TYPE;}
-  boolean valid(){return kind>=0&&kind<11&&phase>=0&&phase<=3&&mode>=-1&&mode<=2&&Double.isFinite(from.lengthSqr())&&Double.isFinite(to.lengthSqr())&&from.distanceToSqr(to)<=170*170;}
+  boolean valid(){return kind>=0&&kind<11&&phase>=0&&phase<=3&&mode>=-1&&mode<=2&&Double.isFinite(from.lengthSqr())&&Double.isFinite(to.lengthSqr())&&from.distanceToSqr(to)<=280*280;}
  }
  static final Map<ServerLevel,long[]> BUDGET=new WeakHashMap<>();
  static void init(){PayloadTypeRegistry.clientboundPlay().register(Visual.TYPE,Visual.CODEC);ServerLifecycleEvents.SERVER_STOPPED.register(s->BUDGET.clear());}

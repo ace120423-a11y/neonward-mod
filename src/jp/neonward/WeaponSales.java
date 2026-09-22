@@ -32,6 +32,7 @@ public final class WeaponSales {
  static int quote(ServerPlayer p,BlockPos pos,int slot){QUOTES.remove(p.getUUID());if(slot<0||slot>=36||!p.isAlive()||!Cyberware.canSell(p,pos))return reply(p,"換金所の近くで操作してください",null);
   var stack=p.getInventory().getItem(slot);long price=price(stack);if(stack.isEmpty()||price==0)return reply(p,"売却できるNeonWard武器を選んでください",null);
   if(stack==p.getMainHandItem())return reply(p,"手に持っている武器は別の枠へ移してから選んでください",null);
+  for(int i=0;i<4;i++)if(GunAttachments.installed(stack,i)>=0)return reply(p,"先にBキーの装着画面でアタッチメントを取り外してください",null);
   var q=new Quote(pos,slot,stack.copy(),price,RANDOM.nextInt(Integer.MAX_VALUE),p.level().getGameTime()+200);QUOTES.put(p.getUUID(),q);return reply(p,"この個体を1本売却します（確認は10秒間有効）",q);
  }
  static int confirm(ServerPlayer p,int token){var q=QUOTES.get(p.getUUID());if(q==null||q.token()!=token)return 0;QUOTES.remove(p.getUUID());
