@@ -35,7 +35,7 @@ public final class PrivateHomes {
  static boolean insidePosition(ServerPlayer p){int slot=Math.floorDiv((int)Math.floor(p.getX()),1024)+Math.floorDiv((int)Math.floor(p.getZ()),1024)*512;var o=origin(slot);return p.getX()>=o.getX()-1&&p.getX()<o.getX()+31&&p.getZ()>=o.getZ()-1&&p.getZ()<o.getZ()+20&&p.getY()>=63&&p.getY()<82;}
  public static void init(){
   try(var in=PrivateHomes.class.getResourceAsStream("/data/neonward/housing/slum.json")){template=JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(in),java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();}catch(Exception e){throw new IllegalStateException("Home template missing",e);}
-  CommandRegistrationCallback.EVENT.register((d,c,e)->{var root=Commands.literal("neonhome");for(String action:List.of("view","buy","enter","leave"))root.then(Commands.literal(action).executes(ctx->request(ctx.getSource().getPlayerOrException(),action)));d.register(root);});
+  CommandRegistrationCallback.EVENT.register((d,c,e)->{var root=Commands.literal("neonhome");for(String action:List.of("view","buy","enter","leave"))root.then(Commands.literal(action).executes(ctx->request(ctx.getSource().getPlayerOrException(),action)));root.then(Commands.literal("sell").then(Commands.argument("revision",com.mojang.brigadier.arguments.LongArgumentType.longArg(0)).executes(ctx->sell(ctx.getSource().getPlayerOrException(),com.mojang.brigadier.arguments.LongArgumentType.getLong(ctx,"revision")))));d.register(root);});
   UseBlockCallback.EVENT.register((p,l,h,hit)->{
    var pos=hit.getBlockPos();
    if(l.dimension()==Level.OVERWORLD&&pos.getX()==221&&pos.getZ()==949&&pos.getY()>=65&&pos.getY()<=68){if(p instanceof ServerPlayer sp&&h==InteractionHand.MAIN_HAND)request(sp,"view");return InteractionResult.SUCCESS;}
@@ -67,14 +67,16 @@ public final class PrivateHomes {
   }else if(action.equals("enter")){if(a.homeSlot>0){enter(p);return 1;}message="先に物件を購入してください";}
   reply(p,message);return 1;
  }
+ static int sell(ServerPlayer p,long revision){if(p.isSpectator()||!near(p)||StockMarket.ledger==null)return 0;String before=StockMarket.JSON.toJson(StockMarket.ledger),msg;try{msg=HousingSales.sell(StockMarket.ledger,p.getStringUUID(),false,revision);StockMarket.save();}catch(Exception e){StockMarket.ledger=StockMarket.JSON.fromJson(before,MarketLedger.class);msg=e instanceof IllegalArgumentException?e.getMessage():"保存できなかったため売却を取り消しました";}reply(p,msg);return 1;}
  static String purchase(MarketLedger ledger,String id){
   var a=ledger.account(id);if(a.homeSlot>0)return "購入済みです。追加の支払いはありません";
   if(a.cash<PRICE)return "残高が足りません";
+  var sale=HousingSales.state(ledger,id);if(sale.retiredHome>0){a.cash-=PRICE;a.homeSlot=sale.retiredHome;sale.retiredHome=0;sale.revision++;return "隠れ家を買い直しました / 内装は売却前の状態です";}
   int slot=Math.max(1,ledger.nextHomeSlot);for(var other:ledger.accounts.values())slot=Math.max(slot,other.homeSlot+1);
   if(slot>=262144)return "現在、新しい部屋を用意できません";
   a.cash-=PRICE;a.homeSlot=slot;ledger.nextHomeSlot=slot+1;return "購入しました。あなただけの隠れ家です";
  }
- static void reply(ServerPlayer p,String msg){var a=account(p);var o=new JsonObject();o.addProperty("private_home",true);o.addProperty("cash",a==null?0:a.cash);o.addProperty("owned",a!=null&&a.homeSlot>0);o.addProperty("message",msg);ServerPlayNetworking.send(p,new StockMarket.Snapshot(o.toString()));}
+ static void reply(ServerPlayer p,String msg){var a=account(p);var o=new JsonObject();o.addProperty("private_home",true);o.addProperty("housing_revision",StockMarket.ledger==null?0:HousingSales.state(StockMarket.ledger,p.getStringUUID()).revision);o.addProperty("cash",a==null?0:a.cash);o.addProperty("owned",a!=null&&a.homeSlot>0);o.addProperty("message",msg);ServerPlayNetworking.send(p,new StockMarket.Snapshot(o.toString()));}
  static <T extends Comparable<T>> BlockState property(BlockState s,Property<T> prop,String value){return prop.getValue(value).map(v->s.setValue(prop,v)).orElse(s);}
  static void build(ServerLevel l,int slot){
   var o=origin(slot);var palette=new ArrayList<BlockState>();

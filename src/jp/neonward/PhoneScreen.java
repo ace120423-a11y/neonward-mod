@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 public class PhoneScreen extends Screen {
  @Override public void onClose(){if(minecraft!=null)minecraft.gui.setScreen(null);}
- static final String[] APPS={"友達","電話","トーク","PULSE","マップ","カメラ","録音","送金","土地","クエスト","称号","ガレージ"};
+ static final String[] APPS={"友達","電話","トーク","PULSE","マップ","カメラ","録音","送金","土地・住宅","クエスト","称号","ガレージ"};
  private int page=-1,l,t,w,h;
  public PhoneScreen(){super(Component.literal("NEON LINK"));}
  @Override public boolean isPauseScreen(){return false;}
