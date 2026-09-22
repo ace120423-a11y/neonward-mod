@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 public final class PhoneTravel {
  public record Point(String name,int x,int z){}
- public static final List<Point> POINTS=List.of(new Point("中央広場",181,154),new Point("マイホーム前",108,237),new Point("企業ビル・ギルド前",84,119),new Point("武器屋前",79,481),new Point("服屋前",244,494),new Point("マーケット前",246,126),new Point("診療所前",426,484),new Point("北門",160,-12),new Point("東門",552,154),new Point("南門",160,680),new Point("西門",-12,154),new Point("車屋",334,580),new Point("カジノ",510,468),new Point("家具屋",327,600),new Point("釣り堀・農地受付",327,634),new Point("薬局・調合台",347,600),new Point("不動産屋",378,640));
+ public static final List<Point> POINTS=List.of(new Point("中央広場",181,154),new Point("マイホーム前",108,237),new Point("企業ビル・ギルド前",84,119),new Point("武器屋前",79,481),new Point("服屋前",244,494),new Point("マーケット前",246,126),new Point("診療所前",426,484),new Point("北門",160,-12),new Point("東門",552,154),new Point("南門",160,680),new Point("西門",-12,154),new Point("車屋",334,580),new Point("カジノ",510,468),new Point("家具屋",327,600),new Point("釣り堀・土地案内",327,634),new Point("薬局・調合台",347,600),new Point("不動産屋",378,640));
  static final Map<UUID,Integer> NEXT=new HashMap<>();
  static boolean source(ServerPlayer p){
   var l=p.level();double x=p.getX(),y=p.getY(),z=p.getZ();

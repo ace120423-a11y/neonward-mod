@@ -33,4 +33,17 @@ for lang,index in [('ja_jp',0),('en_us',1)]:
     path=ROOT/f'lang/{lang}.json'; data=json.loads(path.read_text(encoding='utf-8'))
     for name,details in weapons.items():data['item.neonward.'+name]=details[index]
     path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-print('Generated ten distinct low-poly models and localization; existing materials reused.')
+# Keep the paired inventory icon, but hold exactly one centered blade in each hand.
+pair=json.loads((ROOT/'models/item/neon_dualblades.json').read_text())
+for side,start,shift in [('right',0,5),('left',4,-5)]:
+    single=json.loads(json.dumps(pair));single['elements']=single['elements'][start:start+4]
+    for part in single['elements']:
+        part['from'][0]+=shift;part['to'][0]+=shift
+        if side=='left':part['from'][1]-=4;part['to'][1]-=4
+    (ROOT/f'models/item/neon_dualblade_{side}.json').write_text(json.dumps(single,indent=2),encoding='utf-8')
+selection={'type':'minecraft:select','property':'minecraft:display_context','cases':[
+    {'when':['firstperson_righthand','thirdperson_righthand'],'model':{'type':'minecraft:model','model':'neonward:item/neon_dualblade_right'}},
+    {'when':['firstperson_lefthand','thirdperson_lefthand'],'model':{'type':'minecraft:model','model':'neonward:item/neon_dualblade_left'}}
+], 'fallback':{'type':'minecraft:model','model':'neonward:item/neon_dualblades'}}
+(ROOT/'items/neon_dualblades.json').write_text(json.dumps({'model':selection},indent=2),encoding='utf-8')
+print('Generated ten distinct low-poly models, paired hand variants and localization.')

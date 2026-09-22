@@ -5,9 +5,24 @@ import net.minecraft.world.level.block.Blocks;
 /** One column per tick. Never rebuilds purchased land; no chunks or underground data are erased. */
 public final class LandConstruction {
  static boolean failed;
- public static void tick(MinecraftServer server){var ledger=StockMarket.ledger;if(failed||ledger==null||ledger.westLandColumns>=216||!ledger.westLand.isEmpty())return;
+ public static void tick(MinecraftServer server){var ledger=StockMarket.ledger;if(failed||ledger==null)return;
   if(server.getPlayerList().getPlayers().stream().noneMatch(p->p.level()==server.overworld()&&p.getX()<0&&p.getZ()>60&&p.getZ()<240))return;
+  if(ledger.westLandColumns>=216){if(ledger.westLandRepairColumns<216)repairColumn(server);else if(ledger.westLandTunnelColumns<40)LandTunnel.column(server);else LandPerimeter.column(server);return;}
+  if(!ledger.westLand.isEmpty())return;
   column(server);
+ }
+ static boolean vegetation(net.minecraft.world.level.block.state.BlockState b){return b.isAir()||b.is(Medicine.HERB)||b.is(Blocks.SHORT_GRASS)||b.is(Blocks.TALL_GRASS);}
+ static net.minecraft.world.level.block.Block surface(int x,int z){int plot=LandLayout.plot(x,z);if(plot>=0)return x==LandLayout.x(plot)||x==LandLayout.x(plot)+31||z==LandLayout.z(plot)||z==LandLayout.z(plot)+31?Blocks.POLISHED_ANDESITE:Blocks.GRASS_BLOCK;return z>=144&&z<=159||x%44>=-17&&x%44<=-9?Blocks.SMOOTH_STONE:Blocks.GRASS_BLOCK;}
+ /** One-time migration; do not rerun the terrain generator or fill player-dug air. */
+ static void repairColumn(MinecraftServer server){var ledger=StockMarket.ledger;if(ledger==null||ledger.westLandColumns<216||ledger.westLandRepairColumns>=216)return;int x=-248+ledger.westLandRepairColumns;var l=server.overworld();
+  try{for(int z=88;z<=216;z++){var ground=new BlockPos(x,64,z);
+   if(l.getBlockState(ground).is(Medicine.HERB))l.setBlock(ground,surface(x,z).defaultBlockState(),3);
+   if(!LandLayout.wall(x,z))continue;
+   if(!vegetation(l.getBlockState(ground.above()))&&!l.getBlockState(ground.above()).is(Blocks.STONE_BRICKS))continue;
+   if(vegetation(l.getBlockState(ground))&&l.getBlockEntity(ground)==null)l.setBlock(ground,Blocks.POLISHED_ANDESITE.defaultBlockState(),3);
+   for(int y=65;y<=66;y++){var at=new BlockPos(x,y,z);if(l.getBlockEntity(at)!=null||!vegetation(l.getBlockState(at)))continue;var block=y==65?Blocks.STONE_BRICKS:net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(net.minecraft.resources.Identifier.withDefaultNamespace("stone_brick_wall"));l.setBlock(at,block.defaultBlockState(),3);}
+  }ledger.westLandRepairColumns++;StockMarket.save();if(ledger.westLandRepairColumns==216)System.out.println("[WestLand] Herb surface repaired and exterior parcel walls installed");}
+  catch(Exception ex){failed=true;System.err.println("[WestLand] Repair paused safely: "+ex);}
  }
  static void column(MinecraftServer server){var ledger=StockMarket.ledger;if(ledger==null||ledger.westLandColumns>=216||!ledger.westLand.isEmpty())return;
   int x=-248+ledger.westLandColumns;var l=server.overworld();
@@ -15,7 +30,7 @@ public final class LandConstruction {
    int plot=LandLayout.plot(x,z);boolean avenue=z>=144&&z<=159;boolean cross=x%44>=-17&&x%44<=-9; // fixed shared access paths
    var pos=new BlockPos(x,64,z);var old=l.getBlockState(pos);
    // Only replace surveyed terrain/old roadway. Unknown blocks and containers are left intact.
-   if(l.getBlockEntity(pos)==null&&(old.isAir()||old.is(Blocks.GRASS_BLOCK)||old.is(Blocks.DIRT)||java.util.Set.of("black_concrete","gray_concrete","light_gray_concrete").contains(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(old.getBlock()).getPath())||old.is(Blocks.SMOOTH_STONE)||old.is(Blocks.STONE))){
+   if(l.getBlockEntity(pos)==null&&(old.isAir()||old.is(Medicine.HERB)||old.is(Blocks.GRASS_BLOCK)||old.is(Blocks.DIRT)||java.util.Set.of("black_concrete","gray_concrete","light_gray_concrete").contains(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(old.getBlock()).getPath())||old.is(Blocks.SMOOTH_STONE)||old.is(Blocks.STONE))){
     var ground=avenue||cross?Blocks.SMOOTH_STONE:Blocks.GRASS_BLOCK;
     if(plot<0&&(avenue||cross)&&(x+248)%16==0&&z%8==0)ground=Blocks.SEA_LANTERN;
     if(plot>=0){boolean edge=x==LandLayout.x(plot)||x==LandLayout.x(plot)+31||z==LandLayout.z(plot)||z==LandLayout.z(plot)+31;ground=edge?Blocks.POLISHED_ANDESITE:Blocks.GRASS_BLOCK;}

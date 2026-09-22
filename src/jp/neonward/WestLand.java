@@ -46,7 +46,7 @@ public final class WestLand {
   ServerLifecycleEvents.SERVER_STARTED.register(s->{LandCatalog.init();LandConstruction.failed=false;});
   ServerPlayConnectionEvents.JOIN.register((h,sender,s)->sync(h.player));
   ServerPlayConnectionEvents.DISCONNECT.register((h,s)->SESSIONS.remove(h.player.getUUID()));
-  ServerLifecycleEvents.SERVER_STOPPED.register(s->SESSIONS.clear());
+  ServerLifecycleEvents.SERVER_STOPPED.register(s->{SESSIONS.clear();LandOwnerSigns.CACHE.clear();});
   UseBlockCallback.EVENT.register((p,l,h,hit)->{var pos=hit.getBlockPos();if(!area(l,pos))return InteractionResult.PASS;int n=terminalAt(pos);if(n>=0&&l.getBlockState(pos).is(block(n%4))){if(p instanceof ServerPlayer sp&&h==InteractionHand.MAIN_HAND)open(sp,n/4,n%4,"種類・数量を選んで金額を確認してください");return InteractionResult.SUCCESS;}if(!edit(l,p,pos))return InteractionResult.FAIL;var stack=p.getItemInHand(h);if(HomeBuildingRules.altersWorld(stack)&&!edit(l,p,pos.relative(hit.getDirection())))return InteractionResult.FAIL;return InteractionResult.PASS;});
   UseItemCallback.EVENT.register((p,l,h)->{if(!area(l,p.blockPosition())||!HomeBuildingRules.altersWorld(p.getItemInHand(h)))return InteractionResult.PASS;var hit=p.pick(5,0,true);return hit instanceof BlockHitResult b&&edit(l,p,b.getBlockPos())&&edit(l,p,b.getBlockPos().relative(b.getDirection()))?InteractionResult.PASS:InteractionResult.FAIL;});
   UseEntityCallback.EVENT.register((p,l,h,e,hit)->area(l,e.blockPosition())&&!edit(l,p,e.blockPosition())?InteractionResult.FAIL:InteractionResult.PASS);
@@ -55,7 +55,21 @@ public final class WestLand {
    var count=Commands.argument("count",IntegerArgumentType.integer(1,64)).executes(ctx->buy(ctx.getSource().getPlayerOrException(),IntegerArgumentType.getInteger(ctx,"token"),IntegerArgumentType.getInteger(ctx,"product"),IntegerArgumentType.getInteger(ctx,"count")));
    d.register(Commands.literal("neonland").then(Commands.literal("buy").then(Commands.argument("token",IntegerArgumentType.integer(0)).then(Commands.argument("product",IntegerArgumentType.integer(-1,2000)).then(count)))));
   });
-  ServerTickEvents.END_SERVER_TICK.register(s->{LandConstruction.tick(s);if(s.getTickCount()%100==0)for(var p:s.getPlayerList().getPlayers())if(area(p.level(),p.blockPosition()))for(var e:p.level().getEntities(p,p.getBoundingBox().inflate(48),e->e instanceof net.minecraft.world.entity.monster.Enemy))if(area(p.level(),e.blockPosition()))e.discard();});
+  ServerTickEvents.END_SERVER_TICK.register(s->{LandConstruction.tick(s);LandOwnerSigns.tick(s);if(s.getTickCount()%100==0)for(var p:s.getPlayerList().getPlayers())if(area(p.level(),p.blockPosition()))for(var e:p.level().getEntities(p,p.getBoundingBox().inflate(48),e->e instanceof net.minecraft.world.entity.monster.Enemy))if(area(p.level(),e.blockPosition()))e.discard();});
+ }
+ static String purchase(MarketLedger ledger,String uuid,String name,int plot){
+  if(plot<0||plot>=8)throw new IllegalArgumentException("土地を選んでください");
+  if(ledger.westLand.containsKey(plot))throw new IllegalArgumentException("この土地は購入済みです");
+  if(ledger.westLandColumns<216)throw new IllegalArgumentException("土地の整備中です。お待ちください");
+  var a=ledger.account(uuid);if(a.cash<LandLayout.PRICE)throw new IllegalArgumentException("20,000 Cr必要です");
+  ledger.westLand.put(plot,new MarketLedger.LandOwner(uuid,name));a.cash-=LandLayout.PRICE;
+  return "土地"+(plot+1)+"を購入しました / 20,000 Cr";
+ }
+ static void phoneSnapshot(MarketLedger ledger,String uuid,JsonObject out){
+  var plots=new JsonArray();int owned=0;
+  for(int i=0;i<8;i++){var owner=ledger.westLand.get(i);boolean mine=owner!=null&&uuid.equals(owner.uuid);if(mine)owned++;
+   var row=new JsonObject();row.addProperty("plot",i);row.addProperty("vacant",owner==null);row.addProperty("mine",mine);row.addProperty("owner",owner==null?"未購入":owner.name);plots.add(row);
+  }out.add("land_plots",plots);out.addProperty("land",owned);
  }
  static JsonObject state(){var out=new JsonObject();var owners=new JsonObject();if(StockMarket.ledger!=null)for(var e:StockMarket.ledger.westLand.entrySet())owners.addProperty(""+e.getKey(),e.getValue().uuid);out.add("owners",owners);return out;}
  static void sync(ServerPlayer p){ServerPlayNetworking.send(p,new State(state().toString()));}
@@ -64,7 +78,7 @@ public final class WestLand {
  static int buy(ServerPlayer p,int token,int product,int count){var s=SESSIONS.get(p.getUUID());if(s==null||s.token()!=token)return 0;SESSIONS.remove(p.getUUID());if(!near(p,s.plot(),s.terminal())||p.level().getGameTime()>s.expires())return 0;String msg="購入できません";var ledger=StockMarket.ledger;if(ledger==null){open(p,s.plot(),s.terminal(),"台帳を読み込めないため休止中");return 0;}
   var a=ledger.account(p.getStringUUID());long cash=a.cash;var inv=Cyberware.inventory(p);Entity animal=null;boolean land=false;
   try{
-   if(s.terminal()==0){if(product!=-1||count!=1||ledger.westLand.containsKey(s.plot()))throw new IllegalArgumentException("この土地は購入済みです");if(cash<LandLayout.PRICE)throw new IllegalArgumentException("20,000 Cr必要です");if(ledger.westLandColumns<216)throw new IllegalArgumentException("土地の整備中です。お待ちください");ledger.westLand.put(s.plot(),new MarketLedger.LandOwner(p.getStringUUID(),p.getName().getString()));land=true;a.cash-=LandLayout.PRICE;msg="土地を購入しました。区画内は自分だけ建築できます";}
+   if(s.terminal()==0){if(product!=-1||count!=1)throw new IllegalArgumentException("土地を選んでください");msg=purchase(ledger,p.getStringUUID(),p.getName().getString(),s.plot());land=true;}
    else{if(!owned(p,s.plot()))throw new IllegalArgumentException("この区画の所有者だけ購入できます");if(product<0||product>=LandCatalog.PRODUCTS.size())throw new IllegalArgumentException("商品が不正です");var item=LandCatalog.PRODUCTS.get(product);if(!LandCatalog.page(item,s.terminal()))throw new IllegalArgumentException("別の端末の商品です");long total=(long)item.price()*count;if(cash<total)throw new IllegalArgumentException("残高が足りません");
     if(s.terminal()==2){if(count!=1||animals(p,s.plot())>=LandLayout.ANIMAL_LIMIT)throw new IllegalArgumentException("動物は1頭ずつ、区画内12頭までです");var type=switch(item.id()){case "cow"->EntityTypes.COW;case "pig"->EntityTypes.PIG;case "chicken"->EntityTypes.CHICKEN;default->throw new IllegalArgumentException();};animal=type.create(p.level(),EntitySpawnReason.COMMAND);boolean placed=false;for(int dx=2;dx<30&&!placed;dx++)for(int dz=2;dz<30&&!placed;dz++){var pos=new BlockPos(LandLayout.x(s.plot())+dx,65,LandLayout.z(s.plot())+dz);if(!p.level().getBlockState(pos.below()).isSolidRender())continue;animal.setPos(pos.getX()+.5,65,pos.getZ()+.5);if(p.level().noCollision(animal)){placed=true;}}if(!placed)throw new IllegalArgumentException("区画の地上に動物用の空間を空けてください");LandAnimals.mark(animal,s.plot());if(!p.level().addFreshEntity(animal))throw new IllegalStateException();}
     else {var stack=new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.withDefaultNamespace(item.id())),count);if(!p.getInventory().add(stack)||!stack.isEmpty())throw new IllegalArgumentException("持ち物に十分な空きがありません（課金なし）");}a.cash-=total;msg="購入しました / −"+total+" Cr";

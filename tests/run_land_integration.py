@@ -15,7 +15,7 @@ shutil.copy2(Path.home()/'Documents/NeonWardServer/eula.txt',test/'eula.txt')
 (test/'server.properties').write_text('server-port=0\nonline-mode=false\nview-distance=2\nsimulation-distance=2\nmax-tick-time=-1\nlevel-type=minecraft:flat\n',encoding='utf-8')
 qa=test/'qa';qa.mkdir()
 compile_cp=(root/'build/javac.args').read_text(encoding='utf-8').splitlines()[6].strip('"')+';'+str(root/'build/classes')
-subprocess.run([str(jdk/'javac.exe'),'-proc:none','-encoding','UTF-8','-cp',compile_cp,'-d',str(qa),str(root/'tests/WestLandIntegration.java'),str(root/'tests/LandTestAddon.java')],check=True)
+subprocess.run([str(jdk/'javac.exe'),'-proc:none','-encoding','UTF-8','-cp',compile_cp,'-d',str(qa),str(root/'tests/WestLandIntegration.java'),str(root/'tests/PairedHandsIntegration.java'),str(root/'tests/PairedEffectsIntegration.java'),str(root/'tests/LandTestAddon.java')],check=True)
 with zipfile.ZipFile(test/'mods/land-qa.jar','w') as z:
  z.writestr('fabric.mod.json',json.dumps(dict(schemaVersion=1,id='neon_land_qa',version='1',environment='server',entrypoints=dict(main=['jp.neonward.LandTestAddon']))))
  for f in qa.rglob('*.class'):z.write(f,f.relative_to(qa))

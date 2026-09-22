@@ -25,6 +25,12 @@
     "FishingCollectibleMixin"
   ],
   "client": [
+    "PairedSwingAccess",
+    "PairedAttackMixin",
+    "PairedFirstPersonMixin",
+    "PairedStateMixin",
+    "PairedPoseMixin",
+    "PairedGloveLayerMixin",
     "TelevisionBrowserMixin",
     "EnchantParticlesMixin",
     "PhoneUseMixin",

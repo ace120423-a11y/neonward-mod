@@ -5,7 +5,10 @@ public final class LandLayout {
  public static int x(int id){if(id<0||id>=COUNT)throw new IllegalArgumentException();return -232+(id%4)*44;}
  public static int z(int id){if(id<0||id>=COUNT)throw new IllegalArgumentException();return id<4?104:168;}
  public static boolean area(int x,int z){return x>=-248&&x<=-33&&z>=88&&z<=216;}
+ public static boolean perimeter(int x,int z){return area(x,z)&&(x==-248||x==-33||z==88||z==216)&&!(x==-33&&z>=138&&z<=170);}
  public static int plot(int x,int z){for(int i=0;i<COUNT;i++)if(x>=x(i)&&x<x(i)+32&&z>=z(i)&&z<z(i)+32)return i;return -1;}
  public static boolean editable(int plot,int x,int y,int z){return plot>=0&&plot<COUNT&&y>=MIN_Y&&y<=MAX_Y&&plot(x,z)==plot;}
  public static boolean samePlot(int x,int y,int z,int X,int Y,int Z){int p=plot(x,z);return editable(p,x,y,z)&&editable(p,X,Y,Z);}
+ /** Shared-space enclosure outside the full 32x32 buildable footprint. Four-wide avenue entrance. */
+ public static boolean wall(int X,int Z){for(int id=0;id<COUNT;id++){int x=x(id),z=z(id);if(X<x-1||X>x+32||Z<z-1||Z>z+32)continue;boolean edge=X==x-1||X==x+32||Z==z-1||Z==z+32;boolean gate=X>=x+14&&X<=x+17&&Z==(id<4?z+32:z-1);if(edge&&!gate)return true;}return false;}
 }

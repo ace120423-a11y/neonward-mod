@@ -33,10 +33,12 @@ public final class ArsenalExpansion {
  static Item.Properties described(Item.Properties p,String text){return p.component(DataComponents.LORE,new net.minecraft.world.item.component.ItemLore(List.of(Component.literal(text).withColor(0x80ffee))));}
  public static void register(){
   float[] damage={5,4,2,6,5},speed={-2.6f,-2.4f,-1.5f,-2.9f,-2.3f};
-  String[] meleeTips={"長リーチ突き / 右長押し→離す：溜め突進","右クリック：敵を引き寄せ / ボスは引き寄せ無効","連撃 / 右クリック：横ステップ","広い横薙ぎ・撃破時回復 / 右：薙ぎ払い","至近距離打撃 / 右長押し→離す：溜めパンチ"};
+  String[] meleeTips={"長リーチ突き / 右長押し→離す：溜め突進","右クリック：敵を引き寄せ / ボスは引き寄せ無効","50%軽減 / 出血：5秒間・毎秒2ダメージ / 右：横ステップ","広い横薙ぎ・撃破時回復 / 右：薙ぎ払い","50%軽減 / 爆破＋ノックバック・地形破壊なし / 右長押し：溜めパンチ"};
   String[] gunTips={"右長押し1秒→左：貫通射撃","左：低速プラズマ弾 / 範囲爆発・地形破壊なし","左：最大4体へ連鎖電撃","左長押し：冷気連射 / ボスは弱い減速のみ","左：ボルト発射 / しゃがみ＋右：爆発・毒・電撃切替"};
   for(int i=0;i<MELEE.length;i++)NeonArsenal.add(MELEE[i],new Blade(described(NeonArsenal.properties(MELEE[i]).sword(ToolMaterial.DIAMOND,damage[i],speed[i]).repairable(Items.IRON_INGOT),meleeTips[i]),i));
   for(int i=0;i<RANGED.length;i++)NeonArsenal.add(RANGED[i],new Launcher(described(NeonArsenal.properties(RANGED[i]).durability(1200).enchantable(15).repairable(Items.IRON_INGOT),gunTips[i]),i));
+  PairedHands.init();
+  PairedEffects.init();
   ServerTickEvents.END_SERVER_TICK.register(ArsenalExpansion::tick);
   ServerLifecycleEvents.SERVER_STOPPED.register(s->{SHOTS.clear();ECHOES.clear();MELEE_NEXT.clear();});
   net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.register((h,s)->{MELEE_NEXT.remove(h.player.getUUID());SHOTS.removeIf(v->v.owner()==h.player);ECHOES.removeIf(v->v.owner()==h.player);});
@@ -52,7 +54,8 @@ public final class ArsenalExpansion {
   if(t==3&&!victim.isAlive())p.heal(2);
   int now=p.level().getServer().getTickCount();if(now<MELEE_NEXT.getOrDefault(p.getUUID(),0))return;MELEE_NEXT.put(p.getUUID(),now+10);
   particles(p.level(),p.getEyePosition(),victim.position().add(0,1,0),t==3?0xb978ff:0x63fff0);
-  if(t==2){if(ECHOES.size()<48&&enemy(p,victim))ECHOES.add(new Echo(p,victim,damage*.35f,now+5));return;}
+  if(t==2){PairedEffects.bleed(p,victim);if(ECHOES.size()<48&&enemy(p,victim))ECHOES.add(new Echo(p,victim,damage*.35f,now+5));return;}
+  if(t==4){PairedEffects.blast(p,victim,damage*.3f,.9);return;}
   for(var e:targets(p,t==0?4.5:t==3?3.6:t==1?3.5:2.1,t==0?.15:t==3?1.25:.65))if(e!=victim&&hurt(p,e,damage*.3f)){if(t==3&&!e.isAlive())p.heal(1);if(t==4)push(p,e,.7);}
  }
  public static class Blade extends Item {
@@ -66,6 +69,7 @@ public final class ArsenalExpansion {
   if(type==2){dash(p,new Vec3(front.z,0,-front.x),2);return;}
   if(type==0)dash(p,front,3.5);
   var ts=targets(p,type==1?9:type==0?5:type==3?3.8:2.8,type==1?.35:type==0?.25:1.2);
+  if(type==4){for(var e:ts){float damage=scaled(p,s,16*power);if(hurt(p,e,damage)){PairedEffects.blast(p,e,damage*.35f,1.5);break;}}return;}
   for(var e:ts){if(type==1){boolean hit=hurt(p,e,scaled(p,s,7));if(hit&&!boss(e)){var dir=p.position().subtract(e.position()).normalize();e.setDeltaMovement(dir.scale(.7).add(0,.12,0));}particles(p.level(),p.getEyePosition(),e.position().add(0,1,0),0xffce73);break;}
    if(hurt(p,e,scaled(p,s,(type==4?16:12)*power))){if(type==4)push(p,e,1.5);if(type==3&&!e.isAlive())p.heal(2);}
   }burst(p.level(),p.position().add(front.scale(1.5)),type==3?0xb978ff:0xffcb73);

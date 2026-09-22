@@ -14,7 +14,13 @@ with zipfile.ZipFile(root/'build/neonward-0.1.0.jar') as jar, zipfile.ZipFile(Pa
     for name in names:
         assert 'item.neonward.'+name in language
         definition=json.loads(jar.read(f'assets/neonward/items/{name}.json'))
-        assert definition['model']['model']=='neonward:item/'+name
+        if name=='neon_dualblades':
+            assert definition['model']['fallback']['model']=='neonward:item/'+name
+            for side in ['left','right']:
+                single=json.loads(jar.read(f'assets/neonward/models/item/neon_dualblade_{side}.json'))
+                assert len(single['elements'])==4
+                for texture in single['textures'].values():check_texture(texture)
+        else:assert definition['model']['model']=='neonward:item/'+name
         model=json.loads(jar.read(f'assets/neonward/models/item/{name}.json'))
         assert model['elements'] and model['display']
         for texture in model['textures'].values():

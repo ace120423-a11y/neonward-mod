@@ -8,7 +8,7 @@ import net.minecraft.resources.Identifier;
 /** Saved-city atlas, north-up, with live position and proportional world coordinates. */
 public class CityMapScreen extends Screen {
  static final Identifier ATLAS=NeonWard.id("textures/gui/city_map.png");
- static final String[] NAMES={"マイホーム","企業タワー","中央広場","武器屋","服屋","マーケット","北門","東門","南門","西門","飲み屋横丁","車屋","カジノ","家具屋","釣り堀・農地受付","薬局・調合台","不動産屋 NEON ESTATE","診療所 NEURO CLINIC"};
+ static final String[] NAMES={"マイホーム","企業タワー","中央広場","武器屋","服屋","マーケット","北門","東門","南門","西門","飲み屋横丁","車屋","カジノ","家具屋","釣り堀・土地案内","薬局・調合台","不動産屋 NEON ESTATE","診療所 NEURO CLINIC"};
  static final double[][] POI={{108,237},{84,118},{160,154},{79,480},{244,493},{241,121},{160,-16},{560,154},{160,688},{-16,154},{160,827},{334,580},{510,468},{327,600},{327,634},{347,600},{378,640},{426,440}};
  int l,t,w,h,mx,my,mw,mh,selected=-1,page,rows;double cx=272,cz=484,zoom=1,scale;boolean dragging,follow=true,slum,initialized;
  public CityMapScreen(){super(Component.literal("NEON ATLAS"));}
