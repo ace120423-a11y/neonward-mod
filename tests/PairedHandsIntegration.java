@@ -30,6 +30,20 @@ public final class PairedHandsIntegration {
     clear(p);p.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.IRON_SWORD));p.setItemSlot(EquipmentSlot.OFFHAND,shield);
     check(!PairedHands.enforce(p)&&p.getOffhandItem()==shield,"ordinary weapons unchanged");
    }
+   for(String id:new String[]{"volt_spear","chain_kusarigama","reaper_scythe","impact_gauntlet"}){
+    clear(p);var weapon=new ItemStack(NeonArsenal.ITEMS.get(id));p.setItemSlot(EquipmentSlot.MAINHAND,weapon);
+    check(MeleeGuard.multiplier(p,p.damageSources().generic())==.5f,id+" passive 50 percent");
+    p.startUsingItem(net.minecraft.world.InteractionHand.MAIN_HAND);
+    check(MeleeGuard.multiplier(p,p.damageSources().generic())==.5f,id+" use does not stack reduction");p.stopUsingItem();
+    check(MeleeGuard.multiplier(p,p.damageSources().fellOutOfWorld())==1f,id+" void exclusion");
+    p.setItemSlot(EquipmentSlot.OFFHAND,weapon.copy());
+    check(MeleeGuard.multiplier(p,p.damageSources().generic())==.5f,id+" offhand cannot stack");
+    p.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);
+    check(MeleeGuard.multiplier(p,p.damageSources().generic())==1f,id+" offhand alone does not protect");
+    p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);p.getInventory().setItem(11,weapon);
+    check(MeleeGuard.multiplier(p,p.damageSources().generic())==1f,id+" inventory alone does not protect");
+   }
+   System.out.println("SKILL_MELEE_DEFENSE_QA_PASS: spear, chain, scythe, gauntlet 50%, no stacking, main hand only, void excluded");
    clear(p);var glove=new ItemStack(NeonArsenal.ITEMS.get("impact_gauntlet"));p.setItemSlot(EquipmentSlot.MAINHAND,glove);
    check(MeleeGuard.multiplier(p,p.damageSources().generic())==.5f,"gauntlet passive 50 percent reduction");
    p.startUsingItem(net.minecraft.world.InteractionHand.MAIN_HAND);
@@ -40,9 +54,9 @@ public final class PairedHandsIntegration {
    p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);p.getInventory().setItem(10,glove);
    check(MeleeGuard.multiplier(p,p.damageSources().generic())==1f,"inventory alone does not grant protection");
    p.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(NeonArsenal.ITEMS.get("neon_dualblades")));
-   check(MeleeGuard.multiplier(p,p.damageSources().generic())==.5f,"dual blades passive 50 percent reduction");
+   check(MeleeGuard.multiplier(p,p.damageSources().generic())==.55f,"dual blades passive 45 percent reduction");
    var dual=p.getMainHandItem();p.setItemSlot(EquipmentSlot.OFFHAND,dual.copy());
-   check(MeleeGuard.multiplier(p,p.damageSources().generic())==.5f,"two real dual blade sets cannot stack protection");
+   check(MeleeGuard.multiplier(p,p.damageSources().generic())==.55f,"two real dual blade sets cannot stack protection");
    p.setItemSlot(EquipmentSlot.MAINHAND,ItemStack.EMPTY);
    check(MeleeGuard.multiplier(p,p.damageSources().generic())==1f,"dual blades offhand alone do not protect");
    p.setItemSlot(EquipmentSlot.OFFHAND,ItemStack.EMPTY);p.getInventory().setItem(11,dual);
@@ -51,7 +65,7 @@ public final class PairedHandsIntegration {
    check(MeleeGuard.multiplier(p,p.damageSources().generic())==.55f,"hammer passive unchanged");
    p.startUsingItem(net.minecraft.world.InteractionHand.MAIN_HAND);
    check(MeleeGuard.multiplier(p,p.damageSources().generic())==.5f,"hammer guard unchanged");p.stopUsingItem();
-   System.out.println("PAIRED_DEFENSE_QA_PASS: gauntlet and dual blades passive 50%, charging, no stacking, void exclusion, offhand/inventory exclusion, hammer unchanged");
+   System.out.println("PAIRED_DEFENSE_QA_PASS: gauntlet passive 50%, dual blades passive 45%, charging, no stacking, void exclusion, offhand/inventory exclusion, hammer unchanged");
    System.out.println("PAIRED_HANDS_QA_PASS: both weapon types, relocation, metadata, no duplication, non-shield, full inventory, ordinary weapon");
   }finally{Cyberware.restore(p,backup);}
  }

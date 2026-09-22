@@ -15,7 +15,9 @@ public final class MeleeGuard {
  public static boolean guarding(Player p){return p.isAlive()&&!p.isSpectator()&&p.isUsingItem()&&p.getUsedItemHand()==InteractionHand.MAIN_HAND&&MeleeElements.kind(p.getMainHandItem())!=null&&p.getUseItem()==p.getMainHandItem();}
  public static float multiplier(Player p,DamageSource source){
   if(!p.isAlive()||p.isSpectator()||source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))return 1f;
-  if(PairedHands.paired(p.getMainHandItem()))return .5f;
+  int skillType=ArsenalExpansion.type(p.getMainHandItem());
+  if(skillType==0||skillType==1||skillType==3||skillType==4)return .5f;
+  if(PairedHands.paired(p.getMainHandItem()))return .55f;
   if(guarding(p))return .5f;
   return MeleeElements.kind(p.getMainHandItem())==MeleeElements.Kind.WAVE?.55f:1f;
  }

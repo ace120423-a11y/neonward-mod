@@ -25,6 +25,9 @@
     "FishingCollectibleMixin"
   ],
   "client": [
+    "ChainPoseStateMixin",
+    "WeaponMotionMixin",
+    "WeaponBodyPoseMixin",
     "PairedSwingAccess",
     "PairedAttackMixin",
     "PairedFirstPersonMixin",

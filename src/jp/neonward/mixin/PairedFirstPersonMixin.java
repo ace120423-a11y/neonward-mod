@@ -23,6 +23,7 @@ public abstract class PairedFirstPersonMixin {
    float handSwing=hand==p.swingingArm?swing:0;
    pose.pushPose();
    if(PairedHands.gauntlet(weapon)){
+    WeaponMotion.first(p,hand,weapon,handSwing,delta,pose);
     float charge=p.isUsingItem()?Math.min(1,p.getTicksUsingItem()/30f):0;
     pose.translate(0,.08+charge*.10,charge*.12);
     renderPlayerArm(pose,nodes,light,0,handSwing,hand==InteractionHand.MAIN_HAND?p.getMainArm():p.getMainArm().getOpposite());

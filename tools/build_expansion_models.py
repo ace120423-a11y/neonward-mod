@@ -47,3 +47,5 @@ selection={'type':'minecraft:select','property':'minecraft:display_context','cas
 ], 'fallback':{'type':'minecraft:model','model':'neonward:item/neon_dualblades'}}
 (ROOT/'items/neon_dualblades.json').write_text(json.dumps({'model':selection},indent=2),encoding='utf-8')
 print('Generated ten distinct low-poly models, paired hand variants and localization.')
+import runpy
+runpy.run_path(str(Path(__file__).with_name('tune_weapon_grips.py')))

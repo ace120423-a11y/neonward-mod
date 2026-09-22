@@ -10,6 +10,7 @@
       "jp.neonward.NeonWard"
     ],
     "client": [
+      "jp.neonward.ChainPullClient",
       "jp.neonward.NeonClient",
       "jp.neonward.MarketInteriorClient",
       "jp.neonward.CyberwareGachaClient",

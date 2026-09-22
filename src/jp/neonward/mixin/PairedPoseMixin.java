@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PairedPoseMixin {
  @Inject(method="extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V",at=@At("TAIL"))
  private void pose(Avatar p,AvatarRenderState state,float delta,CallbackInfo ci){
+  ((ChainPoseState)state).neonward$chainPhase(ChainPullClient.phase(p.getId(),delta));
   if(PairedHands.paired(p.getMainHandItem())){state.leftArmPose=HumanoidModel.ArmPose.ITEM;state.rightArmPose=HumanoidModel.ArmPose.ITEM;}
  }
  @Inject(method="renderHand",at=@At("TAIL"))
