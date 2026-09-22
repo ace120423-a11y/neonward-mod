@@ -82,6 +82,7 @@ public final class ArsenalExpansion {
    if(type==3&&(!p.isUsingItem()||p.getUseItem()!=gun))return InteractionResult.FAIL;
    if(type==0&&(!p.isUsingItem()||p.getUseItem()!=gun||p.getTicksUsingItem()<20)){p.sendOverlayMessage(Component.literal("右長押しで1秒チャージしてから発射"));return InteractionResult.FAIL;}
    if((type==1||type==4)&&(SHOTS.size()>=64||SHOTS.stream().filter(s->s.owner()==p).count()>=6))return InteractionResult.FAIL;
+   if(!GunReload.take(p,gun))return InteractionResult.FAIL;
    p.getCooldowns().addCooldown(gun,delay);var l=p.level();var start=p.getEyePosition();var end=l.clip(new ClipContext(start,start.add(p.getLookAngle().scale(range)),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p)).getLocation();float dmg=scaled(p,gun,damage);
    if(type==1||type==4){var shot=new Shot(p,l,gun.copy(),start,p.getLookAngle().scale(type==1?.65:2.0),type==1?70:35,dmg,type==1?-1:mode(gun));SHOTS.add(shot);if(type==4)VisibleBolts.create(shot);}
    else if(type==0){var beamEnd=end;var list=l.getEntitiesOfClass(LivingEntity.class,new AABB(start,end).inflate(1),e->enemy(p,e)&&e.getBoundingBox().inflate(.15).clip(start,beamEnd).isPresent());list.sort(Comparator.comparingDouble(p::distanceToSqr));for(var e:list.stream().limit(6).toList())if(hurt(p,e,dmg))GunEnchantments.impact(l,gun,e,p.getLookAngle());p.stopUsingItem();}

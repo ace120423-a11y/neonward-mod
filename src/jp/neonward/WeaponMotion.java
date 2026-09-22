@@ -84,6 +84,12 @@ public final class WeaponMotion {
   var main=right?model.rightArm:model.leftArm;var other=right?model.leftArm:model.rightArm;
   var off=right?s.leftHandItemStack:s.rightHandItemStack;
   boolean free=off.isEmpty()||f.kind==Kind.DUAL||f.kind==Kind.FIST;
+  if(GunReload.reloading(item)){
+   float t=GunReload.progress(item),d=GunReloadMotion.extraction(t),facing=GunReloadMotion.poseAmount(t);
+   arm(main,-1.12f,-sign*.32f,sign*.38f*facing);
+   if(free)arm(other,-1.32f+d*.48f,sign*(.62f-d*.2f),-sign*(.12f+d*.15f));
+   return;
+  }
   boolean use=s.isUsingItem&&s.useItemHand==InteractionHand.MAIN_HAND;
   float hit=strike(s.attackTime),breath=(float)Math.sin(s.ageInTicks*.09)*.015f;
   float look=(float)Math.toRadians(Math.max(-65,Math.min(65,s.xRot)));

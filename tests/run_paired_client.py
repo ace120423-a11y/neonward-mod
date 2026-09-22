@@ -6,7 +6,7 @@ motion='--motion' in sys.argv or bool(focus)
 chain='--chain' in sys.argv
 vfx='--vfx' in sys.argv
 gacha='--gacha' in sys.argv
-qa_class='GunPresentationQA' if '--guns' in sys.argv else 'HousingSalesQA' if '--housing' in sys.argv else 'CasinoGachaQA' if gacha else 'ElementVfxQA' if vfx else 'ChainPullQA' if chain else 'WeaponMotionQA' if motion else 'PairedClientQA'
+qa_class='GunReloadQA' if '--reload' in sys.argv else 'GunPresentationQA' if '--guns' in sys.argv else 'HousingSalesQA' if '--housing' in sys.argv else 'CasinoGachaQA' if gacha else 'ElementVfxQA' if vfx else 'ChainPullQA' if chain else 'WeaponMotionQA' if motion else 'PairedClientQA'
 root=Path(__file__).resolve().parents[1]
 mc=Path(os.environ['APPDATA'])/'.minecraft'
 jdk=Path(os.environ['LOCALAPPDATA'])/'Packages/Microsoft.4297127D64EC6_8wekyb3d8bbwe/LocalCache/Local/runtime/java-runtime-epsilon/windows-x64/java-runtime-epsilon/bin'
@@ -45,5 +45,5 @@ text=(test/'client.log').read_text(encoding='utf-8',errors='replace')
 print('Client log:',test/'client.log')
 print(text[-4500:])
 assert proc.returncode==0 and 'PAIRED_CLIENT_QA_COMPLETE' in text,'Client QA failed'
-assert len(list((test/'screenshots').glob('*.png')))==(12 if '--guns' in sys.argv else 10 if vfx else 6 if chain or gacha else 4*len(focus.split(',')) if focus else 100 if motion else 4)
+assert len(list((test/'screenshots').glob('*.png')))==(44 if '--reload' in sys.argv else 12 if '--guns' in sys.argv else 10 if vfx else 6 if chain or gacha else 4*len(focus.split(',')) if focus else 100 if motion else 4)
 print('PAIRED_CLIENT_PASS',test/'screenshots')

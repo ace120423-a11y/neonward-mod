@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 /** Cosmetic notifications. Authoritative collision and damage stay in the weapon code. */
 public final class GunVfx {
  static final String[] IDS={"pulse_rifle","kestrel_pistol","oni_handcannon","wisp_compact","longwatch_sniper","storm_machinegun","ion_railgun","plasma_launcher","arc_caster","cryo_projector","tactical_crossbow"};
- static int profile(ItemStack s){for(int i=0;i<IDS.length;i++)if(s.is(NeonArsenal.ITEMS.get(IDS[i])))return i;return 0;}
+ public static int profile(ItemStack s){for(int i=0;i<IDS.length;i++)if(s.is(NeonArsenal.ITEMS.get(IDS[i])))return i;return 0;}
  public record Visual(int owner,int kind,int phase,int mode,Vec3 from,Vec3 to) implements CustomPacketPayload {
   public static final Type<Visual> TYPE=new Type<>(NeonWard.id("gun_vfx"));
   public static final StreamCodec<RegistryFriendlyByteBuf,Visual> CODEC=new StreamCodec<>(){

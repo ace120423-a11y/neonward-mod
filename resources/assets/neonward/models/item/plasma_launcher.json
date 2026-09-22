@@ -488,6 +488,75 @@
           ]
         }
       }
+    },
+    {
+      "from": [
+        12.8,
+        10,
+        8
+      ],
+      "to": [
+        15.5,
+        11,
+        10
+      ],
+      "faces": {
+        "up": {
+          "texture": "#armor",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#armor",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "north": {
+          "texture": "#armor",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "south": {
+          "texture": "#armor",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "east": {
+          "texture": "#armor",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "west": {
+          "texture": "#armor",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        }
+      },
+      "name": "reload_mechanism_0"
     }
   ],
   "display": {
