@@ -10,7 +10,11 @@ public final class RolledWeapons {
  public static ItemStack create(Item item,java.util.random.RandomGenerator random){return create(item,random,LootProfile.FIELD);}
  public static ItemStack create(Item item,java.util.random.RandomGenerator random,LootProfile profile){
   if(item==NeonShield.ITEM)return new ItemStack(item); // Vanilla shield protection has no damage-quality roll.
-  var roll=WeaponLoot.quality(random,profile);int tier=roll.tier(),power=roll.power();var stack=new ItemStack(item);var name=stack.getHoverName().copy().append(" ["+CyberwareCatalog.RARITIES[tier]+"]").withStyle(s->s.withColor(CyberwareCatalog.COLORS[tier]).withItalic(false));stack.set(DataComponents.CUSTOM_NAME,name);
+  return create(item,WeaponLoot.quality(random,profile));
+ }
+ public static ItemStack create(Item item,WeaponLoot.Quality roll){
+  int tier=roll.tier(),power=roll.power();if(tier<0||tier>=5||power<WeaponLoot.MIN[tier]||power>WeaponLoot.MAX[tier])throw new IllegalArgumentException("weapon quality");
+  var stack=new ItemStack(item);var name=stack.getHoverName().copy().append(" ["+CyberwareCatalog.RARITIES[tier]+"]").withStyle(s->s.withColor(CyberwareCatalog.COLORS[tier]).withItalic(false));stack.set(DataComponents.CUSTOM_NAME,name);
   CustomData.update(DataComponents.CUSTOM_DATA,stack,t->{t.putInt("neon_weapon_tier",tier);t.putInt("neon_weapon_power",power);});
   stack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE,tier>=3);
   var lore=new ArrayList<Component>(stack.getOrDefault(DataComponents.LORE,ItemLore.EMPTY).lines());lore.add(Component.literal("武器攻撃性能 "+power+"% / 基準武器比").withStyle(net.minecraft.ChatFormatting.AQUA));

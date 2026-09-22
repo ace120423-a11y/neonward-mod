@@ -24,10 +24,9 @@ public final class CyberwareGacha {
  static final double X=514,Y=65,Z=447;
  static final String TOUCH="nw_casino_touch_cyber_capsule";
  static final java.security.SecureRandom RANDOM=new java.security.SecureRandom();
- static final Map<UUID,Integer> TOKENS=new HashMap<>();
  static long ends;static int tier;static String result="1,000 Cr / 右クリック";
  public record Snapshot(String json) implements CustomPacketPayload {
-  public static final Type<Snapshot> TYPE=new Type<>(NeonWard.id("cyber_gacha"));
+  public static final Type<Snapshot> TYPE=new Type<>(NeonWard.id("casino_gacha_v2"));
   public static final StreamCodec<RegistryFriendlyByteBuf,Snapshot> CODEC=StreamCodec.composite(ByteBufCodecs.STRING_UTF8,Snapshot::json,Snapshot::new);
   public Type<? extends CustomPacketPayload> type(){return TYPE;}
  }
@@ -36,29 +35,12 @@ public final class CyberwareGacha {
  static boolean near(ServerPlayer p){return p.isAlive()&&NeonCasino.inside(p)&&p.distanceToSqr(X,Y+1,Z)<=25;}
  public static void init(){
   PayloadTypeRegistry.clientboundPlay().register(Snapshot.TYPE,Snapshot.CODEC);
-  CommandRegistrationCallback.EVENT.register((d,c,e)->d.register(Commands.literal("neongacha").then(Commands.literal("view").executes(ctx->request(ctx.getSource().getPlayerOrException(),false,0))).then(Commands.literal("roll").then(Commands.argument("token",IntegerArgumentType.integer(0)).executes(ctx->request(ctx.getSource().getPlayerOrException(),true,IntegerArgumentType.getInteger(ctx,"token")))))));
+  CasinoGacha.init();WeaponGacha.init();
   UseEntityCallback.EVENT.register((p,l,h,e,hit)->{if(!e.entityTags().contains(TOUCH))return InteractionResult.PASS;if(p instanceof ServerPlayer sp&&h==InteractionHand.MAIN_HAND)request(sp,false,0);return InteractionResult.SUCCESS;});
-  ServerPlayConnectionEvents.DISCONNECT.register((h,s)->TOKENS.remove(h.player.getUUID()));
-  ServerLifecycleEvents.SERVER_STOPPED.register(s->{TOKENS.clear();ends=0;tier=0;result="1,000 Cr / 右クリック";});
+  ServerLifecycleEvents.SERVER_STOPPED.register(s->{ends=0;tier=0;result="1,000 Cr / 右クリック";});
   ServerTickEvents.END_SERVER_TICK.register(s->{var l=s.overworld();long now=l.getGameTime();if(now% (now<ends?4:20)!=0||!l.isPositionEntityTicking(BlockPos.containing(X,Y,Z)))return;if(s.getPlayerList().getPlayers().stream().noneMatch(p->p.level()==l&&p.distanceToSqr(X,Y,Z)<1024))return;cabinet(l,now);});
  }
- static int request(ServerPlayer p,boolean buy,int token){
-  if(!near(p))return 0;
-  String message="部位・系統は均等 / 重複あり / 必ず1個入手";int prize=-1,value=0;long now=p.level().getGameTime();
-  if(buy&&(!TOKENS.containsKey(p.getUUID())||TOKENS.get(p.getUUID())!=token))return 0;
-  if(StockMarket.ledger==null)message="台帳を読み込めないため休止中です";
-  else if(buy){var a=StockMarket.ledger.account(p.getStringUUID());
-   if(now<ends)message="抽選演出が終わるまでお待ちください";
-   else if(a.cash<PRICE)message="1,000 Cr必要です。残高が足りません";
-   else if(p.getInventory().getFreeSlot()<0)message="持ち物に空きを1枠作ってください（課金なし）";
-   else{var inv=Cyberware.inventory(p);long old=a.cash;int id=roll(RANDOM),bp=CyberwareCatalog.rollValue(id,RANDOM);
-    try{if(!p.getInventory().add(Cyberware.stack(id,bp)))throw new IllegalStateException("full");a.cash-=PRICE;StockMarket.save();prize=id;value=bp;ends=now+60;tier=CyberwareCatalog.PARTS[id].tier();result=CyberwareCatalog.RARITIES[tier]+" GET!";TOKENS.put(p.getUUID(),RANDOM.nextInt(Integer.MAX_VALUE));p.getInventory().setChanged();p.containerMenu.broadcastChanges();message="持ち物に受け取りました / −1,000 Cr";}
-    catch(Exception ex){a.cash=old;Cyberware.restore(p,inv);message="保存できなかったため抽選・支払いを取り消しました";}
-   }
-  }
-  TOKENS.computeIfAbsent(p.getUUID(),u->RANDOM.nextInt(Integer.MAX_VALUE));
-  var out=new JsonObject();out.addProperty("token",TOKENS.get(p.getUUID()));out.addProperty("cash",StockMarket.ledger==null?0:StockMarket.ledger.account(p.getStringUUID()).cash);out.addProperty("message",message);out.addProperty("prize",prize);out.addProperty("value",value);out.addProperty("remaining",Math.max(0,ends-now));ServerPlayNetworking.send(p,new Snapshot(out.toString()));return prize>=0?1:0;
- }
+ static int request(ServerPlayer p,boolean buy,int token){return buy?CasinoGacha.request(p,false,true,token,1):CasinoGacha.open(p,false);}
  static void b(ServerLevel l,String k,double dx,double dy,double dz,float w,float h,float d,String block){CasinoProps.box(l,"cyber_capsule_"+k,X+dx,Y+dy,Z+dz,w,h,d,block);}
  static void cabinet(ServerLevel l,long now){
   CasinoProps.touch(l,"cyber_capsule",X,Y,Z,1.8f,2.9f);
