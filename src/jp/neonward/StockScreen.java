@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 
 public class StockScreen extends Screen {
- final BlockPos pos;int l,t,w,h,selected,quantity=1,age;JsonObject data;String status="接続しています…";
+ final BlockPos pos;int l,t,w,h,selected,quantity=1,age;long bagOpenAt;JsonObject data;String status="接続しています…";
  public StockScreen(BlockPos p){super(Component.literal("PULSE EXCHANGE"));pos=p.immutable();}
  @Override public boolean isPauseScreen(){return false;}
  @Override protected void init(){
@@ -16,11 +16,17 @@ public class StockScreen extends Screen {
   addRenderableWidget(new PhoneScreen.NeonButton(l+202,t+h-52,24,19,"+",b->quantity=Math.min(1000,quantity*10)));
   addRenderableWidget(new PhoneScreen.NeonButton(l+234,t+h-52,70,19,"購入",b->send("buy")));
   addRenderableWidget(new PhoneScreen.NeonButton(l+310,t+h-52,70,19,"売却",b->send("sell")));
+  if(minecraft.player!=null&&CompactShops.room(minecraft.player.level(),minecraft.player.blockPosition())==4)
+   addRenderableWidget(new PhoneScreen.NeonButton(l+10,t+h-52,98,19,"バッグ販売",b->{if(bagOpenAt==0){bagOpenAt=System.currentTimeMillis()+250;b.active=false;status="バッグ売場を開いています…";}}));
   addRenderableWidget(new PhoneScreen.NeonButton(l+w-75,t+h-25,65,18,"閉じる",b->onClose()));send("view");
  }
  void send(String action){if(minecraft.player==null)return;if(!action.equals("view")&&(data==null||!data.has("prices")))return;int quote=data!=null&&data.has("prices")?data.getAsJsonArray("prices").get(selected).getAsInt():0;minecraft.player.connection.sendCommand("neonmarket "+action+" "+pos.getX()+" "+pos.getY()+" "+pos.getZ()+" "+selected+" "+quantity+" "+quote);}
  void receive(JsonObject d){if(d.get("x").getAsInt()!=pos.getX()||d.get("y").getAsInt()!=pos.getY()||d.get("z").getAsInt()!=pos.getZ())return;data=d;String m=d.get("message").getAsString();if(!m.isEmpty())status=m;else if(status.startsWith("接続"))status="銘柄と数量を選んで売買";}
- @Override public void tick(){if(++age%40==0)send("view");}
+ @Override public void tick(){
+  // Give the last stock refresh time to clear the shared non-kicking UI limiter.
+  if(bagOpenAt!=0){if(System.currentTimeMillis()>=bagOpenAt&&minecraft.player!=null){minecraft.player.connection.sendCommand("neonbagshop open");minecraft.gui.setScreen(null);}return;}
+  if(++age%40==0)send("view");
+ }
  @Override public void extractRenderState(GuiGraphicsExtractor g,int mx,int my,float delta){
   g.fill(l-3,t-3,l+w+3,t+h+3,0xff07101a);g.outline(l-3,t-3,w+6,h+6,0xff55e5d7);
   g.text(font,"PULSE EXCHANGE / 街の株式市場",l+12,t+10,0xff7cfff0);g.text(font,"ゲーム内通貨 Cr / 30秒ごとに更新",l+12,t+25,0xff819fac);

@@ -16,7 +16,7 @@ with zipfile.ZipFile(pack) as source:
     extra = {n: source.read(n) for n in source.namelist()
              if n not in ("modrinth.index.json", "overrides/mods/neonward-0.1.0.jar")}
 index.update(versionId=version, name=f"Neon Ward v{version}",
-             summary="NeonWard client pack: weapon-shop attachments limited to eight common designs, with server-side purchase validation. Includes all previous features; no world/player data.")
+             summary="NeonWard client pack: purchasable backpacks, dedicated equipment slot and 9/18/27 extra storage slots with preserved contents. Includes all previous features; no world/player data.")
 entries = [f for f in index["files"] if f["path"] == "mods/neonward-0.1.0.jar"]
 assert len(entries) == 1
 entries[0].update(hashes={alg: hashlib.new(alg, data).hexdigest() for alg in ("sha1", "sha512")},

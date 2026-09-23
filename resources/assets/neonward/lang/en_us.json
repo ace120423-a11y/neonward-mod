@@ -1,4 +1,7 @@
 {
+  "item.neonward.backpack_small": "Small Backpack",
+  "item.neonward.backpack_medium": "Medium Backpack",
+  "item.neonward.backpack_large": "Large Backpack",
   "block.neonward.sakura_saisen_left": "Offering Box Left",
   "block.neonward.sakura_saisen_right": "Offering Box Right",
   "block.neonward.sakura_chozu_front_left": "Chozu Front Left",

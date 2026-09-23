@@ -39,6 +39,7 @@ public class NeonWard implements ModInitializer {
   GlitchSigns.init();HologramFish.init();ClockworkMachinery.init();
   StreetLights.init();PulseNeon.init();SouthMaterials.init();
   SakuraMaterials.init();SakuraTown.init();SakuraAccessUpgrade.init();ShrineBlessings.init();ShrineServices.init();ShrineRituals.init();AccessoryEquipment.init();
+  BackpackEquipment.init();BackpackShop.init();
   AutoDoors.init();CyberwareGacha.init();WeaponSales.init();GunAttachments.init();
   LiftSystem.init();VolcanicSpire.init();
   PhoneEquipment.init();LeisureShop.init();

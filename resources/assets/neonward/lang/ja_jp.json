@@ -1,4 +1,7 @@
 {
+  "item.neonward.backpack_small": "小型バッグ",
+  "item.neonward.backpack_medium": "中型バッグ",
+  "item.neonward.backpack_large": "大型バッグ",
   "block.neonward.sakura_saisen_left": "桜宮の賽銭箱・左端",
   "block.neonward.sakura_saisen_right": "桜宮の賽銭箱・右端",
   "block.neonward.sakura_chozu_front_left": "桜宮の手水鉢・前左",
