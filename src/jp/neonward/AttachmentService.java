@@ -23,6 +23,8 @@ public final class AttachmentService {
   public Type<? extends CustomPacketPayload> type(){return TYPE;}
  }
  static boolean shop(ServerPlayer p){return CompactShops.room(p.level(),p.blockPosition())==0&&p.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(CompactShops.counter(0)))<=36;}
+ static boolean shopSells(int code){return GunAttachments.valid(code)&&code%5==0;}
+ static JsonArray shopRows(){var rows=new JsonArray();for(int code=0;code<40;code++)if(shopSells(code)){var row=row(code,-1);row.addProperty("price",GunAttachments.price(code));rows.add(row);}return rows;}
  static boolean allowed(ServerPlayer p,String mode){return p.isAlive()&&!p.isSpectator()&&switch(mode){case "shop"->shop(p);case "gacha"->AttachmentGacha.near(p);case "equip"->NeonArsenal.isGun(p.getItemInHand(NeonArsenal.gunHand(p)));default->false;};}
  static Session session(ServerPlayer p,String mode){var old=SESSIONS.get(p.getUUID());int token;do{token=RNG.nextInt(Integer.MAX_VALUE);}while(old!=null&&token==old.token());var hand=NeonArsenal.gunHand(p);return new Session(mode,token,p.level().getGameTime()+1200,hand,p.getItemInHand(hand).copy());}
  static int open(ServerPlayer p,String mode){if(!allowed(p,mode))return 0;p.stopUsingItem();SESSIONS.put(p.getUUID(),session(p,mode));reply(p,"",new JsonArray());return 1;}
@@ -54,7 +56,7 @@ public final class AttachmentService {
   }else if(StockMarket.ledger==null)message="台帳を読み込めないため休止中です";
   else {
    int count=action.equals("roll")?value:1;
-   if(action.equals("roll")&&count!=1&&count!=10||action.equals("buy")&&!GunAttachments.valid(value))return 0;
+   if(action.equals("roll")&&count!=1&&count!=10||action.equals("buy")&&!shopSells(value))return 0;
    long price=action.equals("roll")?1000L*count:GunAttachments.price(value);
    var account=StockMarket.ledger.account(p.getStringUUID());int free=0;for(int i=0;i<36;i++)if(p.getInventory().getItem(i).isEmpty())free++;
    if(action.equals("roll")&&p.level().getGameTime()<AttachmentGacha.ends)message="抽選演出が終わるまでお待ちください";
@@ -76,7 +78,7 @@ public final class AttachmentService {
   var s=SESSIONS.get(p.getUUID());if(s==null)return;
   var out=new JsonObject();out.addProperty("mode",s.mode());out.addProperty("token",s.token());out.addProperty("message",message);out.addProperty("cash",StockMarket.ledger==null?0:StockMarket.ledger.account(p.getStringUUID()).cash);out.add("prizes",prizes);out.addProperty("remaining",Math.max(0,AttachmentGacha.ends-p.level().getGameTime()));
   var gun=p.getItemInHand(s.hand());out.addProperty("gun",NeonArsenal.isGun(gun)?gun.getHoverName().getString():"");var installed=new JsonArray();for(int i=0;i<4;i++)installed.add(GunAttachments.installed(gun,i));out.add("installed",installed);
-  var rows=new JsonArray();if(s.mode().equals("shop")){for(int i=0;i<40;i++){var row=row(i,-1);row.addProperty("price",GunAttachments.price(i));rows.add(row);}}
+  var rows=new JsonArray();if(s.mode().equals("shop"))rows=shopRows();
   else if(s.mode().equals("equip"))for(int i=0;i<36;i++){int c=GunAttachments.code(p.getInventory().getItem(i));if(c>=0){var row=row(c,i);row.addProperty("compatible",GunAttachments.compatible(gun,c));rows.add(row);}}
   out.add("rows",rows);
   if(ServerPlayNetworking.canSend(p,Reply.TYPE))ServerPlayNetworking.send(p,new Reply(out.toString()));

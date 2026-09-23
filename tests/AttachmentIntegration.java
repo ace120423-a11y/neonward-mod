@@ -15,6 +15,9 @@ public final class AttachmentIntegration {
   try{
    check(UiCommandLimiter.isUi("neonattach roll 1 10"),"non-kicking throttle");
    for(int c=0;c<40;c++)check(GunAttachments.code(GunAttachments.stack(c))==c,"40 exact item tiers");
+   var shopRows=AttachmentService.shopRows();check(shopRows.size()==8,"shop has eight common designs only");
+   for(int i=0;i<8;i++){var row=shopRows.get(i).getAsJsonObject();check(row.get("code").getAsInt()==i*5&&row.get("price").getAsInt()==GunAttachments.price(i*5),"common shop code and unchanged price");}
+   check(!AttachmentService.shopSells(-5)&&!AttachmentService.shopSells(40),"invalid shop codes rejected");
    int[] weights=new int[5];for(int i=0;i<1000;i++){final int n=i;var s=GunAttachments.roll(new Random(1){public int nextInt(int bound){return bound==1000?n:super.nextInt(bound);}});weights[GunAttachments.code(s)%5]++;}
    check(Arrays.equals(weights,new int[]{419,300,200,80,1}),"exact gacha odds");
    check(GunAttachments.dropChance(LootProfile.BOSS)>GunAttachments.dropChance(LootProfile.FIELD),"boss drops higher");
@@ -43,7 +46,11 @@ public final class AttachmentIntegration {
    check(AttachmentService.request(p,"buy",token,0)==0,"mode isolation");check(AttachmentService.request(p,"roll",token,9)==0,"invalid batch");
    p.setPos(40,65,9);check(AttachmentService.request(p,"roll",token,10)==0,"distance");check(AttachmentService.open(p,"shop")==0,"remote shop");
    var level=p.level().getServer().getLevel(CompactShops.DIM);var buyer=WestLandIntegration.visitor(level);
-   try{buyer.setPos(net.minecraft.world.phys.Vec3.atCenterOf(CompactShops.counter(0)));StockMarket.ledger.account(buyer.getStringUUID()).cash=10000;int t=open(buyer,"shop");check(AttachmentService.request(buyer,"buy",t,0)==1&&count(buyer)==1,"shop purchase");check(StockMarket.ledger.account(buyer.getStringUUID()).cash==9200,"shop exact price");}finally{level.removePlayerImmediately(buyer,net.minecraft.world.entity.Entity.RemovalReason.DISCARDED);AttachmentService.SESSIONS.remove(buyer.getUUID());}
+   try{
+    buyer.setPos(net.minecraft.world.phys.Vec3.atCenterOf(CompactShops.counter(0)));var buyerAccount=StockMarket.ledger.account(buyer.getStringUUID());buyerAccount.cash=1000000;int t=open(buyer,"shop");
+    for(int code=0;code<40;code++)if(code%5!=0){check(AttachmentService.request(buyer,"buy",t,code)==0,"higher tier direct purchase rejected: "+code);check(buyerAccount.cash==1000000&&count(buyer)==0&&AttachmentService.SESSIONS.get(buyer.getUUID()).token()==t,"rejection leaves cash inventory and session unchanged");}
+    long expectedCash=1000000;for(int type=0;type<8;type++){int code=type*5;t=open(buyer,"shop");check(AttachmentService.request(buyer,"buy",t,code)==1&&count(buyer)==type+1,"all common designs purchasable");expectedCash-=GunAttachments.price(code);check(buyerAccount.cash==expectedCash,"shop exact price");check(AttachmentService.request(buyer,"buy",t,code)==0&&buyerAccount.cash==expectedCash,"purchase replay rejected");}
+   }finally{level.removePlayerImmediately(buyer,net.minecraft.world.entity.Entity.RemovalReason.DISCARDED);AttachmentService.SESSIONS.remove(buyer.getUUID());}
    for(String id:GunVfx.IDS){var s=new ItemStack(NeonArsenal.ITEMS.get(id));for(int tier=0;tier<5;tier++){GunAttachments.install(s,2,30+tier);check(GunAttachments.recoil(s)>0&&GunAttachments.recoil(s)<=.9,"bounded recoil");}check(GunReload.profile(s).capacity()>=1,"all guns capacity");}
    System.out.println("ATTACHMENT_PASS: 40 parts, exact odds, equip/swap/detach, compatibility, capacity/ammo, reload, full inventory rollback, shop, gacha single-mode/ten, replay, money rollback, range guards");
   }finally{Cyberware.restore(p,inventory);p.setPos(pos);StockMarket.file=file;StockMarket.ledger=StockMarket.JSON.fromJson(ledger,MarketLedger.class);AttachmentService.SESSIONS.clear();AttachmentGacha.ends=0;}
