@@ -7,7 +7,7 @@ public final class UiCommandLimiter {
  private static final Set<String> ROOTS=Set.of("neonattach","neonland","neonweaponsale","neongacha","neonweapongacha","neonarms","neonslot","neoncasino",
   "neonrange","neontravel","neonfish","neoncyber","neonfarm","neonfashion","neonfriends","neongarage","neonmotor",
   "neonguild","neongun","neonhome","interiors","neonlift","neonmed","neonphone",
-  "neonleisure","parlor","neoncall","neonmarket","neontv","interiortv","neonvend","tutorial","underworld");
+  "neonaccessories","neonshrine","neonleisure","parlor","neoncall","neonmarket","neontv","interiortv","neonvend","tutorial","underworld");
  private long nextUi, nextGun;
  public static boolean isUi(String command){
   int space=command.indexOf(' ');

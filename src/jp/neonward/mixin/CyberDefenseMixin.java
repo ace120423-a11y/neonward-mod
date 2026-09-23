@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public class CyberDefenseMixin {
  @Inject(method="getDamageAfterArmorAbsorb",at=@At("RETURN"),cancellable=true)
- private void cyberDefense(DamageSource source,float amount,CallbackInfoReturnable<Float> result){if((Object)this instanceof ServerPlayer p&&!source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)){double defense=Cyberware.defense(p);result.setReturnValue((float)(result.getReturnValue()*jp.neonward.MeleeGuard.multiplier(p,source)/(1+Math.max(0,defense))));}}
+ private void cyberDefense(DamageSource source,float amount,CallbackInfoReturnable<Float> result){if((Object)this instanceof ServerPlayer p&&!source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)){double defense=Cyberware.defense(p);result.setReturnValue((float)(result.getReturnValue()*jp.neonward.MeleeGuard.multiplier(p,source)*jp.neonward.ShrineBlessings.defenseMultiplier(p)*jp.neonward.AccessoryEquipment.defenseMultiplier(p)/(1+Math.max(0,defense))));}}
 }

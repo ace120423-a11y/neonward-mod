@@ -17,6 +17,7 @@ public final class PhoneTravel {
  static final Map<UUID,Integer> NEXT=new HashMap<>();
  static boolean source(ServerPlayer p){
   var l=p.level();double x=p.getX(),y=p.getY(),z=p.getZ();
+  if(SakuraTown.contains(l,p.blockPosition())&&SakuraTown.ready(l.getServer())&&y>=64&&y<=82)return true;
   if(l.dimension()==Level.OVERWORLD)return city(x,y,z)||(y>=60&&y<=72&&CityProtection.southQuarter(p.blockPosition()))||CityApartments.area(l,p.blockPosition())||front(x,y,z,SpireSite.OUTER_X+3.5,SpireSite.OUTER_Z-8.5)||front(x,y,z,912,214);
   if(l.dimension()==PrivateHomes.DIMENSION)return PrivateHomes.insidePosition(p);
   if(l.dimension()==VolcanicSpire.DIM)return VolcanicSpire.front(p)||VolcanicSpire.floor(p)>0&&p.getZ()<11;

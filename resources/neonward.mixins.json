@@ -23,9 +23,16 @@
     "ProtectedPlacementMixin",
     "WeaponGlintMixin",
     "CyberDefenseMixin",
+    "ShrineAttackMixin",
     "FishingCollectibleMixin"
   ],
   "client": [
+    "ShrineRitualStateMixin",
+    "ShrineRitualExtractMixin",
+    "ShrineRitualHandsMixin",
+    "ShrineRitualBodyMixin",
+    "ShrineRitualPlayerMixin",
+    "ShrineRitualHeldMixin",
     "ScopeCrosshairMixin",
     "ChainPoseStateMixin",
     "WeaponMotionMixin",

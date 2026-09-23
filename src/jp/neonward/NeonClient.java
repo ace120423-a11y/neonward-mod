@@ -28,6 +28,7 @@ public class NeonClient implements ClientModInitializer {
   PetCompanions.initClient();
   WeaponDisplay.initClient();
   LeisureShopScreen.initClient();EntityRendererRegistry.register(HologramFish.TYPE,NoopRenderer::new);
+  ShrineScreen.initClient();ShrineRitualClient.initClient();AccessoryScreen.initClient();
   TrainingRange.initClient();
   net.fabricmc.fabric.api.event.player.UseEntityCallback.EVENT.register((player,level,hand,entity,hit)->{if(level.isClientSide()&&level.dimension()!=CompactShops.DIM&&entity instanceof CityResident r&&r.getDisplayName().getString().equals("サイバーウェア技師")){Minecraft.getInstance().gui.setScreen(new CyberwareScreen(entity.blockPosition()));}return InteractionResult.PASS;});
   net.fabricmc.fabric.api.event.player.UseEntityCallback.EVENT.register((player,level,hand,entity,hit)->{if(hand!=net.minecraft.world.InteractionHand.MAIN_HAND)return InteractionResult.PASS;if(level.isClientSide()&&level.dimension()==net.minecraft.world.level.Level.OVERWORLD&&entity instanceof CityResident r){String n=r.getDisplayName().getString();if(n.startsWith("NEON MOTOR")){Minecraft.getInstance().gui.setScreen(new GarageScreen());return InteractionResult.SUCCESS;}if(n.startsWith("CASINO")){Minecraft.getInstance().gui.setScreen(new CasinoScreen(n.contains("ルーレット")?2:n.contains("カード")?1:0));return InteractionResult.SUCCESS;}if(n.equals("服屋の店員")){Minecraft.getInstance().gui.setScreen(new FashionScreen(StreetFashion.SHOP));return InteractionResult.SUCCESS;}}if(level.isClientSide()&&level.dimension()==net.minecraft.world.level.Level.OVERWORLD&&entity instanceof CityResident resident&&(resident.kind().role()==10||resident.kind().role()==11)&&!resident.getDisplayName().getString().equals("サイバーウェア技師")){boolean exchange=resident.kind().role()==11;Minecraft.getInstance().gui.setScreen(new GuildScreen(exchange?GuildServices.EXCHANGE_POS:GuildServices.QUEST_POS,exchange));return InteractionResult.SUCCESS;}if(level.isClientSide()&&entity instanceof VerticalLift lift&&lift.inside(player)){Minecraft.getInstance().gui.setScreen(new LiftScreen(lift));return InteractionResult.SUCCESS;}return InteractionResult.PASS;});
@@ -47,6 +48,7 @@ public class NeonClient implements ClientModInitializer {
    if(screen.getClass().getName().contains("SocialInteractionsScreen")){mc.gui.setScreen(new PhoneScreen());return;}
    if(!(screen instanceof InventoryScreen)&&!(screen instanceof CreativeModeInventoryScreen))return;
    int x=Math.min(sw-55,sw/2+(screen instanceof CreativeModeInventoryScreen?102:94)),y=sh/2+55;
+   Screens.getWidgets(screen).add(Button.builder(Component.literal("装飾品"),b->{if(mc.player!=null&&!mc.player.isSpectator())mc.player.connection.sendCommand("neonaccessories");}).bounds(x,Math.max(2,y-22),50,18).build());
    Screens.getWidgets(screen).add(Button.builder(Component.literal("持つ／しまう"),b->{if(mc.player!=null)mc.player.connection.sendCommand("neonphone hold");mc.gui.setScreen(null);}).bounds(x,y+26,50,18).build());
    ScreenEvents.afterExtract(screen).register((s,g,mx,my,delta)->{
     g.fill(x,y,x+24,y+24,0xffa3afbb);g.fill(x+2,y+2,x+22,y+22,0xff101722);
