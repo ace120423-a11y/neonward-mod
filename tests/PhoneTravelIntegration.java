@@ -12,12 +12,15 @@ public final class PhoneTravelIntegration implements net.fabricmc.api.ModInitial
  static void run(ServerPlayer p){
   var l=p.level();var server=l.getServer();
   ((net.fabricmc.fabric.api.attachment.v1.AttachmentTarget)p).setAttached(PhoneEquipment.SLOT,new ItemStack(NeonWard.PHONE));
+  var food=ExistingEateries.ALL.stream().filter(s->s.name().startsWith("焼鳥")).findFirst().orElseThrow();
+  check(LeisureSites.at(0)==null&&LeisureSites.destination(0).equals(food.arrival()),"FT17 routes to first original grilled-skewer eatery, not a new kiosk");
   for(int i=0;i<PhoneTravel.POINTS.size();i++){
-   var point=PhoneTravel.POINTS.get(i);var at=PhoneTravel.landing(l,p,point);
+   var point=i>=17?LeisureSites.destination(i-17):PhoneTravel.POINTS.get(i);check(point!=null,"service deployed "+i);var at=PhoneTravel.landing(l,p,point);
    System.out.println("TRAVEL_DEST "+i+" "+point.name()+" -> "+at);
    check(at!=null,"landing "+point.name());check(PhoneTravel.safeBody(l,p,at)&&!PhoneTravel.entrance(at),"safe outside "+point.name());
    p.teleportTo(l,181.5,65,154.5,Set.of(),0,0,true);PhoneTravel.NEXT.clear();
    check(PhoneTravel.travel(p,i)==1,"actual travel "+point.name());check(p.position().distanceTo(at)<.01,"actual arrival "+point.name());
+   if(i==17)check(PhoneTravel.source(p),"phone travel remains available after arriving in the existing restaurant quarter");
   }
   // Every separate shop entrance uses the production entrance detector, in the very same tick as travel.
   int[] destinations={3,4,2,6,5};
@@ -54,6 +57,6 @@ public final class PhoneTravelIntegration implements net.fabricmc.api.ModInitial
   var sealed=PhoneTravel.landing(l,p,test);check(sealed==null,"sealed room rejected / no rooftop arrival: "+sealed);
   l.setBlock(new BlockPos(4010,64,4000),Blocks.STONE.defaultBlockState(),2);
   check(PhoneTravel.landing(l,p,test)!=null,"blocked center uses nearby safe street");
-  System.out.println("TRAVEL_PASS: 17 real destinations, 5 immediate entrances, 19 apartment floors, private home, slab/awning/hazard/blocked/void");
+  System.out.println("TRAVEL_PASS: "+PhoneTravel.POINTS.size()+" real destinations, 5 immediate entrances, 19 apartment floors, private home, slab/awning/hazard/blocked/void");
  }
 }

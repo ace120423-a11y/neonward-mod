@@ -17,11 +17,12 @@ public class PhoneScreen extends Screen {
  @Override protected void init(){
   h=Math.min(370,height-12);w=Math.min(250,Math.min(width-24,(int)(h*.72)));l=(width-w)/2;t=(height-h)/2;
   if(page==-1){
-   int gap=(w-20)/4,step=(h-70)/3,size=Math.min(42,gap-8);
+   int gap=(w-20)/4,step=(h-94)/3,size=Math.min(42,gap-8);
    for(int i=0;i<APPS.length;i++){final int app=i;int x=l+10+(i%4)*gap+(gap-size)/2,y=t+42+(i/4)*step;
     addRenderableWidget(new AppButton(x,y,size,app,b->open(app)));
    }
   }
+  if(page==-1)addRenderableWidget(new NeonButton(l+15,t+h-49,w-30,18,"ペット / 呼び出し・帰還",b->{if(minecraft.player!=null)minecraft.player.connection.sendCommand("neonleisure pets");}));
   if(page==11){
    addRenderableWidget(new NeonButton(l+15,t+87,w-30,24,"車を呼び出す",b->callVehicle("car")));
    addRenderableWidget(new NeonButton(l+15,t+125,w-30,24,"バイクを呼び出す",b->callVehicle("bike")));

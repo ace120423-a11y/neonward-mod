@@ -33,12 +33,15 @@ public class NeonWard implements ModInitializer {
     level.getGameRules().set(net.minecraft.world.level.gamerules.GameRules.KEEP_INVENTORY,true,server);
   });
   WestLand.init();OrnamentalFish.init();FishingShop.init();NeonFurniture.init();CityProtection.init();NeonArsenal.init();NeonHostiles.init();SpireBosses.init();SkyBosses.init();SkySpire.init();NeonZones.init();StreetFashion.init();GuildServices.init();
+  WeaponDisplay.init();
   VanillaEnemyFilter.init();VendingMachines.init();StockMarket.init();Cyberware.init();if(MediaBridge.available()){NeonTelevision.init();PortableTelevision.init();}
+  PetCompanions.init();
   GlitchSigns.init();HologramFish.init();ClockworkMachinery.init();
   StreetLights.init();PulseNeon.init();SouthMaterials.init();
   AutoDoors.init();CyberwareGacha.init();WeaponSales.init();GunAttachments.init();
   LiftSystem.init();VolcanicSpire.init();
-  PhoneEquipment.init();
+  PhoneEquipment.init();LeisureShop.init();
+  TrainingRange.init();
   PhoneTravel.init();PhoneGarage.init();PrivateHomes.init();SupportedSmallBlock.init();CityResidents.init();NeonCasino.init();ParlorGames.init();InteriorShop.init();PrivateFarms.init();Medicine.init();PhoneFriends.init();PhoneServices.init();PhoneCalls.init();RealEstate.init();CityApartments.init();CombatFeedback.init();MeleeElements.init();MotorWorks.init();Underworld.init();Aquariums.init();WelcomeTutorial.init();ObjectiveTracker.init();CompactShops.init();
   CreativeModeTabEvents.modifyOutputEvent(ResourceKey.create(Registries.CREATIVE_MODE_TAB,Identifier.withDefaultNamespace("tools_and_utilities"))).register(e->{e.accept(BIKE_KEY);e.accept(CAR_KEY);});
   CommandRegistrationCallback.EVENT.register((dispatcher,ctx,env)->dispatcher.register(Commands.literal("neon").then(Commands.literal("kit").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(c->{var p=c.getSource().getPlayerOrException();for(Item i:new Item[]{BIKE_KEY,CAR_KEY})if(!p.getInventory().add(new ItemStack(i)))p.drop(new ItemStack(i),false);p.sendSystemMessage(Component.literal("NEON TECH: スマホは専用枠に固定、Pで開きます。キーを道路で使うと車両を配置。車両に右クリックで乗車、W/Sで前進・後退、A/Dで操舵、Spaceでブレーキ、Shiftで降車。"));return 1;}))));

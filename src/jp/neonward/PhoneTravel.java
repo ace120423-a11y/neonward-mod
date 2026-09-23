@@ -13,16 +13,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 public final class PhoneTravel {
  public record Point(String name,int x,int z){}
- public static final List<Point> POINTS=List.of(new Point("中央広場",181,154),new Point("マイホーム前",108,237),new Point("企業ビル・ギルド前",84,119),new Point("武器屋前",79,481),new Point("服屋前",244,494),new Point("マーケット前",246,126),new Point("診療所前",426,484),new Point("北門",160,-12),new Point("東門",552,154),new Point("南門",160,680),new Point("西門",-12,154),new Point("車屋",334,580),new Point("カジノ",510,468),new Point("家具屋",327,600),new Point("釣り堀・土地案内",327,634),new Point("薬局・調合台",347,600),new Point("不動産屋",378,640));
+ public static final List<Point> POINTS=List.of(new Point("中央広場",181,154),new Point("マイホーム前",108,237),new Point("企業ビル・ギルド前",84,119),new Point("武器屋前",79,481),new Point("服屋前",244,494),new Point("マーケット前",246,126),new Point("診療所前",426,484),new Point("北門",160,-12),new Point("東門",552,154),new Point("南門",160,680),new Point("西門",-12,154),new Point("車屋",334,580),new Point("カジノ",510,468),new Point("家具屋",327,600),new Point("釣り堀・土地案内",327,634),new Point("薬局・調合台",347,600),new Point("不動産屋",378,640),new Point("焼鳥 炭火屋 / 横丁飲食街",93,821),new Point("ペットショップ",358,620),new Point("闇商人 / スラム",160,863),new Point("射撃訓練所",79,484),new Point("武器展示台販売",327,600));
  static final Map<UUID,Integer> NEXT=new HashMap<>();
  static boolean source(ServerPlayer p){
   var l=p.level();double x=p.getX(),y=p.getY(),z=p.getZ();
-  if(l.dimension()==Level.OVERWORLD)return city(x,y,z)||CityApartments.area(l,p.blockPosition())||front(x,y,z,SpireSite.OUTER_X+3.5,SpireSite.OUTER_Z-8.5)||front(x,y,z,912,214);
+  if(l.dimension()==Level.OVERWORLD)return city(x,y,z)||(y>=60&&y<=72&&CityProtection.southQuarter(p.blockPosition()))||CityApartments.area(l,p.blockPosition())||front(x,y,z,SpireSite.OUTER_X+3.5,SpireSite.OUTER_Z-8.5)||front(x,y,z,912,214);
   if(l.dimension()==PrivateHomes.DIMENSION)return PrivateHomes.insidePosition(p);
   if(l.dimension()==VolcanicSpire.DIM)return VolcanicSpire.front(p)||VolcanicSpire.floor(p)>0&&p.getZ()<11;
   if(l.dimension()==NeonZones.TOWER)return foyer(x,y,z,40.5,9.5);
   if(l.dimension()==SkySpire.DIM)return foyer(x,y,z,SkySpire.padX(1,0)+.5,10.5);
-  return l.dimension()==CompactShops.DIM&&CompactShops.room(l,p.blockPosition())>=0;
+  return l.dimension()==CompactShops.DIM&&(CompactShops.room(l,p.blockPosition())>=0||TrainingRange.contains(l,p.blockPosition()));
  }
  static boolean city(double x,double y,double z){return x>=-32&&x<=576&&z>=-32&&z<=704&&y>=60&&y<=72;}
  static boolean front(double x,double y,double z,double cx,double cz){return y>=60&&y<=78&&Math.hypot(x-cx,z-cz)<=24;}
@@ -65,7 +65,7 @@ public final class PhoneTravel {
   int now=p.level().getServer().getTickCount();if(now<NEXT.getOrDefault(p.getUUID(),0))return 0;NEXT.put(p.getUUID(),now+60);
   if(p.isPassenger())return message(p,"車両から降りてから利用してください");
   if(!source(p))return message(p,"街中・マイホーム内・塔の入口付近で利用できます");
-  var l=p.level().getServer().overworld();var dest=POINTS.get(index);var at=landing(l,p,dest);if(at==null)return message(p,"到着地点が塞がっているため移動を中止しました");
+  var l=p.level().getServer().overworld();var dest=index>=17?LeisureSites.destination(index-17):POINTS.get(index);if(dest==null)return message(p,"店舗の設置が完了していません");var at=landing(l,p,dest);if(at==null)return message(p,"到着地点が塞がっているため移動を中止しました");
   if(!p.teleportTo(l,at.x,at.y,at.z,Set.of(),180,0,true))return message(p,"移動できませんでした");
   p.fallDistance=0;p.setDeltaMovement(Vec3.ZERO);
   // Arrival is outside door triggers. A travel throttle must not lock building entrances.

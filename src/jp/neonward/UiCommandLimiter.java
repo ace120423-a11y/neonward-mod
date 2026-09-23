@@ -5,9 +5,9 @@ import java.util.Set;
 /** Per-connection limiter; called only on the server thread. Never grants permissions. */
 public final class UiCommandLimiter {
  private static final Set<String> ROOTS=Set.of("neonattach","neonland","neonweaponsale","neongacha","neonweapongacha","neonarms","neonslot","neoncasino",
-  "neontravel","neonfish","neoncyber","neonfarm","neonfashion","neonfriends","neongarage","neonmotor",
+  "neonrange","neontravel","neonfish","neoncyber","neonfarm","neonfashion","neonfriends","neongarage","neonmotor",
   "neonguild","neongun","neonhome","interiors","neonlift","neonmed","neonphone",
-  "parlor","neoncall","neonmarket","neontv","interiortv","neonvend","tutorial","underworld");
+  "neonleisure","parlor","neoncall","neonmarket","neontv","interiortv","neonvend","tutorial","underworld");
  private long nextUi, nextGun;
  public static boolean isUi(String command){
   int space=command.indexOf(' ');

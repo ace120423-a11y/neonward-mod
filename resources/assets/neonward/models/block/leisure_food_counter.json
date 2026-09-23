@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "minecraft:block/orange_concrete",
+    "down": "minecraft:block/polished_deepslate",
+    "up": "minecraft:block/sea_lantern",
+    "north": "minecraft:block/orange_concrete",
+    "south": "minecraft:block/polished_deepslate",
+    "east": "minecraft:block/orange_concrete",
+    "west": "minecraft:block/orange_concrete"
+  }
+}
